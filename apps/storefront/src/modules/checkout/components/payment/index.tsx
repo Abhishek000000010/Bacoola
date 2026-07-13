@@ -50,6 +50,9 @@ const Payment = ({
     if (isStripeLike(method)) {
       await initiatePaymentSession(cart, {
         provider_id: method,
+        data: {
+          cart_id: cart.id,
+        },
       })
     }
   }
@@ -89,6 +92,9 @@ const Payment = ({
       if (!checkActiveSession) {
         await initiatePaymentSession(cart, {
           provider_id: selectedPaymentMethod,
+          data: {
+            cart_id: cart.id,
+          },
         })
       }
 

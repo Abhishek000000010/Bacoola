@@ -1,12 +1,18 @@
 "use client"
 
-import { isManual, isStripeLike } from "@lib/constants"
+import { isManual, isStripeLike, isRazorpay } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
+import dynamic from "next/dynamic"
+
+const RazorpayPaymentButton = dynamic(
+  () => import("./razorpay-payment-button").then((mod) => mod.RazorpayPaymentButton),
+  { ssr: false }
+)
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -38,6 +44,15 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case isManual(paymentSession?.provider_id):
       return (
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
+      )
+    case isRazorpay(paymentSession?.provider_id):
+      return (
+        <RazorpayPaymentButton
+          notReady={notReady}
+          cart={cart}
+          session={paymentSession!}
+          data-testid={dataTestId}
+        />
       )
     default:
       return <Button disabled>Select a payment method</Button>

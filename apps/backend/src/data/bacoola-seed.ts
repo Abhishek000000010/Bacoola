@@ -12,10 +12,11 @@
 
 export const store = {
   name: "Bacoola",
-  // First entry is the default currency.
+  // First entry is the default currency. INR is the default because payments
+  // use Razorpay, which settles in INR.
   currencies: [
-    { currency_code: "usd", is_default: true },
-    { currency_code: "eur", is_default: false },
+    { currency_code: "inr", is_default: true },
+    { currency_code: "usd", is_default: false },
   ],
 }
 
@@ -23,18 +24,18 @@ export const salesChannelName = "Bacoola Storefront"
 
 /**
  * Primary market. `NEXT_PUBLIC_DEFAULT_REGION` in the storefront must be one of
- * the country codes below (defaults to "us").
+ * the country codes below (defaults to "in").
  */
 export const region = {
-  name: "United States",
-  currency_code: "usd",
-  countries: ["us", "ca"],
+  name: "India",
+  currency_code: "inr",
+  countries: ["in"],
 }
 
 export const stockLocation = {
   name: "Main Warehouse",
-  city: "New York",
-  country_code: "US",
+  city: "Mumbai",
+  country_code: "IN",
 }
 
 /** Category names shown in the storefront navigation. */
@@ -50,8 +51,8 @@ export type SeedProduct = {
   /** Omit for single-option (size-only) products. */
   colors?: string[]
   images: string[]
-  /** Price per variant, in major currency units (e.g. 29 = $29.00). */
-  prices: { usd: number; eur: number }
+  /** Price per variant, in major currency units (e.g. 1499 = ₹1499). */
+  prices: { inr: number; usd: number }
   /** Grams; used for shipping estimates. */
   weight?: number
 }
@@ -68,7 +69,7 @@ export const products: SeedProduct[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "White"],
     images: [`${IMG}/tee-black-front.png`, `${IMG}/tee-black-back.png`],
-    prices: { usd: 29, eur: 27 },
+    prices: { inr: 1499, usd: 29 },
     weight: 220,
   },
   {
@@ -80,7 +81,7 @@ export const products: SeedProduct[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["White", "Navy"],
     images: [`${IMG}/tee-white-front.png`, `${IMG}/tee-white-back.png`],
-    prices: { usd: 29, eur: 27 },
+    prices: { inr: 1499, usd: 29 },
     weight: 200,
   },
   {
@@ -92,7 +93,7 @@ export const products: SeedProduct[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy"],
     images: [`${IMG}/tee-black-front.png`],
-    prices: { usd: 49, eur: 45 },
+    prices: { inr: 2499, usd: 49 },
     weight: 300,
   },
   {
@@ -104,7 +105,7 @@ export const products: SeedProduct[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["White", "Navy"],
     images: [`${IMG}/tee-white-front.png`],
-    prices: { usd: 49, eur: 45 },
+    prices: { inr: 2499, usd: 49 },
     weight: 280,
   },
   {
@@ -115,7 +116,7 @@ export const products: SeedProduct[] = [
     categories: ["Men"],
     sizes: ["S", "M", "L", "XL"],
     images: [`${IMG}/sweatshirt-vintage-front.png`],
-    prices: { usd: 39, eur: 36 },
+    prices: { inr: 1999, usd: 39 },
     weight: 350,
   },
 ]

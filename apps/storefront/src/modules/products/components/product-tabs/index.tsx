@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState, useEffect } from "react"
 import Back from "@modules/common/icons/back"
 import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
@@ -12,6 +13,12 @@ type ProductTabsProps = {
 }
 
 const ProductTabs = ({ product }: ProductTabsProps) => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const tabs = [
     {
       label: "Product Information",
@@ -22,6 +29,15 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
       component: <ShippingInfoTab />,
     },
   ]
+
+  if (!mounted) {
+    return (
+      <div className="w-full space-y-4">
+        <div className="h-12 w-full bg-neutral-100 animate-pulse rounded border border-neutral-200" />
+        <div className="h-12 w-full bg-neutral-100 animate-pulse rounded border border-neutral-200" />
+      </div>
+    )
+  }
 
   return (
     <div className="w-full">

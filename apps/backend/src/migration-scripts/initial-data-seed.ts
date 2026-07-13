@@ -59,8 +59,8 @@ function buildProductVariantsAndOptions(product: SeedProduct) {
           : `${skuBase}-${size}`,
         options: variantOptions,
         prices: [
+          { amount: product.prices.inr, currency_code: "inr" },
           { amount: product.prices.usd, currency_code: "usd" },
-          { amount: product.prices.eur, currency_code: "eur" },
         ],
       };
     })
@@ -220,9 +220,9 @@ export default async function initial_data_seed({
           code: "standard",
         },
         prices: [
+          { currency_code: "inr", amount: 99 },
           { currency_code: "usd", amount: 10 },
-          { currency_code: "eur", amount: 10 },
-          { region_id: region.id, amount: 10 },
+          { region_id: region.id, amount: 99 },
         ],
         rules: [
           { attribute: "enabled_in_store", value: "true", operator: "eq" },
@@ -241,9 +241,9 @@ export default async function initial_data_seed({
           code: "express",
         },
         prices: [
+          { currency_code: "inr", amount: 199 },
           { currency_code: "usd", amount: 15 },
-          { currency_code: "eur", amount: 15 },
-          { region_id: region.id, amount: 15 },
+          { region_id: region.id, amount: 199 },
         ],
         rules: [
           { attribute: "enabled_in_store", value: "true", operator: "eq" },
