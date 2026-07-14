@@ -55,12 +55,12 @@ module.exports = defineConfig({
             resolve: "@sam-ael/medusa-plugin-shiprocket",
             id: "shiprocket",
             options: {
-              email: process.env.SHIPROCKET_EMAIL,
-              password: process.env.SHIPROCKET_PASSWORD,
+              email: process.env.SHIPROCKET_EMAIL || "dummy@example.com",
+              password: process.env.SHIPROCKET_PASSWORD || "dummypassword",
               // Must match a pickup location nickname configured in your
               // Shiprocket dashboard (Settings → Pickup Addresses). Defaults to
               // "Primary" inside the plugin if unset.
-              pickup_location: process.env.SHIPROCKET_PICKUP_LOCATION,
+              pickup_location: process.env.SHIPROCKET_PICKUP_LOCATION || "Primary",
             },
           },
         ],
@@ -98,9 +98,9 @@ module.exports = defineConfig({
     {
       resolve: "@sam-ael/medusa-plugin-shiprocket",
       options: {
-        email: process.env.SHIPROCKET_EMAIL,
-        password: process.env.SHIPROCKET_PASSWORD,
-        channel_id: process.env.SHIPROCKET_CHANNEL_ID,
+        email: process.env.SHIPROCKET_EMAIL || "dummy@example.com",
+        password: process.env.SHIPROCKET_PASSWORD || "dummypassword",
+        channel_id: process.env.SHIPROCKET_CHANNEL_ID || "12345",
         pricing: "flat_rate",
         length_unit: "cm",
       },
