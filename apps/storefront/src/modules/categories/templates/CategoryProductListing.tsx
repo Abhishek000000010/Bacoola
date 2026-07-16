@@ -92,8 +92,8 @@ export default function CategoryProductListing({
             cols === 1
               ? "[&_ul]:!grid-cols-1 max-w-xl mx-auto"
               : cols === 2
-              ? "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-2 [&_ul]:!gap-y-10"
-              : "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 md:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-2 [&_ul]:!gap-y-10"
+              ? "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
+              : "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 md:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
           }`}
         >
           {children}
