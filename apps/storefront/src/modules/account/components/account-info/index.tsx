@@ -42,29 +42,38 @@ const AccountInfo = ({
   }, [isSuccess, close])
 
   return (
-    <div className="text-small-regular" data-testid={dataTestid}>
-      <div className="flex items-end justify-between">
-        <div className="flex flex-col">
-          <span className="uppercase text-ui-fg-base">{label}</span>
-          <div className="flex items-center flex-1 basis-0 justify-end gap-x-4">
-            {typeof currentInfo === "string" ? (
-              <span className="font-semibold" data-testid="current-info">{currentInfo}</span>
-            ) : (
-              currentInfo
-            )}
-          </div>
+    <div className="w-full mb-[36px]" data-testid={dataTestid}>
+      <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-start gap-x-4">
+        <div className="flex flex-col items-start">
+          <span className="text-[14px] font-semibold leading-[1.3] text-[#111111]">
+            {label}
+          </span>
+          {typeof currentInfo === "string" ? (
+            <span
+              className="text-[14px] font-normal leading-[1.6] mt-[2px] text-[#111111]"
+              data-testid="current-info"
+            >
+              {currentInfo}
+            </span>
+          ) : (
+            currentInfo
+          )}
         </div>
-        <div>
-          <Button
-            variant="secondary"
-            className="w-[100px] min-h-[25px] py-1"
+        <div className="flex justify-start pt-0">
+          <button
             onClick={handleToggle}
             type={state ? "reset" : "button"}
+            className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
             data-testid="edit-button"
             data-active={state}
           >
-            {state ? "Cancel" : "Edit"}
-          </Button>
+            {state
+              ? "CANCEL"
+              : typeof currentInfo === "string" &&
+                (currentInfo.includes("?") || currentInfo === "")
+              ? "ADD"
+              : "EDIT"}
+          </button>
         </div>
       </div>
 
@@ -117,12 +126,12 @@ const AccountInfo = ({
             }
           )}
         >
-          <div className="flex flex-col gap-y-2 py-4">
+          <div className="flex flex-col gap-y-2 py-3">
             <div>{children}</div>
             <div className="flex items-center justify-end mt-2">
               <Button
                 isLoading={pending}
-                className="w-full small:max-w-[140px]"
+                className="w-full small:max-w-[120px] text-[13px]"
                 type="submit"
                 data-testid="save-button"
               >

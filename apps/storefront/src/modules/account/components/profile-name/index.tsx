@@ -47,9 +47,14 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form action={formAction} className="w-full overflow-visible">
+      {/* Mango-style fallback text keeps the row in the "ADD" state when the name is missing */}
       <AccountInfo
         label="Name"
-        currentInfo={`${customer.first_name} ${customer.last_name}`}
+        currentInfo={
+          customer.first_name || customer.last_name
+            ? [customer.first_name, customer.last_name].filter(Boolean).join(" ")
+            : "What's your name?"
+        }
         isSuccess={successState}
         isError={!!state?.error}
         clearState={clearState}

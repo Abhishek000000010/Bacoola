@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 import ProfilePhone from "@modules/account//components/profile-phone"
-import ProfileBillingAddress from "@modules/account/components/profile-billing-address"
+import ProfilePassword from "@modules/account/components/profile-password"
 import ProfileEmail from "@modules/account/components/profile-email"
 import ProfileName from "@modules/account/components/profile-name"
 import { notFound } from "next/navigation"
@@ -22,30 +22,74 @@ export default async function Profile() {
   }
 
   return (
-    <div className="w-full" data-testid="profile-page-wrapper">
-      <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Profile</h1>
-        <p className="text-base-regular">
-          View and update your profile information, including your name, email,
-          and phone number. You can also update your billing address, or change
-          your password.
-        </p>
-      </div>
-      <div className="flex flex-col gap-y-8 w-full">
-        <ProfileName customer={customer} />
-        <Divider />
-        <ProfileEmail customer={customer} />
-        <Divider />
-        <ProfilePhone customer={customer} />
-        <Divider />
-        {/* <ProfilePassword customer={customer} />
-        <Divider /> */}
-        <ProfileBillingAddress customer={customer} regions={regions} />
+    <div
+      className="w-full flex flex-col items-start pt-[72px] pb-20 font-sans text-[#111111]"
+      data-testid="profile-page-wrapper"
+    >
+      <div className="w-full max-w-[560px] mx-auto">
+        <h1 className="text-[24px] font-semibold uppercase leading-none mb-[34px]">
+          My Details
+        </h1>
+        
+        <div className="flex flex-col w-full">
+          <ProfileName customer={customer} />
+          <ProfileEmail customer={customer} />
+          <ProfilePhone customer={customer} />
+          <ProfilePassword customer={customer} />
+          
+          <DetailRow
+            label="Date of birth"
+            value="When's your birthday?"
+            action="ADD"
+            data-testid="account-dob"
+          />
+
+          <DetailRow
+            label="Gender"
+            value="Prefer not to say"
+            action="EDIT"
+            data-testid="account-gender"
+          />
+          
+          <div className="w-full flex items-start mt-[4px]">
+            <button className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none">
+              Delete Account
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-const Divider = () => {
-  return <div className="w-full h-px bg-gray-200" />
+type DetailRowProps = {
+  label: string
+  value: string
+  action: "ADD" | "EDIT"
+  "data-testid"?: string
+}
+
+const DetailRow = ({ label, value, action, "data-testid": dataTestid }: DetailRowProps) => {
+  return (
+    <div className="w-full mb-[28px]" data-testid={dataTestid}>
+      <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-start gap-x-4">
+        <div className="flex flex-col items-start">
+          <span className="text-[14px] font-semibold leading-[1.3] text-[#111111]">
+            {label}
+          </span>
+          <span className="mt-[2px] text-[14px] font-normal leading-[1.6] text-[#111111]">
+            {value}
+          </span>
+        </div>
+        <div className="flex justify-start pt-0">
+          <button
+            type="button"
+            className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
+          >
+            {action}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }

@@ -58,7 +58,7 @@ export default async function Nav() {
               </LocalizedClientLink>
               
               <LocalizedClientLink
-                href="#"
+                href="/wishlist"
                 className="hover:text-[#555555] transition-colors duration-200"
               >
                 Wishlist
