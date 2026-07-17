@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Container, Heading, Button, toast, Badge, IconButton } from "@medusajs/ui"
 import { ArrowUturnLeft, PencilSquare, Trash, Plus } from "@medusajs/icons"
-import { sdk } from "../../../../../lib/config"
+import { sdk } from "../../../../lib/config"
 
 import { SectionForm } from "../components/section-form"
 import { ItemForm } from "../components/item-form"

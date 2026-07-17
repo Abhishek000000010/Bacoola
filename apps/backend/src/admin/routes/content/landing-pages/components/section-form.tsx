@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react"
 import { Drawer, Button, Input, Label, Switch, Select, toast } from "@medusajs/ui"
-import { sdk } from "../../../../../lib/config"
+import { sdk } from "../../../../lib/config"
 
 type Section = {
   id?: string
