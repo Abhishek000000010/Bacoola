@@ -5,7 +5,7 @@ import { createProductsWorkflow, createInventoryLevelsWorkflow } from "@medusajs
 function generateMockProducts(category: any, count: number, salesChannelId: string, shippingProfileId: string) {
   const sizes = ["S", "M", "L", "XL"]
   const colors = ["Black", "White", "Navy", "Beige"]
-  const products = []
+  const products: any[] = []
 
   for (let i = 1; i <= count; i++) {
     const title = `${category.name} - Essential Collection ${i}`
@@ -76,7 +76,7 @@ export default async function seedMockProducts({ container }: { container: Medus
   )
   logger.info(`Found ${leafCategories.length} leaf categories for women. Generating 10 products for each...`)
 
-  let allProducts = []
+  let allProducts: any[] = []
   for (const category of leafCategories) {
     allProducts.push(...generateMockProducts(category, 10, salesChannelId, shippingProfileId))
   }
@@ -84,16 +84,24 @@ export default async function seedMockProducts({ container }: { container: Medus
   logger.info(`Total products to create: ${allProducts.length}. Creating in batches of 50 to avoid timeout...`)
 
   const BATCH_SIZE = 50
+  const failedBatches: string[] = []
+
   for (let i = 0; i < allProducts.length; i += BATCH_SIZE) {
     const batch = allProducts.slice(i, i + BATCH_SIZE)
-    logger.info(`Processing batch ${Math.floor(i/BATCH_SIZE) + 1} of ${Math.ceil(allProducts.length/BATCH_SIZE)}...`)
-    
+    const batchNo = Math.floor(i / BATCH_SIZE) + 1
+    logger.info(`Processing batch ${batchNo} of ${Math.ceil(allProducts.length/BATCH_SIZE)}...`)
+
+    // A batch can fail *after* creating products and variants but before their
+    // prices land, leaving variants that look fine but can never be added to a
+    // cart. This used to be logged and swallowed, so the seed reported success
+    // while leaving 800 priceless variants behind. Collect and re-throw instead.
     try {
       await createProductsWorkflow(container).run({
         input: { products: batch }
       })
     } catch (e) {
-      logger.error(`Error in batch ${Math.floor(i/BATCH_SIZE) + 1}: ${e.message}`)
+      logger.error(`Error in batch ${batchNo}: ${e.message}`)
+      failedBatches.push(`batch ${batchNo}: ${e.message}`)
     }
   }
 
@@ -118,5 +126,23 @@ export default async function seedMockProducts({ container }: { container: Medus
     })
   }
 
-  logger.info("Finished seeding mock products!")
+  // Verify against the database rather than trusting the workflow runs above:
+  // a half-failed batch is exactly how priceless variants got shipped before.
+  const { data: seededVariants } = await query.graph({
+    entity: "product_variant",
+    fields: ["id", "prices.*"],
+  })
+  const unpriced = seededVariants.filter((v: any) => !v.prices?.length).length
+
+  logger.info(
+    `Finished seeding mock products! failedBatches=${failedBatches.length}, unpricedVariants=${unpriced}`
+  )
+
+  if (failedBatches.length || unpriced) {
+    throw new Error(
+      `seed-mock-products: incomplete — ${unpriced} variants have no price. ` +
+        `Run 'medusa exec ./src/scripts/fix-missing-prices.ts' to backfill. ` +
+        (failedBatches.length ? `Failures: ${failedBatches.join("; ")}` : "")
+    )
+  }
 }

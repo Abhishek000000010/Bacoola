@@ -43,7 +43,7 @@ export default async function fixCategories({ container }: { container: MedusaCo
   console.log(`Deleting ${toDelete.length} old sub-categories for Men and Women...`)
   for (const id of toDelete) {
     try {
-      await productModule.deleteProductCategories(id)
+      await productModule.deleteProductCategories([id])
     } catch (e) {
       // ignore
     }
