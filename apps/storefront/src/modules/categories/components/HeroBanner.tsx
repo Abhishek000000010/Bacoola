@@ -7,6 +7,7 @@ interface HeroBannerProps {
   image: string
   ctaText: string
   ctaHref: string
+  imagePosition?: string
 }
 
 export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
@@ -14,6 +15,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
   image,
   ctaText,
   ctaHref,
+  imagePosition = "center center",
 }) => {
   return (
     <section className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center text-center text-white">
@@ -22,8 +24,13 @@ export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
         alt={title}
         fill
         priority
-        className="object-cover object-center"
+        className="object-cover"
+        style={{
+          objectFit: "cover",
+          objectPosition: imagePosition
+        }}
         sizes="100vw"
+        unoptimized
       />
       <div className="absolute inset-0 bg-black/25 z-10" />
       <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none animate-in fade-in duration-700">

@@ -11,6 +11,8 @@ interface EditorialGridProps {
   rightImage: string
   rightHref: string
   rightSpan: string
+  leftImagePosition?: string
+  rightImagePosition?: string
 }
 
 export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
@@ -22,6 +24,8 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
   rightImage,
   rightHref,
   rightSpan,
+  leftImagePosition = "center center",
+  rightImagePosition = "center center",
 }) => {
   return (
     <section className="w-full h-screen grid grid-cols-1 md:grid-cols-5 bg-neutral-900 overflow-hidden relative">
@@ -32,8 +36,13 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           alt={leftTitle}
           fill
           loading="lazy"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          style={{
+            objectFit: "cover",
+            objectPosition: leftImagePosition
+          }}
           sizes="(max-width: 768px) 100vw, 60vw"
+          unoptimized
         />
         <div className="absolute inset-0 bg-black/20 z-10" />
         <div className="absolute bottom-12 left-12 z-20 text-white select-none">
@@ -58,8 +67,13 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           alt={rightTitle}
           fill
           loading="lazy"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          style={{
+            objectFit: "cover",
+            objectPosition: rightImagePosition
+          }}
           sizes="(max-width: 768px) 100vw, 60vw"
+          unoptimized
         />
         <div className="absolute inset-0 bg-black/20 z-10" />
         <div className="absolute bottom-12 left-12 z-20 text-white select-none">

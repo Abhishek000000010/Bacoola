@@ -16,7 +16,9 @@ import EditorialGrid from "../components/EditorialGrid"
 import { categoryEditorialConfigs } from "../components/landing-configs"
 import CategoryProductListing from "./CategoryProductListing"
 
-export default function CategoryTemplate({
+import { getLandingSections } from "@lib/data/landing-pages"
+
+export default async function CategoryTemplate({
   category,
   sortBy,
   page,
@@ -38,31 +40,59 @@ export default function CategoryTemplate({
   const editorialConfig = categoryEditorialConfigs[category.handle]
 
   if (editorialConfig) {
+    // Fetch dynamic CMS data for this page
+    const cmsSections = await getLandingSections(category.handle)
+
+    // Helper to find CMS section by layout_type
+    const getCmsSection = (layoutType: string) =>
+      cmsSections.find((s) => s.layout_type === layoutType)
+
+    const heroSection = getCmsSection("hero_slider")
+    const splitSection =
+      getCmsSection("split_banner") || getCmsSection("editorial_banner")
+
+    // Merge Hero Data
+    const heroItem = heroSection?.items?.[0]
+    const heroTitle = heroItem?.title || editorialConfig.heroTitle
+    const heroImage = heroItem?.desktop_image || editorialConfig.heroImage
+    const heroCta = heroItem?.button_text || editorialConfig.heroCta
+    const heroHref = heroItem?.button_link || `/products/${category.handle}`
+    const heroImagePosition = heroItem?.image_position || "center center"
+
     return (
       <div className="relative w-full flex flex-col bg-neutral-900">
-        
+
         {/* 1. Fullscreen Editorial Hero Banner Component */}
         <HeroBanner
-          title={editorialConfig.heroTitle}
-          image={editorialConfig.heroImage}
-          ctaText={editorialConfig.heroCta}
-          ctaHref={`/products/${category.handle}`}
+          title={heroTitle}
+          image={heroImage}
+          ctaText={heroCta}
+          ctaHref={heroHref}
+          imagePosition={heroImagePosition}
         />
 
         {/* 2. Alternating Editorial Campaign Grids Components */}
-        {editorialConfig.grid.map((row, index) => (
-          <EditorialGrid
-            key={index}
-            leftTitle={row.leftTitle}
-            leftImage={row.leftImage}
-            leftHref={`/categories/${category.handle}/${row.leftSlug}`}
-            leftSpan={row.leftSpan}
-            rightTitle={row.rightTitle}
-            rightImage={row.rightImage}
-            rightHref={`/categories/${category.handle}/${row.rightSlug}`}
-            rightSpan={row.rightSpan}
-          />
-        ))}
+        {editorialConfig.grid.map((row, index) => {
+          // Find CMS items for this row (2 items per row)
+          const cmsLeft = splitSection?.items?.[index * 2]
+          const cmsRight = splitSection?.items?.[index * 2 + 1]
+
+          return (
+            <EditorialGrid
+              key={index}
+              leftTitle={cmsLeft?.title || row.leftTitle}
+              leftImage={cmsLeft?.desktop_image || row.leftImage}
+              leftHref={cmsLeft?.button_link || `/categories/${category.handle}/${row.leftSlug}`}
+              leftSpan={row.leftSpan}
+              leftImagePosition={cmsLeft?.image_position || "center center"}
+              rightTitle={cmsRight?.title || row.rightTitle}
+              rightImage={cmsRight?.desktop_image || row.rightImage}
+              rightHref={cmsRight?.button_link || `/categories/${category.handle}/${row.rightSlug}`}
+              rightSpan={row.rightSpan}
+              rightImagePosition={cmsRight?.image_position || "center center"}
+            />
+          )
+        })}
       </div>
     )
   }
