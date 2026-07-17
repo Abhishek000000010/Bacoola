@@ -93,6 +93,12 @@ module.exports = defineConfig({
         ],
       },
     },
+    {
+      // Landing Pages CMS — custom standalone module for managing
+      // marketing/landing page content (hero banners, editorial sections, etc.)
+      // directly from the Medusa admin. Completely independent of commerce modules.
+      resolve: "./src/modules/landing-pages",
+    },
   ],
   plugins: [
     {

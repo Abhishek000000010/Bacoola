@@ -107,60 +107,77 @@ const AccountNav = ({
           </>
         )}
       </div>
-      <div className="hidden small:block" data-testid="account-nav">
-        <div>
-          <div className="pb-4">
-            <h3 className="text-base-semi">Account</h3>
+      <div className="hidden small:block w-full max-w-[230px]" data-testid="account-nav">
+        <div className="flex flex-col gap-y-10">
+          <div className="text-[12px] font-semibold uppercase tracking-[0.01em] text-[#111111]">
+            Hello {customer?.first_name || "Customer"}
           </div>
-          <div className="text-base-regular">
-            <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
-              <li>
-                <AccountNavLink
-                  href="/account"
-                  route={route!}
-                  data-testid="overview-link"
-                >
-                  Overview
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/profile"
-                  route={route!}
-                  data-testid="profile-link"
-                >
-                  Profile
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/addresses"
-                  route={route!}
-                  data-testid="addresses-link"
-                >
-                  Addresses
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/orders"
-                  route={route!}
-                  data-testid="orders-link"
-                >
-                  Orders
-                </AccountNavLink>
-              </li>
-              <li className="text-grey-700">
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  data-testid="logout-button"
-                >
-                  Log out
-                </button>
-              </li>
-            </ul>
-          </div>
+          
+          <ul className="flex flex-col gap-y-7">
+            <li>
+              <AccountNavLink href="/account" route={route!} data-testid="overview-link">
+                My Account
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/orders" route={route!} data-testid="orders-link">
+                My Purchases
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/returns" route={route!}>
+                Returns
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/refunds" route={route!}>
+                Refunds
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/profile" route={route!} data-testid="profile-link">
+                My Details
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/addresses" route={route!} data-testid="addresses-link">
+                My Addresses
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/subscriptions" route={route!}>
+                My Subscriptions
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/account/cards" route={route!}>
+                My Cards
+              </AccountNavLink>
+            </li>
+            <li>
+              <AccountNavLink href="/help" route={route!}>
+                Help
+              </AccountNavLink>
+            </li>
+            <li>
+              <LocalizedClientLink
+                href="/wishlist"
+                className="text-[11px] xl:text-[12px] font-medium uppercase tracking-[0.02em] text-[#111111] hover:text-[#555555] transition-colors"
+              >
+                Wishlist
+              </LocalizedClientLink>
+            </li>
+            <li className="mt-4">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-[12px] font-semibold uppercase tracking-[0.01em] text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
+                data-testid="logout-button"
+              >
+                Sign out
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -186,8 +203,9 @@ const AccountNavLink = ({
   return (
     <LocalizedClientLink
       href={href}
-      className={clx("text-ui-fg-subtle hover:text-ui-fg-base", {
-        "text-ui-fg-base font-semibold": active,
+      className={clx("text-[12px] font-semibold uppercase tracking-[0.01em] text-[#111111] transition-colors", {
+        "font-bold": active,
+        "font-semibold hover:text-[#555555]": !active,
       })}
       data-testid={dataTestId}
     >

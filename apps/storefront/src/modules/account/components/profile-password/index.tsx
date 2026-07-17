@@ -24,23 +24,17 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
   }
 
   return (
-    <form
-      action={updatePassword}
-      onReset={() => clearState()}
-      className="w-full"
-    >
+    <form action={updatePassword} onReset={() => clearState()} className="w-full">
       <AccountInfo
         label="Password"
-        currentInfo={
-          <span>The password is not shown for security reasons</span>
-        }
+        currentInfo={<span>••••••••••</span>}
         isSuccess={successState}
         isError={false}
         errorMessage={undefined}
         clearState={clearState}
         data-testid="account-password-editor"
       >
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <Input
             label="Old password"
             name="old_password"

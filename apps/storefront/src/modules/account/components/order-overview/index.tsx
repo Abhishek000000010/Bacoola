@@ -24,20 +24,24 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
 
   return (
     <div
-      className="w-full flex flex-col items-center gap-y-4"
+      className="w-full flex flex-col items-center justify-center min-h-[400px] text-center"
       data-testid="no-orders-container"
     >
-      <h2 className="text-large-semi">Nothing to see here</h2>
-      <p className="text-base-regular">
-        You don&apos;t have any orders yet, let us change that {":)"}
+      <h2 className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.05em] text-neutral-950 mb-3">
+        You still don&apos;t have any purchases
+      </h2>
+      <p className="text-[13px] sm:text-[14px] font-normal text-neutral-800 mb-8 max-w-[400px] leading-relaxed">
+        Be inspired by the latest news and get new pieces for your wardrobe
       </p>
-      <div className="mt-4">
-        <LocalizedClientLink href="/" passHref>
-          <Button data-testid="continue-shopping-button">
-            Continue shopping
-          </Button>
-        </LocalizedClientLink>
-      </div>
+      
+      <LocalizedClientLink href="/" passHref>
+        <button 
+          className="bg-neutral-950 text-white text-[12px] font-bold uppercase tracking-[0.1em] px-16 py-4 hover:bg-neutral-800 transition-colors focus:outline-none"
+          data-testid="continue-shopping-button"
+        >
+          See what&apos;s new
+        </button>
+      </LocalizedClientLink>
     </div>
   )
 }
