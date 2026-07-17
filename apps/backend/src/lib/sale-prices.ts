@@ -71,6 +71,13 @@ export async function syncSalePrices(
   let synced = 0
   let cleared = 0
 
+  // Deleting a generated list is the slow half of a sync: ~42s for 416 prices,
+  // against a database that touches the same rows in 0.07s via raw SQL. The cost
+  // is Medusa's per-row cascade, not the DB, and the pricing module's own
+  // softDeletePriceLists is no faster (~48s). Rebuilding a category therefore
+  // takes ~35-48s end to end, which is why a percent change needs a moment
+  // before the storefront reflects it. Left on the workflow: it is the supported
+  // path and swapping it buys nothing.
   const dropManagedList = async (categoryId: string) => {
     const id = owned.get(categoryId)
     if (!id) return false
