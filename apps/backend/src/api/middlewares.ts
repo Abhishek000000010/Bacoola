@@ -34,6 +34,14 @@ const missingDimensions = (variant: Dimensioned): string[] =>
     return value === null || value === undefined || Number(value) <= 0
   })
 
+/**
+ * A variant with no price cannot be sold: Medusa refuses to add it to a cart,
+ * so the storefront shows a price-shaped blank and an add button that only
+ * fails once clicked. Publishing one is never intentional.
+ */
+const hasNoPrice = (variant: any): boolean =>
+  !Array.isArray(variant?.prices) || variant.prices.length === 0
+
 const describe = (variant: any, index: number): string =>
   variant?.title || variant?.sku || `variant #${index + 1}`
 
@@ -41,8 +49,8 @@ const reject = (res: MedusaResponse, problems: string[]) =>
   res.status(400).json({
     type: "invalid_data",
     message:
-      `Cannot publish: every variant needs weight, length, width and height ` +
-      `before it can ship. Missing — ${problems.join("; ")}. ` +
+      `Cannot publish: ${problems.join("; ")}. ` +
+      `Every variant needs a price, plus weight/length/width/height to ship. ` +
       `Set these on each VARIANT (product-level dimensions are ignored for shipping).`,
   })
 
@@ -74,6 +82,7 @@ export async function validateProductPublish(
           "variants.id",
           "variants.title",
           "variants.sku",
+          "variants.prices.*",
           ...DIMENSION_FIELDS.map((f) => `variants.${f}`),
         ],
         filters: { id: productId },
@@ -91,20 +100,32 @@ export async function validateProductPublish(
 
     // Variants named in the request win; otherwise fall back to what is stored.
     // A create request carries them inline and has nothing stored yet.
-    const variants: any[] = Array.isArray(body.variants) && body.variants.length
-      ? body.variants
+    // Merge by id on update: a partial body (e.g. dimensions only) would
+    // otherwise look priceless even when prices are already stored.
+    const bodyVariants: any[] = Array.isArray(body.variants) ? body.variants : []
+    const variants: any[] = bodyVariants.length
+      ? bodyVariants.map((v) => {
+          const stored = storedVariants.find((s: any) => s.id && s.id === v.id)
+          return stored ? { ...stored, ...v } : v
+        })
       : storedVariants
 
-    // A published product with no variants at all cannot be bought, but that is
-    // not this guard's business -- say nothing rather than block on it.
+    // A product with no variants cannot be bought either.
     if (!variants.length) {
-      return next()
+      return reject(res, ["a product needs at least one variant"])
     }
 
     const problems = variants
       .map((variant, index) => {
+        const faults: string[] = []
+        if (hasNoPrice(variant)) {
+          faults.push("no price")
+        }
         const missing = missingDimensions(variant)
-        return missing.length ? `${describe(variant, index)}: ${missing.join(", ")}` : null
+        if (missing.length) {
+          faults.push(`missing ${missing.join(", ")}`)
+        }
+        return faults.length ? `${describe(variant, index)}: ${faults.join(" and ")}` : null
       })
       .filter(Boolean) as string[]
 

@@ -38,6 +38,7 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [addError, setAddError] = useState<string | null>(null)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -116,6 +117,20 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
+  // A variant with no price cannot be added to a cart -- Medusa rejects it
+  // server-side. Treat it as unavailable up front rather than letting the
+  // customer click an enabled button that can only fail.
+  const hasPrice = useMemo(() => {
+    if (!selectedVariant) {
+      return (product.variants ?? []).some(
+        (v: any) => v.calculated_price?.calculated_amount != null
+      )
+    }
+    return (
+      (selectedVariant as any).calculated_price?.calculated_amount != null
+    )
+  }, [selectedVariant, product.variants])
+
   const actionsRef = useRef<HTMLDivElement>(null)
 
   const inView = useIntersection(actionsRef, "0px")
@@ -125,14 +140,22 @@ export default function ProductActions({
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
+    setAddError(null)
 
-    await addToCart({
-      variantId: selectedVariant.id,
-      quantity: 1,
-      countryCode,
-    })
-
-    setIsAdding(false)
+    // Without this catch a rejected addToCart skips setIsAdding(false) and the
+    // button reads "Loading..." forever with nothing explaining why -- which is
+    // exactly what a variant with no price does.
+    try {
+      await addToCart({
+        variantId: selectedVariant.id,
+        quantity: 1,
+        countryCode,
+      })
+    } catch (error: any) {
+      setAddError(error?.message ?? "Could not add to bag. Please try again.")
+    } finally {
+      setIsAdding(false)
+    }
   }
 
   return (
@@ -187,14 +210,17 @@ export default function ProductActions({
                  !selectedVariant ||
                  !!disabled ||
                  isAdding ||
-                 !isValidVariant
+                 !isValidVariant ||
+                 !hasPrice
                }
                className="flex-1 bg-gray-900 text-white rounded-none hover:bg-gray-800 tracking-widest text-xs font-bold uppercase transition-colors !h-full"
                isLoading={isAdding}
                data-testid="add-product-button"
              >
-               {!selectedVariant && !options
-                 ? "Select Size"
+               {!hasPrice
+                 ? "Unavailable"
+                 : !selectedVariant
+                 ? "Select options"
                  : !inStock || !isValidVariant
                  ? "Out of stock"
                  : "Add"}
@@ -205,6 +231,19 @@ export default function ProductActions({
                </svg>
              </button>
            </div>
+           {!hasPrice && (
+             <p className="text-[10px] tracking-wide text-gray-500 uppercase">
+               This item has no price yet and cannot be purchased.
+             </p>
+           )}
+           {addError && (
+             <p
+               className="text-[10px] tracking-wide text-red-600"
+               data-testid="add-product-error"
+             >
+               {addError}
+             </p>
+           )}
         </div>
 
         {/* Delivery Info & Tags */}

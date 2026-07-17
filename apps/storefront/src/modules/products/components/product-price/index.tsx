@@ -17,8 +17,15 @@ export default function ProductPrice({
 
   const selectedPrice = variant ? variantPrice : cheapestPrice
 
+  // No price is a permanent state, not a slow one: Medusa returns no
+  // calculated_price when a variant has none. A pulsing skeleton here reads as
+  // "still loading" and never resolves, so say what is actually true.
   if (!selectedPrice) {
-    return <div className="block w-32 h-9 bg-gray-100 animate-pulse" />
+    return (
+      <span className="text-sm text-ui-fg-muted" data-testid="product-price-unavailable">
+        Price unavailable
+      </span>
+    )
   }
 
   return (
