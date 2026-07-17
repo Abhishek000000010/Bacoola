@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { XMark } from "@medusajs/icons"
-import { navigationData, CategoryKey } from "./navigation-data"
-import MegaMenuColumn from "./MegaMenuColumn"
+import { HttpTypes } from "@medusajs/types"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 interface MegaMenuProps {
-  activeCategory: CategoryKey | null
-  setActiveCategory: (category: CategoryKey | null) => void
+  activeCategory: string | null
+  setActiveCategory: (category: string | null) => void
   onMouseEnter: () => void
   onMouseLeave: () => void
+  categories?: HttpTypes.StoreProductCategory[]
 }
 
 const MegaMenu: React.FC<MegaMenuProps> = ({
@@ -15,17 +16,20 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
   setActiveCategory,
   onMouseEnter,
   onMouseLeave,
+  categories = [],
 }) => {
-  const [lastCategory, setLastCategory] = useState<CategoryKey>("women")
+  const [lastCategory, setLastCategory] = useState<string>("women")
+  const [hoveredLevel2Id, setHoveredLevel2Id] = useState<string | null>(null)
+  const [activeTabId, setActiveTabId] = useState<string | null>(null)
 
-  // Keep track of the last active category so content doesn't disappear during exit animation
   useEffect(() => {
     if (activeCategory) {
       setLastCategory(activeCategory)
+      setHoveredLevel2Id(null) // reset hover when switching main categories
+      setActiveTabId(null) // reset tab when switching main categories
     }
   }, [activeCategory])
 
-  // Handle escape key to close menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -37,19 +41,41 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
   }, [onMouseLeave])
 
   const isOpen = activeCategory !== null
-  const currentCategoryData = navigationData[lastCategory]
-  const currentMenuItems = currentCategoryData?.menuItems || []
 
-  const categories: { key: CategoryKey; label: string }[] = [
-    { key: "women", label: "WOMEN" },
-    { key: "men", label: "MEN" },
-    { key: "teen", label: "TEEN" },
-    { key: "kids", label: "KIDS" },
-  ]
+  // 1. Find the root category (e.g. "women", "men", "teen", "kids")
+  const rootCategory = categories.find((c) => c.handle === lastCategory)
+
+  // 2. Find Level 2 categories (children of root)
+  const level2Categories = rootCategory
+    ? categories.filter((c) => c.parent_category_id === rootCategory.id)
+    : []
+
+  // Check if we need tabs (if lastCategory is teen or kids, which have 4 levels)
+  const needsTabs = lastCategory === "teen" || lastCategory === "kids"
+
+  // The active tab for Level 2 (e.g. "Teen Girl")
+  const currentTabCategory = needsTabs 
+    ? level2Categories.find(c => c.id === activeTabId) || level2Categories[0]
+    : null
+
+  // The categories shown in the Left Column
+  const leftColumnCategories = needsTabs && currentTabCategory
+    ? categories.filter(c => c.parent_category_id === currentTabCategory.id)
+    : level2Categories
+
+  // The categories shown in the Right Column
+  const level3Categories = hoveredLevel2Id
+    ? categories.filter((c) => c.parent_category_id === hoveredLevel2Id)
+    : []
+
+  const isKids = lastCategory === "kids"
+  const colWidth = 265
+  const expandedWidth = 530
+  const baseWidth = 416
 
   return (
     <>
-      {/* 1. Backdrop Overlay (fades in/out) */}
+      {/* 1. Backdrop Overlay */}
       <div
         onClick={onMouseLeave}
         className={`fixed top-[76px] left-0 right-0 bottom-0 bg-black/15 z-[998] transition-opacity duration-300 ${
@@ -57,29 +83,136 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
         }`}
       />
 
-      {/* 2. Left Sliding Panel (slides in/out from left) */}
+      {/* 2. Mega Menu Container */}
       <div
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className={`fixed top-[76px] left-0 bottom-0 w-full max-w-[420px] bg-white border-r border-[#ECECEC] z-[999] transition-transform duration-300 ease-in-out select-none flex flex-col ${
+        className={`fixed top-[76px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col shadow-2xl overflow-hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ width: isOpen && level3Categories.length > 0 ? `${expandedWidth}px` : `${baseWidth}px` }}
       >
-        {/* Top Header Bar inside Panel - Close Button only */}
-        <div className="flex border-b border-neutral-100 pl-8 pr-6 py-5 bg-white items-center justify-end">
+        {/* Close button (always top right of the whole box) */}
+        <div className="absolute top-4 right-4 z-50">
           <button
             onClick={onMouseLeave}
-            className="p-1 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
+            className="p-2 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
             aria-label="Close menu"
           >
             <XMark className="w-5 h-5 stroke-[1.2px]" />
           </button>
         </div>
 
-        {/* Scrollable Single Menu List (Hidden scrollbars) */}
-        <div className="flex-1 overflow-y-auto scrollbar-none">
-          <MegaMenuColumn menuItems={currentMenuItems} />
+        {/* Top Header for Tabs (spans both columns) */}
+        {needsTabs && (
+          <div className="w-full pl-10 pr-4 pt-12 pb-2 flex flex-nowrap items-center gap-3 overflow-hidden shrink-0">
+            {level2Categories.map(tab => {
+              const isActive = activeTabId === tab.id || (!activeTabId && level2Categories[0]?.id === tab.id)
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTabId(tab.id)
+                    setHoveredLevel2Id(null)
+                  }}
+                  onMouseEnter={() => {
+                    setActiveTabId(tab.id)
+                    setHoveredLevel2Id(null)
+                  }}
+                  className={`py-1.5 px-1 text-[11px] whitespace-nowrap uppercase font-bold tracking-wider border-b-2 transition-colors duration-200 ${
+                    isActive
+                      ? "border-black text-black"
+                      : "border-transparent text-neutral-500 hover:text-black"
+                  }`}
+                >
+                  {tab.name}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Two Columns Container */}
+        <div className="flex flex-row flex-1 h-full overflow-hidden">
+          {/* Left Column (Level 2 or 3 depending on tabs) */}
+          <div className="shrink-0 h-full flex flex-col bg-white z-20 relative" style={{ width: `${colWidth}px` }}>
+            <div className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pl-10 pr-4 ${needsTabs ? 'pt-4' : 'pt-12'} pb-8`}>
+            
+            {isKids && (
+              <div className="text-[11px] text-neutral-500 mb-6">
+                From 4 to 14 years
+              </div>
+            )}
+
+            <div className="flex flex-col gap-y-1">
+              {leftColumnCategories.map((cat) => {
+                const isSale = cat.name.toUpperCase().includes("SALE")
+                const hasChildren = categories.some((c) => c.parent_category_id === cat.id)
+
+                return (
+                  <div
+                    key={cat.id}
+                    onMouseEnter={() => setHoveredLevel2Id(cat.id)}
+                    className="w-full flex items-center group py-3"
+                  >
+                    <LocalizedClientLink
+                      href={`/categories/${cat.handle}`}
+                      onClick={() => {
+                        setActiveCategory(null)
+                        setHoveredLevel2Id(null)
+                      }}
+                      className={`w-full text-left py-1 text-[11px] uppercase tracking-wide font-bold transition-all duration-200 ${
+                        hoveredLevel2Id === cat.id
+                          ? `underline underline-offset-[4px] decoration-[1.5px] ${isSale ? 'text-[#c22026] decoration-[#c22026]' : 'text-black decoration-black'}`
+                          : isSale
+                          ? "text-[#c22026]"
+                          : "text-neutral-500 hover:text-black"
+                      }`}
+                    >
+                      {cat.name}
+                    </LocalizedClientLink>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
+
+          {/* Right Column (Level 3 or 4 Popup) */}
+          <div 
+            className="shrink-0 h-full bg-white flex flex-col transition-opacity duration-300 ease-in"
+            style={{ 
+              width: `${colWidth}px`,
+              opacity: level3Categories.length > 0 ? 1 : 0 
+            }}
+          >
+            <div 
+              className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] px-4 pb-8 h-full transition-opacity duration-500 ${
+                level3Categories.length > 0 ? "opacity-100 delay-100" : "opacity-0 pointer-events-none"
+              }`}
+              style={{
+                paddingTop: needsTabs ? (isKids ? '56px' : '16px') : '48px'
+              }}
+            >
+              <div className="flex flex-col gap-y-1">
+              {level3Categories.map((cat) => (
+                <div key={cat.id} className="w-full flex items-center py-2">
+                  <LocalizedClientLink
+                    href={`/categories/${cat.handle}`}
+                    onClick={() => {
+                      setActiveCategory(null)
+                      setHoveredLevel2Id(null)
+                    }}
+                    className="w-full text-left py-1 text-[11px] font-bold uppercase tracking-wide text-[#111111] hover:text-neutral-500 transition-colors duration-200"
+                  >
+                    {cat.name}
+                  </LocalizedClientLink>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </>
   )

@@ -11,18 +11,17 @@ import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 
 import CategoryTabs from "./CategoryTabs"
-import MenuList from "./MenuList"
-import TeenSwitcher from "./TeenSwitcher"
-import KidsSwitcher from "./KidsSwitcher"
-import { CategoryKey, womenMenu, menMenu } from "./menu-data"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { CategoryKey } from "./menu-data"
 
 type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
+  categories?: HttpTypes.StoreProductCategory[]
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale }) => {
+const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, categories = [] }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<CategoryKey>("women")
   
@@ -103,10 +102,22 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale }) 
 
                       {/* Main Menu Scrollable Body */}
                       <div className="relative flex-1 overflow-y-auto px-8 py-4 scrollbar-none">
-                        {activeTab === "women" && <MenuList items={womenMenu} />}
-                        {activeTab === "men" && <MenuList items={menMenu} />}
-                        {activeTab === "teen" && <TeenSwitcher />}
-                        {activeTab === "kids" && <KidsSwitcher />}
+                        {categories
+                          .filter((c) => c.parent_category_id === categories.find((cat) => cat.handle === activeTab)?.id)
+                          .map((cat) => (
+                            <LocalizedClientLink
+                              key={cat.id}
+                              href={`/categories/${cat.handle}`}
+                              onClick={closeDrawer}
+                              className={`block w-full text-left py-2 text-[13px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                                cat.name.toUpperCase().includes("SALE")
+                                  ? "text-[#D01313] hover:text-[#B01010]"
+                                  : "text-[#111111] hover:text-neutral-500"
+                              }`}
+                            >
+                              {cat.name}
+                            </LocalizedClientLink>
+                          ))}
                       </div>
 
                       {/* Bottom Footer Section (Country / Language selection) */}

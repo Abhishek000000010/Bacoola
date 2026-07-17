@@ -37,6 +37,7 @@
     "cloudinary": "^2.10.0",
     "react-i18next": "13.5.0",
     "react-router-dom": "6.30.4",
+    "ulid": "^3.0.2",
     "zod": "4.2.0"
   },
   "devDependencies": {

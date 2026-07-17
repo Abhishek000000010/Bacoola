@@ -20,9 +20,48 @@ import { RazorpayProviderService } from "@sgftech/payment-razorpay/dist/services
  *    "`order_id` is mandatory", so a paid cart could never authorize and no
  *    order was ever created (and therefore nothing reached Shiprocket). We
  *    override those four methods to unwrap `data` and normalize the output.
+ *
+ * 3. `initiatePayment` converts the amount for INR as
+ *    `getAmountFromSmallestUnit(amount) * 100 * 100`, which is lossy in binary
+ *    floating point: a ₹6907 cart becomes 690699.9999999999 and Razorpay
+ *    rejects it with "The amount must be an integer." Whether a cart fails
+ *    depends on its total (₹2598 → 259800 is exact and works), so checkout
+ *    broke only for some baskets. The plugin swallows the failure by
+ *    *returning* buildError() instead of throwing, so Medusa stores a session
+ *    with no order id and the storefront's Place order button stays disabled.
+ *    We round the amount at the Razorpay client boundary.
  */
 export class BacoolaRazorpayService extends RazorpayProviderService {
   static identifier = "razorpay"
+
+  init() {
+    // @ts-ignore - base class builds the Razorpay client here
+    super.init()
+    this.roundOrderAmounts()
+  }
+
+  /**
+   * Razorpay requires an integer amount in the smallest currency unit. The
+   * upstream amount maths can land a hair off an integer, so round it on the
+   * way out rather than reimplementing initiatePayment.
+   */
+  private roundOrderAmounts() {
+    // @ts-ignore - base class exposes the Razorpay client
+    const client: any = this.razorpay_
+    if (!client?.orders?.create || client.orders.__amountRoundingPatched) {
+      return
+    }
+
+    const create = client.orders.create.bind(client.orders)
+    client.orders.create = (params: any, ...rest: any[]) => {
+      const amount = Number(params?.amount)
+      if (Number.isFinite(amount) && !Number.isInteger(amount)) {
+        params = { ...params, amount: Math.round(amount) }
+      }
+      return create(params, ...rest)
+    }
+    client.orders.__amountRoundingPatched = true
+  }
 
   // Medusa 2.17 wraps the session data as `{ data, context }`; older plugin
   // methods expect the raw Razorpay order object. Unwrap defensively.

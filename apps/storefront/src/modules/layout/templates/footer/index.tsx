@@ -1,7 +1,5 @@
 import React from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { listCategories } from "@lib/data/categories"
-import { listCollections } from "@lib/data/collections"
 
 // Simple SVG Icons for Social Links (monochrome)
 const InstagramIcon = () => (
@@ -28,12 +26,7 @@ const LinkedinIcon = () => (
   </svg>
 )
 
-export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
-  const productCategories = await listCategories()
-
+export default function Footer() {
   return (
     <footer className="border-t border-neutral-100 bg-white w-full text-neutral-800 font-sans tracking-wide">
       {/* 4-Column Desktop Layout */}

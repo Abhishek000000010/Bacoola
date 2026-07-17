@@ -5,6 +5,9 @@ import { getCacheOptions } from "./cookies"
 export const listCategories = async (query?: Record<string, unknown>) => {
   const next = {
     ...(await getCacheOptions("categories")),
+    // The nav fetches this on every page render; categories change rarely, so
+    // serve them from cache rather than hitting the backend each time.
+    revalidate: 300,
   }
 
   const limit = query?.limit || 100
@@ -14,13 +17,14 @@ export const listCategories = async (query?: Record<string, unknown>) => {
       "/store/product-categories",
       {
         query: {
+          // Expanding *products here pulls every product of every category
+          // (~1MB) on each render; nothing reading this list needs them.
           fields:
-            "*category_children, *products, *parent_category, *parent_category.parent_category",
+            "*category_children, *parent_category, *parent_category.parent_category",
           limit,
           ...query,
         },
         next,
-        cache: "force-cache",
       }
     )
     .then(({ product_categories }) => product_categories)
@@ -38,11 +42,12 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       `/store/product-categories`,
       {
         query: {
-          fields: "*category_children, *products",
+          fields: "*category_children",
+          include_descendants_tree: true,
           handle,
         },
         next,
-        cache: "force-cache",
+        cache: "no-store",
       }
     )
     .then(({ product_categories }) => product_categories[0])

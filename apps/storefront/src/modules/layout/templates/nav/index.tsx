@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
 import { listRegions } from "@lib/data/regions"
+import { listCategories } from "@lib/data/categories"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
@@ -10,10 +11,11 @@ import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, categories] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    listCategories({ limit: 1000 }),
   ])
 
   return (
@@ -26,7 +28,7 @@ export default async function Nav() {
             
             {/* Left Section: Navigation links */}
             <div className="flex justify-start items-center h-full">
-              <HeaderLinks />
+              <HeaderLinks categories={categories} />
             </div>
 
             {/* Center Section: Store Logo */}
@@ -86,7 +88,7 @@ export default async function Nav() {
             
             {/* Left: Mobile SideMenu */}
             <div className="flex-1 basis-0 flex items-center justify-start text-[14px] font-semibold text-[#111111] uppercase tracking-wider">
-              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} categories={categories} />
             </div>
 
             {/* Center: Mobile Logo */}

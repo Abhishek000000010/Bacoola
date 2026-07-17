@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@modules/common/components/ui"
 import MegaMenu from "../navigation/MegaMenu"
-import { CategoryKey } from "../navigation/navigation-data"
 
 const NAV_LINKS = [
   { label: "Women", href: "/categories/women", key: "women" },
@@ -15,9 +14,10 @@ const NAV_LINKS = [
   { label: "Home", href: "/", key: "home" },
 ]
 
-export const HeaderLinks: React.FC = () => {
+import { HttpTypes } from "@medusajs/types"
+export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory[] }> = ({ categories = [] }) => {
   const pathname = usePathname()
-  const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null)
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const isActive = (href: string) => {
@@ -45,7 +45,7 @@ export const HeaderLinks: React.FC = () => {
     if (key === "home") {
       setActiveCategory(null)
     } else {
-      setActiveCategory(key as CategoryKey)
+      setActiveCategory(key)
     }
   }
 
@@ -103,6 +103,7 @@ export const HeaderLinks: React.FC = () => {
         setActiveCategory={setActiveCategory}
         onMouseEnter={handleMenuMouseEnter}
         onMouseLeave={handleMenuMouseLeave}
+        categories={categories}
       />
     </div>
   )

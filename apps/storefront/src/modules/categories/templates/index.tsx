@@ -79,6 +79,16 @@ export default function CategoryTemplate({
 
   getParents(category)
 
+  // Collect this category and all descendant IDs so we fetch products from all subcategories
+  const allCategoryIds: string[] = []
+  const collectIds = (cat: HttpTypes.StoreProductCategory) => {
+    allCategoryIds.push(cat.id)
+    if (cat.category_children) {
+      cat.category_children.forEach(collectIds)
+    }
+  }
+  collectIds(category)
+
   return (
     <CategoryProductListing category={category} parents={parents}>
       <Suspense
@@ -91,7 +101,7 @@ export default function CategoryTemplate({
         <PaginatedProducts
           sortBy={sort}
           page={pageNumber}
-          categoryId={category.id}
+          categoryId={allCategoryIds}
           countryCode={countryCode}
           optionValueIds={optionValueIds}
         />
