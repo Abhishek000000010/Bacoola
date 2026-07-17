@@ -1,5 +1,5 @@
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
 
 /**
@@ -87,13 +87,57 @@ export default async function autoFulfillOrderHandler({
     logger.info(
       `auto-fulfill: created fulfillment for order ${order.display_id ?? orderId}`
     )
+    await recordFulfillmentError(container, orderId, null)
   } catch (err: any) {
-    // Surface the reason (e.g. missing product dimensions, unserviceable
-    // pincode, wrong pickup_location) without crashing the event bus worker.
+    const reason = err?.message ?? String(err)
+
+    // This failure is invisible to everyone: the customer has paid, the order
+    // looks complete, and only Shiprocket is missing. Throwing here would just
+    // retry against the same bad data and crash the worker, so instead the
+    // reason is written onto the order itself where the admin can see it --
+    // logs are not something anyone reads before shipping day.
     logger.error(
-      `auto-fulfill: failed to create fulfillment for order ${
+      `auto-fulfill: NOT SHIPPED — order ${
         order.display_id ?? orderId
-      }: ${err?.message ?? err}`
+      } was paid but no fulfillment could be created: ${reason}`
+    )
+
+    await recordFulfillmentError(container, orderId, reason)
+  }
+}
+
+/**
+ * Records (or clears) the auto-fulfil failure reason on the order's metadata so
+ * it is visible in the admin rather than only in the server log.
+ *
+ * `updateOrders` MERGES metadata and cannot remove a key, so clearing writes an
+ * explicit null rather than deleting: a key left over from an earlier failure
+ * would otherwise make a since-fixed order look permanently broken.
+ *
+ * Never throws: a bookkeeping failure must not mask the original error or take
+ * down the event bus worker.
+ */
+async function recordFulfillmentError(
+  container: SubscriberArgs<{ id: string }>["container"],
+  orderId: string,
+  reason: string | null
+) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  try {
+    const orderModule: any = container.resolve(Modules.ORDER)
+
+    await orderModule.updateOrders(orderId, {
+      metadata: {
+        auto_fulfill_error: reason,
+        auto_fulfill_failed_at: reason ? new Date().toISOString() : null,
+      },
+    })
+  } catch (err: any) {
+    logger.warn(
+      `auto-fulfill: could not record fulfillment status on order ${orderId}: ${
+        err?.message ?? err
+      }`
     )
   }
 }
