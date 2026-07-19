@@ -9,11 +9,23 @@ export interface EditorialRowConfig {
   rightSlug: string
 }
 
+export interface FullWidthBannerConfig {
+  title: string
+  image: string
+  slug: string
+}
+
+export interface NavConfig {
+  title: string
+  slug: string
+}
+
 export interface CategoryLandingConfig {
   heroTitle: string
   heroImage: string
   heroCta: string
   grid: EditorialRowConfig[]
+  fullWidthBanners?: FullWidthBannerConfig[]
 }
 
 export const categoryEditorialConfigs: Record<string, CategoryLandingConfig> = {
@@ -53,6 +65,11 @@ export const categoryEditorialConfigs: Record<string, CategoryLandingConfig> = {
         rightSlug: "bags",
       },
     ],
+    fullWidthBanners: [
+      { title: "The Suit Guide", image: "/images/campaign-5.jpg", slug: "suits" },
+      { title: "Linen", image: "/images/campaign-6.jpg", slug: "linen" },
+      { title: "T-Shirt Guide", image: "/images/hero-arrivals.jpg", slug: "t-shirts" },
+    ],
   },
   men: {
     heroTitle: "Vacation",
@@ -89,6 +106,11 @@ export const categoryEditorialConfigs: Record<string, CategoryLandingConfig> = {
         rightSpan: "md:col-span-2",
         rightSlug: "accessories",
       },
+    ],
+    fullWidthBanners: [
+      { title: "The Suit Guide", image: "/images/campaign-5.jpg", slug: "suits" },
+      { title: "Linen", image: "/images/campaign-6.jpg", slug: "linen" },
+      { title: "T-Shirt Guide", image: "/images/hero-arrivals.jpg", slug: "t-shirts" },
     ],
   },
   teen: {
@@ -127,6 +149,11 @@ export const categoryEditorialConfigs: Record<string, CategoryLandingConfig> = {
         rightSlug: "featured",
       },
     ],
+    fullWidthBanners: [
+      { title: "The Suit Guide", image: "/images/campaign-5.jpg", slug: "suits" },
+      { title: "Linen", image: "/images/campaign-6.jpg", slug: "linen" },
+      { title: "T-Shirt Guide", image: "/images/hero-arrivals.jpg", slug: "t-shirts" },
+    ],
   },
   kids: {
     heroTitle: "Playtime",
@@ -163,6 +190,11 @@ export const categoryEditorialConfigs: Record<string, CategoryLandingConfig> = {
         rightSpan: "md:col-span-2",
         rightSlug: "school",
       },
+    ],
+    fullWidthBanners: [
+      { title: "The Suit Guide", image: "/images/campaign-5.jpg", slug: "suits" },
+      { title: "Linen", image: "/images/campaign-6.jpg", slug: "linen" },
+      { title: "T-Shirt Guide", image: "/images/hero-arrivals.jpg", slug: "t-shirts" },
     ],
   },
 }

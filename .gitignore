@@ -52,6 +52,8 @@ yarn-error.log*
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 Thumbs.db
 **/.DS_Store
+
+# Temporary database test scripts
+**/test_db.js

@@ -32,15 +32,15 @@ export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
         sizes="100vw"
         unoptimized
       />
-      <div className="absolute inset-0 bg-black/25 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10" />
       <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none animate-in fade-in duration-700">
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[0.18em] uppercase text-white mb-8 leading-none">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase text-white mb-6 leading-none">
           {title}
         </h1>
         <div>
           <LocalizedClientLink
             href={ctaHref}
-            className="text-white text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] border-b-[1.5px] border-white pb-1.5 hover:text-neutral-300 hover:border-neutral-300 transition-colors duration-300"
+            className="text-white text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
           >
             {ctaText}
           </LocalizedClientLink>

@@ -11,6 +11,8 @@ import { getProductPrice } from "@lib/util/get-product-price"
 interface FeaturedProductsShowcaseProps {
   products: HttpTypes.StoreProduct[]
   region: HttpTypes.StoreRegion
+  title?: string
+  subtitle?: string
 }
 
 // Simple interactive wishlist button component
@@ -37,6 +39,8 @@ const WishlistButton: React.FC = () => {
 
 export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> = ({
   products,
+  title = "Featured Products",
+  subtitle = "Handpicked essentials"
 }) => {
   if (!products || products.length === 0) return null
 
@@ -48,10 +52,10 @@ export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> =
       {/* Title */}
       <div className="flex flex-col items-center mb-12 md:mb-16 text-center">
         <h2 className="text-xs font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-2">
-          Handpicked essentials
+          {subtitle}
         </h2>
         <p className="text-xl sm:text-2xl font-light uppercase tracking-widest text-[#111111]">
-          Featured Products
+          {title}
         </p>
       </div>
 

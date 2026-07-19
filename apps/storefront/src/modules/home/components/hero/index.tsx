@@ -13,19 +13,11 @@ const campaigns: HeroSlide[] = [
   },
   {
     id: "vacation-collection",
-    title: "Vacation Collection",
-    ctaText: "Shop Now",
+    title: "Vacation",
+    ctaText: "Discover More",
     link: "/store",
     imageSrc: "/images/hero-vacation.jpg",
     imageAlt: "Summer holiday model posing in minimalist vacation clothing",
-  },
-  {
-    id: "linen-essentials",
-    title: "Linen Essentials",
-    ctaText: "Explore Collection",
-    link: "/store",
-    imageSrc: "/images/hero-linen.jpg",
-    imageAlt: "Luxury organic linen shirt editorial layout",
   },
 ]
 
@@ -51,18 +43,18 @@ const Hero = () => {
               sizes="100vw"
             />
             {/* Subtle overlay for typography readability */}
-            <div className="absolute inset-0 bg-black/25 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10" />
           </div>
 
           {/* Centered Typography & Minimalist CTA */}
           <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[0.18em] uppercase text-white mb-8 leading-none">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight uppercase text-white mb-8 leading-none">
               {campaign.title}
             </h1>
             <div>
               <LocalizedClientLink
                 href={campaign.link}
-                className="text-white text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] border-b-[1.5px] border-white pb-1.5 hover:text-neutral-300 hover:border-neutral-300 transition-colors duration-300"
+                className="text-white text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
               >
                 {campaign.ctaText}
               </LocalizedClientLink>

@@ -49,11 +49,6 @@ export default async function Home(props: {
 
       {/* 2. Magazine-like Editorial Campaign Flow */}
       <EditorialFlow />
-
-      {/* 3. Medusa Priced Products Showcase */}
-      {pricedProducts && (
-        <FeaturedProductsShowcase products={pricedProducts} region={region} />
-      )}
     </>
   )
 }

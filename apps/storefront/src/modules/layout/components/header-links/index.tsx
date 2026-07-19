@@ -7,11 +7,11 @@ import { clx } from "@modules/common/components/ui"
 import MegaMenu from "../navigation/MegaMenu"
 
 const NAV_LINKS = [
+  { label: "Home", href: "/", key: "home" },
   { label: "Women", href: "/categories/women", key: "women" },
   { label: "Men", href: "/categories/men", key: "men" },
   { label: "Teen", href: "/categories/teen", key: "teen" },
   { label: "Kids", href: "/categories/kids", key: "kids" },
-  { label: "Home", href: "/", key: "home" },
 ]
 
 import { HttpTypes } from "@medusajs/types"
@@ -71,7 +71,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   }
 
   return (
-    <div className="flex items-center gap-x-[32px] h-full relative">
+    <div className="flex items-center gap-x-[28px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         return (
@@ -110,4 +110,3 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
 }
 
 export default HeaderLinks
-

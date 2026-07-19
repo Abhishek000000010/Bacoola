@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "build": "medusa build",
+    "clean:admin-cache": "node ./scripts/clean-admin-cache.mjs",
     "start": "medusa start",
     "dev": "medusa develop",
     "lint": "medusa lint",

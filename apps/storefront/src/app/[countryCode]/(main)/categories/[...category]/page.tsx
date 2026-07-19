@@ -20,6 +20,10 @@ type Props = {
 }
 
 export async function generateStaticParams() {
+  if (process.env.NODE_ENV !== "production") {
+    return []
+  }
+
   const product_categories = await listCategories()
 
   if (!product_categories) {

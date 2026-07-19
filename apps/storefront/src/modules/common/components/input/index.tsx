@@ -13,10 +13,27 @@ type InputProps = Omit<
   touched?: Record<string, unknown>
   name: string
   topLabel?: string
+  wrapperClassName?: string
+  inputClassName?: string
+  labelClassName?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched: _touched, required, topLabel, ...props }, ref) => {
+  (
+    {
+      type,
+      name,
+      label,
+      touched: _touched,
+      required,
+      topLabel,
+      wrapperClassName,
+      inputClassName,
+      labelClassName,
+      ...props
+    },
+    ref
+  ) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
@@ -34,7 +51,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     useImperativeHandle(ref, () => inputRef.current!)
 
     return (
-      <div className="flex flex-col w-full">
+      <div className={`flex flex-col w-full ${wrapperClassName ?? ""}`}>
         {topLabel && (
           <Label className="mb-2 txt-compact-medium-plus">{topLabel}</Label>
         )}
@@ -44,17 +61,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             name={name}
             placeholder=" "
             required={required}
-            className="pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover"
+            className={`peer block h-16 w-full appearance-none border border-neutral-300 bg-white px-4 pb-3 pt-6 text-[17px] font-normal text-neutral-950 outline-none transition-colors placeholder:text-transparent focus:border-black focus:ring-0 ${
+              inputClassName ?? ""
+            }`}
             {...props}
             ref={inputRef}
           />
           <label
             htmlFor={name}
             onClick={() => inputRef.current?.focus()}
-            className="flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0 text-ui-fg-subtle"
+            className={`pointer-events-none absolute left-4 top-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 transition-colors ${
+              labelClassName ?? ""
+            }`}
           >
             {label}
-            {required && <span className="text-rose-500">*</span>}
+            {required && <span className="text-rose-500 ml-1">*</span>}
           </label>
           {type === "password" && (
             <button
