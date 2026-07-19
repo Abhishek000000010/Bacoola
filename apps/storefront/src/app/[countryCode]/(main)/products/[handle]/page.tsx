@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
-import ProductTemplate from "@modules/products/templates"
+import CustomProductDetails from "@modules/products/templates/CustomProductDetails"
 import { HttpTypes } from "@medusajs/types"
 
 type Props = {
@@ -121,7 +121,7 @@ export default async function ProductPage(props: Props) {
   }
 
   return (
-    <ProductTemplate
+    <CustomProductDetails
       product={pricedProduct}
       region={region}
       countryCode={params.countryCode}

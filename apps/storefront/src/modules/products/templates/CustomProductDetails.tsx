@@ -7,6 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { addToCart } from "@lib/data/cart"
 import { isEqual } from "lodash"
 import ProductPrice from "../components/product-price"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 interface CustomProductDetailsProps {
   product: HttpTypes.StoreProduct
@@ -62,6 +63,10 @@ export default function CustomProductDetails({
   countryCode,
   images,
 }: CustomProductDetailsProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -71,13 +76,20 @@ export default function CustomProductDetails({
     shipping: false,
   })
 
-  // Preselect options if only 1 variant exists
+  // Preselect options if v_id query parameter is present or if only 1 variant exists
   useEffect(() => {
-    if (product.variants?.length === 1) {
+    const vId = searchParams.get("v_id")
+    if (vId && product.variants) {
+      const variant = product.variants.find((v) => v.id === vId)
+      if (variant) {
+        const variantOptions = optionsAsKeymap(variant.options)
+        setOptions(variantOptions ?? {})
+      }
+    } else if (product.variants?.length === 1) {
       const variantOptions = optionsAsKeymap(product.variants[0].options)
       setOptions(variantOptions ?? {})
     }
-  }, [product.variants])
+  }, [product.variants, searchParams])
 
   // Compute selected variant based on option choices
   const selectedVariant = useMemo(() => {
@@ -91,13 +103,6 @@ export default function CustomProductDetails({
     })
   }, [product.variants, options])
 
-  const setOptionValue = (optionId: string, value: string) => {
-    setOptions((prev) => ({
-      ...prev,
-      [optionId]: value,
-    }))
-  }
-
   // Check variant validation
   const isValidVariant = useMemo(() => {
     return product.variants?.some((v) => {
@@ -105,6 +110,31 @@ export default function CustomProductDetails({
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
+
+  // Update URL search parameters when the selected variant changes
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    const value = isValidVariant ? selectedVariant?.id : null
+
+    if (params.get("v_id") === value) {
+      return
+    }
+
+    if (value) {
+      params.set("v_id", value)
+    } else {
+      params.delete("v_id")
+    }
+
+    router.replace(pathname + "?" + params.toString(), { scroll: false })
+  }, [selectedVariant, isValidVariant, pathname, router, searchParams])
+
+  const setOptionValue = (optionId: string, value: string) => {
+    setOptions((prev) => ({
+      ...prev,
+      [optionId]: value,
+    }))
+  }
 
   // Check inventory stock status
   const inStock = useMemo(() => {
@@ -145,12 +175,19 @@ export default function CustomProductDetails({
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  // Fallback to product images if images are empty
+  // Prioritize selected variant's images, fallback to product images if empty
   const productImages = useMemo(() => {
+    if (selectedVariant && selectedVariant.images && selectedVariant.images.length > 0) {
+      const imageIdsMap = new Map(selectedVariant.images.map((i: any) => [i.id, true]))
+      const variantImages = product.images?.filter((i) => imageIdsMap.has(i.id)) ?? []
+      if (variantImages.length > 0) {
+        return variantImages
+      }
+    }
     if (images && images.length > 0) return images
     if (product.images && product.images.length > 0) return product.images
     return product.thumbnail ? [{ url: product.thumbnail }] : []
-  }, [images, product.images, product.thumbnail])
+  }, [selectedVariant, images, product.images, product.thumbnail])
 
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-24">
