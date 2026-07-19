@@ -2,13 +2,10 @@ import { MedusaContainer } from "@medusajs/framework"
 import {
   ContainerRegistrationKeys,
   Modules,
-  PriceListStatus,
 } from "@medusajs/framework/utils"
-import {
-  createPriceListsWorkflow,
-  updateProductCategoriesWorkflow,
-} from "@medusajs/medusa/core-flows"
+import { updateProductCategoriesWorkflow } from "@medusajs/medusa/core-flows"
 import { createHash } from "crypto"
+import { ulid } from "ulid"
 
 /**
  * Category-driven sale pricing.
@@ -143,15 +140,24 @@ export async function syncSalePrices(
     : allTree
 
   // Only price lists we generated carry the marker; everything else is off-limits.
+  //
+  // A category can accumulate MORE THAN ONE managed list if past syncs raced (the
+  // metadata save and the rename echo, or rapid edits, processed concurrently by
+  // the in-memory event bus). Track every list per category, not one: Medusa serves
+  // the LOWEST price across all applicable lists, so a single stale list left behind
+  // pins the storefront to the old, steeper discount even after the percent changes.
   const existing = await pricing.listPriceLists({}, { take: null })
   const owned = new Map<
     string,
-    { id: string; metadata: Record<string, unknown> }
+    { id: string; metadata: Record<string, unknown> }[]
   >()
   for (const list of existing) {
     const metadata = list.metadata as Record<string, unknown> | null
     if (metadata?.managed_by === MANAGED_BY && metadata?.category_id) {
-      owned.set(String(metadata.category_id), { id: list.id, metadata })
+      const key = String(metadata.category_id)
+      const group = owned.get(key) ?? []
+      group.push({ id: list.id, metadata })
+      owned.set(key, group)
     }
   }
 
@@ -170,13 +176,21 @@ export async function syncSalePrices(
   // hand-entered data. price_rule rows cascade off price via FK; price.price_list_id
   // has no FK, so prices must go explicitly.
   const dropManagedList = async (categoryId: string) => {
-    const id = owned.get(categoryId)?.id
-    if (!id) return false
+    // Re-read the managed lists for this category straight from the DB rather than
+    // trust this run's `owned` snapshot: it drops every duplicate a past race left
+    // behind, and also catches a list a concurrent sync created after we loaded the
+    // snapshot. Leaving any one behind lets Medusa keep serving its (lower) price.
+    const rows: { id: string }[] = await pg("price_list")
+      .whereRaw(`"metadata"->>'managed_by' = ?`, [MANAGED_BY])
+      .whereRaw(`"metadata"->>'category_id' = ?`, [categoryId])
+      .select("id")
+    const ids = rows.map((r) => r.id)
+    if (!ids.length) return false
 
     await pg.transaction(async (trx) => {
-      await trx.raw(`delete from "price" where "price_list_id" = ?`, [id])
-      await trx.raw(`delete from "price_list_rule" where "price_list_id" = ?`, [id])
-      await trx.raw(`delete from "price_list" where "id" = ?`, [id])
+      await trx("price").whereIn("price_list_id", ids).del()
+      await trx("price_list_rule").whereIn("price_list_id", ids).del()
+      await trx("price_list").whereIn("id", ids).del()
     })
 
     owned.delete(categoryId)
@@ -272,6 +286,9 @@ export async function syncSalePrices(
       amount: number
       currency_code: string
       variant_id: string
+      // The variant's base price set. The generated price-list price must land in
+      // the SAME set so Medusa resolves it for this variant — it's what we insert.
+      price_set_id: string
     }[] = []
     let skippedRuled = 0
 
@@ -290,6 +307,10 @@ export async function syncSalePrices(
             continue
           }
 
+          // No price set means nothing to attach the discount to; skip rather
+          // than insert an orphaned row the pricing engine can never resolve.
+          if (!price.price_set_id) continue
+
           const discounted = Math.round(Number(price.amount) * multiplier)
           if (!Number.isFinite(discounted) || discounted <= 0) continue
 
@@ -297,6 +318,7 @@ export async function syncSalePrices(
             amount: discounted,
             currency_code: price.currency_code,
             variant_id: variant.id,
+            price_set_id: price.price_set_id,
           })
         }
       }
@@ -325,32 +347,60 @@ export async function syncSalePrices(
     // prices and two minutes to change one product's title — and the rename below
     // would cost a second full rebuild on every percentage change.
     const stamp = fingerprint(percent, prices)
-    const upToDate = owned.get(category.id)?.metadata?.fingerprint === stamp
+    const ownedLists = owned.get(category.id) ?? []
+    // Up to date only when there is exactly one managed list and it already holds
+    // these prices. More than one means a past race left duplicates behind: force
+    // the rebuild so dropManagedList clears them all and one correct list replaces
+    // them — otherwise the stale, cheaper list would win on the storefront forever.
+    const upToDate =
+      ownedLists.length === 1 && ownedLists[0].metadata?.fingerprint === stamp
 
     if (!upToDate) {
       // Rebuild rather than diff: the generated list is disposable by definition,
       // and this only ever deletes a list carrying our marker.
       await dropManagedList(category.id)
 
-      await createPriceListsWorkflow(container).run({
-        input: {
-          price_lists_data: [
-            {
-              // Handle, not name: two categories can both be called "Sale 40% off",
-              // and identical titles in the admin's price list table help nobody.
-              title: `${category.handle}: auto ${percent}% off`,
-              description: `Generated from category ${category.handle} (${finalName}). Edits here are overwritten on the next sync; change metadata.sale_percent on the category instead.`,
-              status: PriceListStatus.ACTIVE,
-              prices,
-              metadata: {
-                managed_by: MANAGED_BY,
-                category_id: category.id,
-                sale_percent: percent,
-                fingerprint: stamp,
-              },
-            },
-          ],
-        },
+      // Insert the list and its prices directly instead of createPriceListsWorkflow.
+      // The workflow inserts prices in small orchestrated batches and emits events
+      // per step: ~40s to lay down 416 prices, which is what made a percentage
+      // change feel like it never landed until a much later refresh. A single
+      // chunked bulk insert writes the same rows in well under a second. Safe for
+      // the same reason the set-based delete above is: it only ever touches a list
+      // carrying our MANAGED_BY marker, and those rows are disposable, rule-free
+      // (rules_count 0, so no price_list_rule/price_rule rows to weave) and hold no
+      // hand-entered data. Amounts are BigNumber-backed: `amount` and `raw_amount`
+      // must agree or the pricing engine reads the raw side and ignores `amount`.
+      const priceListId = `plist_${ulid()}`
+      const priceRows = prices.map((p) => ({
+        id: `price_${ulid()}`,
+        price_set_id: p.price_set_id,
+        currency_code: p.currency_code,
+        amount: p.amount,
+        raw_amount: JSON.stringify({ value: String(p.amount), precision: 20 }),
+        rules_count: 0,
+        price_list_id: priceListId,
+      }))
+
+      await pg.transaction(async (trx) => {
+        await trx("price_list").insert({
+          id: priceListId,
+          status: "active",
+          // Handle, not name: two categories can both be called "Sale 40% off",
+          // and identical titles in the admin's price list table help nobody.
+          title: `${category.handle}: auto ${percent}% off`,
+          description: `Generated from category ${category.handle} (${finalName}). Edits here are overwritten on the next sync; change metadata.sale_percent on the category instead.`,
+          type: "sale",
+          rules_count: 0,
+          metadata: JSON.stringify({
+            managed_by: MANAGED_BY,
+            category_id: category.id,
+            sale_percent: percent,
+            fingerprint: stamp,
+          }),
+        })
+        // Chunked so no single INSERT approaches Postgres' 65535-parameter cap
+        // (each row binds ~7 columns, so 1000 rows ≈ 7000 params — comfortably under).
+        await trx.batchInsert("price", priceRows, 1000)
       })
 
       synced++
