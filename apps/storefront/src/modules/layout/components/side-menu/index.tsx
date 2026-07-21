@@ -109,7 +109,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                               key={cat.id}
                               href={`/categories/${cat.handle}`}
                               onClick={closeDrawer}
-                              className={`block w-full text-left py-2 text-[13px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                              className={`block w-full text-left py-2 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
                                 cat.name.toUpperCase().includes("SALE")
                                   ? "text-[#D01313] hover:text-[#B01010]"
                                   : "text-[#111111] hover:text-neutral-500"

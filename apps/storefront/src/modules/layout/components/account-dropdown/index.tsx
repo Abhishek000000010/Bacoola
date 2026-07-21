@@ -37,7 +37,7 @@ const AccountDropdown = ({
         <PopoverButton className="focus:outline-none flex items-center cursor-pointer group py-2">
           <LocalizedClientLink
             href="/account"
-            className={`text-[13px] font-bold uppercase tracking-[0.05em] text-[#111111] transition-colors duration-200 border-b border-transparent ${isOpen ? 'border-[#111111] pb-[1px]' : 'hover:text-[#555555]'}`}
+            className={`text-[14px] font-bold uppercase tracking-[0.05em] text-[#111111] transition-colors duration-200 border-b border-transparent ${isOpen ? 'border-[#111111] pb-[1px]' : 'hover:text-[#555555]'}`}
             data-testid="nav-account-link"
           >
             MY ACCOUNT

@@ -18,7 +18,7 @@ export default function Loading() {
 
       {/* Product Grid Skeleton Container */}
       <div className="w-full mx-auto pb-16">
-        <SkeletonProductGrid numberOfProducts={8} grid="4" />
+        <SkeletonProductGrid numberOfProducts={8} />
       </div>
     </div>
   )

@@ -13,6 +13,8 @@ interface CloudinaryImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageEle
   desktopAspectRatio?: string
   tabletAspectRatio?: string
   mobileAspectRatio?: string
+  useGravityAuto?: boolean
+  objectFit?: "cover" | "contain" | "fill" | "scale-down" | "none"
 }
 
 /**
@@ -64,6 +66,8 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   desktopAspectRatio,
   tabletAspectRatio,
   mobileAspectRatio,
+  useGravityAuto = false,
+  objectFit = "cover",
   sizes,
   ...rest
 }) => {
@@ -85,6 +89,27 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   // Default image src (e.g. for fallback or standard browsers)
   // Let's use 1024px as a safe default src size
   const defaultSrc = isCloudinary ? buildCloudinaryUrl(imageUrl, 1024, desktopAr) : imageUrl
+
+  // Detect if the media is a video
+  const isVideo = imageUrl.match(/\.(mp4|webm|mov|ogg)$/i) || imageUrl.includes("/video/upload/")
+
+  if (isVideo) {
+    return (
+      <video
+        src={imageUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={className}
+        style={{
+          objectFit: objectFit,
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    )
+  }
 
   return (
     <picture>
@@ -123,10 +148,11 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
         decoding={priority ? "sync" : "async"}
         {...(priority ? { fetchPriority: "high" } : {})}
         style={{
-          objectFit: "cover",
+          objectFit: objectFit,
           // Let the container control dimensions, or fallback to 100%
           width: "100%",
           height: "100%",
+          ...(rest.style || {}),
         }}
         {...rest}
       />

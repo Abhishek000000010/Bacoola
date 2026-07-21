@@ -84,13 +84,13 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "relative py-[26px] text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
+                "relative h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >
               {label}
               {active && (
-                <span className="absolute bottom-[18px] left-0 right-0 h-[1.5px] bg-[#111111]" />
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#111111]" />
               )}
             </LocalizedClientLink>
           </div>

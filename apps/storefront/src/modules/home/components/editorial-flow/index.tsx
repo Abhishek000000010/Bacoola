@@ -29,18 +29,18 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
           className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
         />
 
-        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
-          <h2 className="text-2xl md:text-3xl font-medium uppercase tracking-[0.15em] mb-4 leading-none">
+        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 z-20 select-none">
+          <h2 className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none">
             {leftTitle}
           </h2>
-          <div>
-            <LocalizedClientLink
-              href={link}
-              className="text-white text-xs uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
-            >
-              {ctaText}
-            </LocalizedClientLink>
-          </div>
+        </div>
+        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-20 select-none">
+          <LocalizedClientLink
+            href={link}
+            className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
+          >
+            {ctaText}
+          </LocalizedClientLink>
         </div>
       </div>
 
@@ -52,18 +52,18 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
           className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
         />
 
-        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
-          <h2 className="text-2xl md:text-3xl font-medium uppercase tracking-[0.15em] mb-4 leading-none">
+        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 z-20 select-none">
+          <h2 className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none">
             {rightTitle}
           </h2>
-          <div>
-            <LocalizedClientLink
-              href={link}
-              className="text-white text-xs uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
-            >
-              {ctaText}
-            </LocalizedClientLink>
-          </div>
+        </div>
+        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-20 select-none">
+          <LocalizedClientLink
+            href={link}
+            className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
+          >
+            {ctaText}
+          </LocalizedClientLink>
         </div>
       </div>
     </section>
@@ -93,18 +93,16 @@ const FullWidthCampaign: React.FC<FullWidthCampaignProps> = ({
         />
       </div>
 
-      <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none">
-        <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase mb-8 leading-none">
+      <div className="relative z-20 flex flex-col items-center justify-center h-full w-full px-4 select-none mt-12 md:mt-0">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight uppercase text-white mb-4 text-center">
           {title}
         </h2>
-        <div>
-          <LocalizedClientLink
-            href={link}
-            className="text-white text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
-          >
-            {ctaText}
-          </LocalizedClientLink>
-        </div>
+        <LocalizedClientLink
+          href={link}
+          className="text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.2em] text-white hover:text-neutral-300 transition-colors duration-300"
+        >
+          {ctaText}
+        </LocalizedClientLink>
       </div>
     </section>
   )

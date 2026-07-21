@@ -10,6 +10,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
 import AccountDropdown from "@modules/layout/components/account-dropdown"
+import PromoBanner from "@modules/layout/components/promo-banner"
 import { retrieveCustomer } from "@lib/data/customer"
 
 export default async function Nav() {
@@ -23,7 +24,7 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50">
-      <header className="relative h-[76px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
+      <header className="relative h-[56px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
         <nav className="w-full h-full px-8 small:px-12 max-w-[1550px] mx-auto flex items-center justify-between text-small-regular">
           
           {/* DESKTOP LAYOUT (1024px and wider) */}
@@ -38,10 +39,14 @@ export default async function Nav() {
             <div className="flex justify-center items-center">
               <LocalizedClientLink
                 href="/"
-                className="text-2xl font-bold tracking-[0.25em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none font-sans"
+                className="flex items-center hover:opacity-80 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                Bacoola
+                <img
+                  src="/images/bacoola-logo.png"
+                  alt="Bacoola"
+                  className="h-[18px] w-auto select-none"
+                />
               </LocalizedClientLink>
             </div>
 
@@ -102,10 +107,14 @@ export default async function Nav() {
             <div className="flex items-center justify-center">
               <LocalizedClientLink
                 href="/"
-                className="text-xl font-bold tracking-[0.2em] text-[#111111] uppercase select-none"
+                className="flex items-center hover:opacity-80 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                Bacoola
+                <img
+                  src="/images/bacoola-logo.png"
+                  alt="Bacoola"
+                  className="h-[14px] w-auto select-none"
+                />
               </LocalizedClientLink>
             </div>
 
@@ -128,6 +137,9 @@ export default async function Nav() {
 
         </nav>
       </header>
+
+      {/* Promotional Red Banner - dynamically shows sale % based on current category */}
+      <PromoBanner categories={categories} />
     </div>
   )
 }

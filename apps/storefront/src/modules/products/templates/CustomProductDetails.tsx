@@ -221,17 +221,17 @@ export default function CustomProductDetails({
           <div className="lg:sticky lg:top-[110px] flex flex-col items-start select-none">
             
             {/* Collection Badge */}
-            <span className="text-[10px] uppercase tracking-widest text-[#D01313] font-semibold mb-2">
+            <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-900 mb-1">
               {product.collection?.title || "NEW NOW"}
             </span>
 
             {/* Product Title */}
-            <h1 className="text-xl sm:text-2xl font-light uppercase tracking-[0.12em] text-[#111111] mb-2 leading-snug">
+            <h1 className="text-lg font-bold uppercase tracking-wide text-neutral-900 mb-1">
               {product.title}
             </h1>
 
             {/* Product Price */}
-            <div className="text-lg sm:text-xl font-semibold tracking-wider text-[#111111] mb-6">
+            <div className="text-sm font-normal text-neutral-600 mb-8">
               <ProductPrice product={product} variant={selectedVariant} />
             </div>
 
@@ -243,26 +243,28 @@ export default function CustomProductDetails({
 
               if (optionTitle === "color") {
                 return (
-                  <div key={option.id} className="flex flex-col mb-6 w-full">
-                    <span className="text-[11px] font-semibold tracking-wider text-neutral-400 mb-3 uppercase">
-                      COLOR: {currentValue || "SELECT COLOR"}
-                    </span>
-                    <div className="flex gap-x-3">
-                      {values.map((val) => {
-                        const hex = colorHexMap[val.toLowerCase()] || val.toLowerCase()
-                        const isSelected = currentValue === val
-                        return (
-                          <button
-                            key={val}
-                            onClick={() => setOptionValue(option.id, val)}
-                            className={`w-5 h-5 rounded-full border focus:outline-none transition-all duration-200 ${
-                              isSelected ? "border-black scale-110" : "border-neutral-200"
-                            }`}
-                            style={{ backgroundColor: hex }}
-                            title={val}
-                          />
-                        )
-                      })}
+                  <div key={option.id} className="flex flex-col mb-8 w-full">
+                    <div className="flex justify-between items-center">
+                      <div className="flex gap-x-2">
+                        {values.map((val) => {
+                          const hex = colorHexMap[val.toLowerCase()] || val.toLowerCase()
+                          const isSelected = currentValue === val
+                          return (
+                            <button
+                              key={val}
+                              onClick={() => setOptionValue(option.id, val)}
+                              className={`w-3 h-4 rounded-[1px] border focus:outline-none transition-all duration-200 ${
+                                isSelected ? "border-black scale-110" : "border-neutral-200"
+                              }`}
+                              style={{ backgroundColor: hex }}
+                              title={val}
+                            />
+                          )
+                        })}
+                      </div>
+                      <span className="text-xs font-medium text-neutral-900 capitalize">
+                        {currentValue || ""}
+                      </span>
                     </div>
                   </div>
                 )
@@ -271,28 +273,20 @@ export default function CustomProductDetails({
               if (optionTitle === "size") {
                 return (
                   <div key={option.id} className="flex flex-col mb-8 w-full">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-[11px] font-semibold tracking-wider text-neutral-400 uppercase">
-                        SELECT SIZE
-                      </span>
-                      <button className="text-[10px] font-semibold tracking-wider uppercase border-b border-black pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors">
-                        SIZE GUIDE
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="flex flex-col w-full text-xs font-semibold text-neutral-900 mt-2">
                       {values.map((val) => {
                         const isSelected = currentValue === val
                         return (
                           <button
                             key={val}
                             onClick={() => setOptionValue(option.id, val)}
-                            className={`py-3 border text-center text-xs tracking-wider font-semibold rounded-sm transition-all focus:outline-none ${
+                            className={`flex justify-between items-center py-3 border-b border-transparent focus:outline-none transition-colors ${
                               isSelected
-                                ? "border-black bg-black text-white"
-                                : "border-neutral-200 hover:border-neutral-400 text-neutral-800"
+                                ? "text-black font-bold"
+                                : "text-neutral-500 hover:text-black"
                             }`}
                           >
-                            {val}
+                            <span className="uppercase tracking-widest">{val}</span>
                           </button>
                         )
                       })}
@@ -356,70 +350,7 @@ export default function CustomProductDetails({
               </button>
             </div>
 
-            {/* Compositions & Shipping Accordion Details */}
-            <div className="w-full border-t border-neutral-100 flex flex-col">
-              
-              {/* Accordion Item 1: Description */}
-              {product.description && (
-                <div className="border-b border-neutral-100 py-4 flex flex-col">
-                  <button
-                    onClick={() => toggleAccordion("description")}
-                    className="flex justify-between items-center text-left focus:outline-none w-full"
-                  >
-                    <span className="text-[11px] font-semibold tracking-wider uppercase text-neutral-800">
-                      DESCRIPTION
-                    </span>
-                    <ChevronIcon isOpen={openAccordions.description} />
-                  </button>
-                  {openAccordions.description && (
-                    <p className="mt-3 text-xs sm:text-sm text-neutral-600 leading-relaxed tracking-wide font-normal animate-in fade-in duration-300">
-                      {product.description}
-                    </p>
-                  )}
-                </div>
-              )}
 
-              {/* Accordion Item 2: Composition */}
-              <div className="border-b border-neutral-100 py-4 flex flex-col">
-                <button
-                  onClick={() => toggleAccordion("composition")}
-                  className="flex justify-between items-center text-left focus:outline-none w-full"
-                >
-                  <span className="text-[11px] font-semibold tracking-wider uppercase text-neutral-800">
-                    COMPOSITION AND CARE
-                  </span>
-                  <ChevronIcon isOpen={openAccordions.composition} />
-                </button>
-                {openAccordions.composition && (
-                  <div className="mt-3 text-xs sm:text-sm text-neutral-600 leading-relaxed tracking-wide font-normal flex flex-col gap-y-2 animate-in fade-in duration-300">
-                    <p><strong>Outer Shell:</strong> 52% Cotton, 45% Lyocell, 3% Elastane</p>
-                    <p><strong>Lining:</strong> 100% Polyester</p>
-                    <p>Do not wash. Do not bleach. Iron at a maximum of 110°C. Professional dry clean with PC121. Do not tumble dry.</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Accordion Item 3: Shipping */}
-              <div className="border-b border-neutral-100 py-4 flex flex-col">
-                <button
-                  onClick={() => toggleAccordion("shipping")}
-                  className="flex justify-between items-center text-left focus:outline-none w-full"
-                >
-                  <span className="text-[11px] font-semibold tracking-wider uppercase text-neutral-800">
-                    FREE SHIPPING AND RETURNS
-                  </span>
-                  <ChevronIcon isOpen={openAccordions.shipping} />
-                </button>
-                {openAccordions.shipping && (
-                  <div className="mt-3 text-xs sm:text-sm text-neutral-600 leading-relaxed tracking-wide font-normal flex flex-col gap-y-1 animate-in fade-in duration-300">
-                    <p>• Standard delivery: Free over Rs. 5,000 (3-5 business days)</p>
-                    <p>• Express delivery: Rs. 500 (1-2 business days)</p>
-                    <p>• Free returns within 30 days of shipment receipt.</p>
-                  </div>
-                )}
-              </div>
-
-            </div>
 
           </div>
         </div>

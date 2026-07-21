@@ -45,7 +45,7 @@ const fallbackCampaigns: Record<string, any[]> = {
       title: "Modern Essentials",
       button_text: "Shop Men",
       button_link: "/categories/men",
-      desktop_image: "/images/campaign-3.jpg",
+      desktop_image: "/videos/men-hero.mp4",
     },
   ],
   kids: [

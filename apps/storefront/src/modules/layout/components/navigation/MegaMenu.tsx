@@ -78,7 +78,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
       {/* 1. Backdrop Overlay */}
       <div
         onClick={onMouseLeave}
-        className={`fixed top-[76px] left-0 right-0 bottom-0 bg-black/15 z-[998] transition-opacity duration-300 ${
+        className={`fixed top-[56px] left-0 right-0 bottom-0 bg-black/15 z-[998] transition-opacity duration-300 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       />
@@ -87,7 +87,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
       <div
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className={`fixed top-[76px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col shadow-2xl overflow-hidden ${
+        className={`fixed top-[56px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col shadow-2xl overflow-hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: isOpen && level3Categories.length > 0 ? `${expandedWidth}px` : `${baseWidth}px` }}
@@ -119,7 +119,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                     setActiveTabId(tab.id)
                     setHoveredLevel2Id(null)
                   }}
-                  className={`py-1.5 px-1 text-[11px] whitespace-nowrap uppercase font-bold tracking-wider border-b-2 transition-colors duration-200 ${
+                  className={`py-1.5 px-1 text-[12px] whitespace-nowrap uppercase font-bold tracking-wider border-b-2 transition-colors duration-200 ${
                     isActive
                       ? "border-black text-black"
                       : "border-transparent text-neutral-500 hover:text-black"
@@ -139,7 +139,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
             <div className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pl-10 pr-4 ${needsTabs ? 'pt-4' : 'pt-12'} pb-8`}>
             
             {isKids && (
-              <div className="text-[11px] text-neutral-500 mb-6">
+              <div className="text-[12px] text-neutral-500 mb-6">
                 From 4 to 14 years
               </div>
             )}
@@ -161,7 +161,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                         setActiveCategory(null)
                         setHoveredLevel2Id(null)
                       }}
-                      className={`w-full text-left py-1 text-[11px] uppercase tracking-wide font-bold transition-all duration-200 ${
+                      className={`w-full text-left py-1 text-[12px] uppercase tracking-wide font-bold transition-all duration-200 ${
                         hoveredLevel2Id === cat.id
                           ? `underline underline-offset-[4px] decoration-[1.5px] ${isSale ? 'text-[#c22026] decoration-[#c22026]' : 'text-black decoration-black'}`
                           : isSale
@@ -203,7 +203,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                       setActiveCategory(null)
                       setHoveredLevel2Id(null)
                     }}
-                    className="w-full text-left py-1 text-[11px] font-bold uppercase tracking-wide text-[#111111] hover:text-neutral-500 transition-colors duration-200"
+                    className="w-full text-left py-1 text-[12px] font-bold uppercase tracking-wide text-[#111111] hover:text-neutral-500 transition-colors duration-200"
                   >
                     {cat.name}
                   </LocalizedClientLink>
