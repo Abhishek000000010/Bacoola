@@ -4,7 +4,7 @@ import { Button } from "@modules/common/components/ui"
 import React, { useCallback, useEffect, useState } from "react"
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay"
 import { HttpTypes } from "@medusajs/types"
-import { placeOrder } from "@lib/data/cart"
+import { placeOrder, checkCartInventory } from "@lib/data/cart"
 import ErrorMessage from "../error-message"
 
 export const RazorpayPaymentButton = ({
@@ -43,6 +43,20 @@ export const RazorpayPaymentButton = ({
       setSubmitting(false)
       return
     }
+
+    // --- NEW: Real-time Pre-Payment Stock Check ---
+    try {
+      const stockCheck = await checkCartInventory(cart.id)
+      if (!stockCheck.inStock) {
+        setErrorMessage(stockCheck.message || "An item in your cart is out of stock.")
+        setSubmitting(false)
+        return
+      }
+    } catch (err: any) {
+      // If the check fails completely, we still let them proceed (fallback to normal Medusa errors)
+      console.error("Failed to check inventory before payment", err)
+    }
+    // ----------------------------------------------
 
     const options: RazorpayOrderOptions = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY || "rzp_test_T6Dp9BJO5sSWlW",

@@ -19,7 +19,7 @@ const helpCategories = [
     icon: RotateCcw,
   },
   {
-    title: "Payments, promotions and gift cards",
+    title: "Payments and promotions",
     href: "#payments",
     icon: CreditCard,
   },

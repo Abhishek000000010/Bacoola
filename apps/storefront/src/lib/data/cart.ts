@@ -283,48 +283,7 @@ export async function applyPromotions(codes: string[]) {
     .catch(medusaError)
 }
 
-export async function applyGiftCard(code: string) {
-  //   const cartId = getCartId()
-  //   if (!cartId) return "No cartId cookie found"
-  //   try {
-  //     await updateCart(cartId, { gift_cards: [{ code }] }).then(() => {
-  //       revalidateTag("cart")
-  //     })
-  //   } catch (error: any) {
-  //     throw error
-  //   }
-}
 
-export async function removeDiscount(code: string) {
-  // const cartId = getCartId()
-  // if (!cartId) return "No cartId cookie found"
-  // try {
-  //   await deleteDiscount(cartId, code)
-  //   revalidateTag("cart")
-  // } catch (error: any) {
-  //   throw error
-  // }
-}
-
-export async function removeGiftCard(
-  codeToRemove: string,
-  giftCards: any[]
-  // giftCards: GiftCard[]
-) {
-  //   const cartId = getCartId()
-  //   if (!cartId) return "No cartId cookie found"
-  //   try {
-  //     await updateCart(cartId, {
-  //       gift_cards: [...giftCards]
-  //         .filter((gc) => gc.code !== codeToRemove)
-  //         .map((gc) => ({ code: gc.code })),
-  //     }).then(() => {
-  //       revalidateTag("cart")
-  //     })
-  //   } catch (error: any) {
-  //     throw error
-  //   }
-}
 
 export async function submitPromotionForm(
   currentState: unknown,
@@ -476,3 +435,74 @@ export async function listCartOptions() {
     cache: "force-cache",
   })
 }
+
+/**
+ * Checks the real-time inventory of all items in the cart to prevent overselling.
+ * Must bypass cache to get the absolute latest stock.
+ */
+export async function checkCartInventory(cartId?: string) {
+  const id = cartId || (await getCartId())
+
+  if (!id) {
+    throw new Error("No existing cart found")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const cartResp = await sdk.client
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
+      method: "GET",
+      query: {
+        fields: "*items, *items.variant, *items.variant.inventory_quantity",
+      },
+      headers,
+      cache: "no-store", // CRITICAL: Skip Next.js cache for real-time check
+    })
+    .catch(() => null)
+
+  if (!cartResp?.cart) {
+    throw new Error("Could not fetch cart for inventory check")
+  }
+
+  const cart = cartResp.cart
+
+  for (const item of cart.items || []) {
+    if (item.variant?.manage_inventory) {
+      let available = item.variant.inventory_quantity
+
+      // Fallback: If the API stripped the field from the cart response, fetch the product directly
+      if (available === undefined && item.variant.product_id) {
+        const prodResp = await sdk.client
+          .fetch<any>(`/store/products`, {
+            method: "GET",
+            query: {
+              id: item.variant.product_id,
+              fields: "*variants,*variants.inventory_quantity",
+            },
+            headers,
+            cache: "no-store",
+          })
+          .catch(() => null)
+
+        const variant = prodResp?.products?.[0]?.variants?.find(
+          (v: any) => v.id === item.variant?.id
+        )
+        available = variant?.inventory_quantity
+      }
+
+      const stock = available ?? 0
+
+      if (item.quantity > stock) {
+        return {
+          inStock: false,
+          message: `Sorry, "${item.product_title}" only has ${stock} left in stock. Please adjust your cart.`,
+        }
+      }
+    }
+  }
+
+  return { inStock: true }
+}
+

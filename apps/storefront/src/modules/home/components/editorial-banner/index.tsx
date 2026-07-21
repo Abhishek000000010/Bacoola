@@ -1,71 +1,49 @@
-"use client"
-
 import React from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
+import CloudinaryImage from "@modules/common/components/cloudinary-image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-export const EditorialBanner: React.FC = () => {
+export interface EditorialBannerProps {
+  items?: any[]
+}
+
+const fallbackItem = {
+  title: "The Suit Guide",
+  desktop_image: "/images/campaign-5.jpg",
+  button_link: "/store",
+  button_text: "DISCOVER MORE"
+}
+
+export const EditorialBanner: React.FC<EditorialBannerProps> = ({ items }) => {
+  const item = items?.[0] || fallbackItem
+
+  const title = item.title || fallbackItem.title
+  const image = item.desktop_image || item.mobile_image || fallbackItem.desktop_image
+  const link = item.button_link || fallbackItem.button_link
+  const ctaText = item.button_text || fallbackItem.button_text
+
   return (
-    <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-neutral-900 text-white flex items-center justify-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0 w-full h-full">
-        <Image
-          src="/images/campaign-5.jpg"
-          alt="Autumn Collection Campaign"
-          fill
-          className="object-cover object-center scale-105"
-          sizes="100vw"
+    <section className="w-full h-screen relative bg-neutral-900 overflow-hidden flex flex-col justify-center items-center text-center text-white">
+      <div className="absolute inset-0 w-full h-full z-0 flex [&>picture]:w-full [&>picture]:h-full">
+        <CloudinaryImage
+          src={image}
+          alt={title}
+          className="object-cover object-center w-full h-full"
         />
-        {/* Editorial vignette filter overlay */}
-        <div className="absolute inset-0 bg-black/35 z-10" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-20 text-center max-w-2xl px-4 flex flex-col items-center">
-        <motion.span
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 0.85, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-xs font-semibold tracking-[0.4em] uppercase text-white/90 mb-3"
-        >
-          Seasonal campaign
-        </motion.span>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-3xl sm:text-5xl lg:text-6xl font-extralight tracking-[0.18em] uppercase text-white mb-4 leading-none"
-        >
-          Autumn Collection
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 0.95, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base font-light tracking-wide text-neutral-200 mb-8"
-        >
-          Crafted for Everyday Luxury.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+      <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none">
+        <h2 className="text-5xl md:text-[80px] font-semibold tracking-widest uppercase mb-6 leading-none" style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}>
+          {title}
+        </h2>
+        <div>
           <LocalizedClientLink
-            href="/store"
-            className="px-8 py-3.5 bg-white text-black text-xs font-semibold uppercase tracking-[0.25em] hover:bg-transparent hover:text-white border border-white transition-all duration-300 shadow-md"
+            href={link}
+            className="text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
+            style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}
           >
-            Shop Collection
+            {ctaText}
           </LocalizedClientLink>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

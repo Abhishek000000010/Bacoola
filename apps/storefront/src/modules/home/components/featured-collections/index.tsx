@@ -42,7 +42,7 @@ export const FeaturedCollections: React.FC = () => {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
                 {/* Overlay that darkens slightly on hover */}
-                <div className="absolute inset-0 bg-black/15 group-hover:bg-black/30 transition-colors duration-500 z-10" />
+
               </div>
 
               {/* Centered label */}

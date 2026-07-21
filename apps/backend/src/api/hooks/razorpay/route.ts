@@ -30,12 +30,13 @@ export const POST = async (
     return res.status(400).json({ error: "Invalid signature" })
   }
 
-  const event = req.body?.event
+  const body = req.body as any
+  const event = body?.event
   if (event === "payment.captured" || event === "payment.authorized" || event === "order.paid") {
     
     // Extract the cart_id from the Razorpay order notes
-    const paymentEntity = req.body?.payload?.payment?.entity
-    const orderEntity = req.body?.payload?.order?.entity
+    const paymentEntity = body?.payload?.payment?.entity
+    const orderEntity = body?.payload?.order?.entity
     
     const cartId = paymentEntity?.notes?.cart_id || orderEntity?.notes?.cart_id
     

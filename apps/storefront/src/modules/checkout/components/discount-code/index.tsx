@@ -66,7 +66,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
               className="flex w-full items-center justify-between border border-neutral-300 px-5 py-5 text-left text-xs font-semibold uppercase tracking-[0.18em] text-neutral-900 transition-colors hover:border-black focus:outline-none"
               data-testid="add-discount-button"
             >
-              <span>Promotional code or gift card</span>
+              <span>Promotional code</span>
               <span className="text-[10px]">{isOpen ? "▲" : "▼"}</span>
             </button>
           </div>

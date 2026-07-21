@@ -133,9 +133,6 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-start gap-y-5">
-          <LocalizedClientLink href="/gift-voucher" className={footerLinkClass}>
-            Gift Voucher
-          </LocalizedClientLink>
           <LocalizedClientLink href="/stores" className={footerLinkClass}>
             Stores
           </LocalizedClientLink>

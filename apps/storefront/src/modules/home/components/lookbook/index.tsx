@@ -47,7 +47,7 @@ export const LookbookGallery: React.FC = () => {
                   sizes="(max-width: 640px) 50vw, 25vw"
                 />
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-colors duration-300 z-10" />
+
               </div>
 
               {/* Hover text label */}

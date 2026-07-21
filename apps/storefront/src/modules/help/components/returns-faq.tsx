@@ -65,7 +65,7 @@ const CATEGORIES = [
   },
   {
     id: "payments",
-    title: "Payments, promotions and gift cards",
+    title: "Payments and promotions",
     icon: (
       <svg
         width="18"
@@ -83,8 +83,7 @@ const CATEGORIES = [
     ),
     questions: [
       "What payment methods are accepted?",
-      "How do I apply a promotional code?",
-      "How can I purchase and use a gift card?",
+      "How do I use a promotional code?",
       "Can I get a tax invoice for my purchase?",
     ],
   },

@@ -1,7 +1,7 @@
 "use client"
 
 import { isManual, isStripeLike, isRazorpay } from "@lib/constants"
-import { placeOrder } from "@lib/data/cart"
+import { placeOrder, checkCartInventory } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
@@ -99,6 +99,19 @@ const StripePaymentButton = ({
       return
     }
 
+    // --- NEW: Real-time Pre-Payment Stock Check ---
+    try {
+      const stockCheck = await checkCartInventory(cart.id)
+      if (!stockCheck.inStock) {
+        setErrorMessage(stockCheck.message || "An item in your cart is out of stock.")
+        setSubmitting(false)
+        return
+      }
+    } catch (err: any) {
+      console.error("Failed to check inventory before payment", err)
+    }
+    // ----------------------------------------------
+
     await stripe
       .confirmCardPayment(session?.data.client_secret as string, {
         payment_method: {
@@ -180,8 +193,21 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
       })
   }
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setSubmitting(true)
+
+    // --- NEW: Real-time Pre-Payment Stock Check ---
+    try {
+      const stockCheck = await checkCartInventory()
+      if (!stockCheck.inStock) {
+        setErrorMessage(stockCheck.message || "An item in your cart is out of stock.")
+        setSubmitting(false)
+        return
+      }
+    } catch (err: any) {
+      console.error("Failed to check inventory before payment", err)
+    }
+    // ----------------------------------------------
 
     onPaymentCompleted()
   }

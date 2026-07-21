@@ -1,22 +1,19 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-import InteractiveLink from "@modules/common/components/interactive-link"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
-import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import PaginatedProducts from "@modules/store/templates/paginated-products"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 import { OptionValueIds } from "@lib/util/product-option-filters"
 
-// Import modular reusable landing components and configuration
-import HeroBanner from "../components/HeroBanner"
-import EditorialGrid from "../components/EditorialGrid"
-import { categoryEditorialConfigs } from "../components/landing-configs"
+// Import unified architecture components
+import LandingRenderer from "@modules/home/components/landing-renderer"
 import CategoryProductListing from "./CategoryProductListing"
 
 import { getLandingSections } from "@lib/data/landing-pages"
+
+const EDITORIAL_CATEGORIES = ["women", "men", "kids", "teen", "home"]
 
 export default async function CategoryTemplate({
   category,
@@ -36,77 +33,14 @@ export default async function CategoryTemplate({
 
   if (!category || !countryCode) notFound()
 
-  // Verify if we should render an Editorial Landing Page (only for women, men, teen, kids)
-  const editorialConfig = categoryEditorialConfigs[category.handle]
-
-  if (editorialConfig) {
-    // Fetch dynamic CMS data for this page
-    const cmsSections = await getLandingSections(category.handle)
-
-    // Helper to find CMS section by layout_type
-    const getCmsSection = (layoutType: string) =>
-      cmsSections.find((s) => s.layout_type === layoutType)
-
-    const heroSection = getCmsSection("hero_slider")
-    const splitSection =
-      getCmsSection("split_banner") || getCmsSection("editorial_banner")
-
-    // Merge Hero Data
-    const heroItem = heroSection?.items?.[0]
-    const heroTitle = heroItem?.title || editorialConfig.heroTitle
-    const heroImage = heroItem?.desktop_image || editorialConfig.heroImage
-    const heroCta = heroItem?.button_text || editorialConfig.heroCta
-    const heroHref = heroItem?.button_link || `/products/${category.handle}`
-    const heroImagePosition = heroItem?.image_position || "center center"
-
-    return (
-      <div className="relative w-full flex flex-col bg-neutral-900">
-
-        {/* 1. Fullscreen Editorial Hero Banner Component */}
-        <HeroBanner
-          title={heroTitle}
-          image={heroImage}
-          ctaText={heroCta}
-          ctaHref={heroHref}
-          imagePosition={heroImagePosition}
-        />
-
-        {/* 2. Alternating Editorial Campaign Grids Components */}
-        {editorialConfig.grid.map((row, index) => {
-          // Find CMS items for this row (2 items per row)
-          const cmsLeft = splitSection?.items?.[index * 2]
-          const cmsRight = splitSection?.items?.[index * 2 + 1]
-
-          return (
-            <EditorialGrid
-              key={index}
-              leftTitle={cmsLeft?.title || row.leftTitle}
-              leftImage={cmsLeft?.desktop_image || row.leftImage}
-              leftHref={cmsLeft?.button_link || `/categories/${category.handle}/${row.leftSlug}`}
-              leftSpan={row.leftSpan}
-              leftImagePosition={cmsLeft?.image_position || "center center"}
-              rightTitle={cmsRight?.title || row.rightTitle}
-              rightImage={cmsRight?.desktop_image || row.rightImage}
-              rightHref={cmsRight?.button_link || `/categories/${category.handle}/${row.rightSlug}`}
-              rightSpan={row.rightSpan}
-              rightImagePosition={cmsRight?.image_position || "center center"}
-            />
-          )
-        })}
-      </div>
-    )
-  }
-
-  // Fallback to normal Product Listing Page (PLP) for subcategories
+  // Collect parents
   const parents = [] as HttpTypes.StoreProductCategory[]
-
-  const getParents = (category: HttpTypes.StoreProductCategory) => {
-    if (category.parent_category) {
-      parents.push(category.parent_category)
-      getParents(category.parent_category)
+  const getParents = (cat: HttpTypes.StoreProductCategory) => {
+    if (cat.parent_category) {
+      parents.push(cat.parent_category)
+      getParents(cat.parent_category)
     }
   }
-
   getParents(category)
 
   // Collect this category and all descendant IDs so we fetch products from all subcategories
@@ -119,23 +53,44 @@ export default async function CategoryTemplate({
   }
   collectIds(category)
 
+  const productGrid = (
+    <Suspense fallback={<SkeletonProductGrid numberOfProducts={category.products?.length ?? 8} />}>
+      <PaginatedProducts
+        sortBy={sort}
+        page={pageNumber}
+        categoryId={allCategoryIds}
+        countryCode={countryCode}
+        optionValueIds={optionValueIds}
+      />
+    </Suspense>
+  )
+
+  // Unified Architecture for Landing Pages
+  if (EDITORIAL_CATEGORIES.includes(category.handle)) {
+    const cmsSections = await getLandingSections(category.handle)
+    return (
+      <div className="relative w-full flex flex-col bg-neutral-900">
+        <LandingRenderer sections={cmsSections || []} pageName={category.handle} />
+        
+        {/* Render product grid below editorial flow */}
+        <div className="w-full bg-white">
+          <div className="content-container py-12 md:py-24">
+            <div className="flex flex-col gap-8">
+              <h2 className="text-3xl font-medium tracking-tight uppercase border-b pb-4 border-neutral-200 text-neutral-900">
+                Shop {category.name}
+              </h2>
+              {productGrid}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Fallback to normal Product Listing Page (PLP) for subcategories
   return (
     <CategoryProductListing category={category} parents={parents}>
-      <Suspense
-        fallback={
-          <SkeletonProductGrid
-            numberOfProducts={category.products?.length ?? 8}
-          />
-        }
-      >
-        <PaginatedProducts
-          sortBy={sort}
-          page={pageNumber}
-          categoryId={allCategoryIds}
-          countryCode={countryCode}
-          optionValueIds={optionValueIds}
-        />
-      </Suspense>
+      {productGrid}
     </CategoryProductListing>
   )
 }
