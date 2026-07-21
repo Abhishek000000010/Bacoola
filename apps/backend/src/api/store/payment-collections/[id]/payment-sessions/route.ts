@@ -28,9 +28,6 @@ export const POST = async (
   }
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  console.log(
-    `[rzp-route] override HIT collection=${collectionId} provider=${provider_id} cart_id=${(data as any)?.cart_id}`
-  )
 
   let cart: unknown = undefined
   let cartCustomerId: string | undefined = undefined
