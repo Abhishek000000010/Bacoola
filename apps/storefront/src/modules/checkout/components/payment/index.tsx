@@ -119,30 +119,29 @@ const Payment = ({
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="flex flex-row items-center justify-between mb-8 border-b border-neutral-200 pb-4">
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 gap-x-4 items-baseline",
+            "flex flex-row items-baseline gap-x-2 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-950",
             {
               "opacity-50 pointer-events-none select-none":
                 !isOpen && !paymentReady,
             }
           )}
         >
-          Payment
-          {!isOpen && paymentReady && <CheckCircleSolid />}
+          Payment Method
         </Heading>
         {!isOpen && paymentReady && (
-          <Text>
+          <div>
             <button
               onClick={handleEdit}
-              className="text-[10px] uppercase tracking-widest underline font-bold text-gray-900 hover:text-gray-500 transition-colors"
+              className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:text-neutral-950"
               data-testid="edit-payment-button"
             >
               Edit
             </button>
-          </Text>
+          </div>
         )}
       </div>
       <div>
@@ -197,7 +196,8 @@ const Payment = ({
           />
 
           <Button
-            className="w-full h-12 bg-gray-900 text-white rounded-none hover:bg-gray-800 tracking-widest text-xs font-bold uppercase transition-colors mt-6"
+            size="large"
+            className="mt-6 h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black"
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
@@ -214,47 +214,27 @@ const Payment = ({
 
         <div className={isOpen ? "hidden" : "block"}>
           {cart && paymentReady && activeSession ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-              <div className="flex flex-col">
-                <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
-                  Payment method
-                </Text>
-                <Text
-                  className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500"
-                  data-testid="payment-method-summary"
-                >
-                  {paymentInfoMap[activeSession?.provider_id]?.title ||
-                    activeSession?.provider_id}
-                </Text>
+            <div className="flex flex-col border border-neutral-200 p-5 mt-2">
+              <div className="flex items-center gap-x-3 text-[13px] font-bold text-neutral-950 uppercase tracking-[0.05em]">
+                <CreditCard className="w-5 h-5 text-neutral-700" />
+                <span>
+                  {paymentInfoMap[activeSession?.provider_id ?? ""]?.title || activeSession?.provider_id}
+                </span>
               </div>
-              <div className="flex flex-col">
-                <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
-                  Payment details
-                </Text>
-                <div
-                  className="flex gap-2 text-[10px] md:text-xs uppercase tracking-wider text-gray-500 items-center"
-                  data-testid="payment-details-summary"
-                >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-gray-100 rounded-none border-0">
-                    {paymentInfoMap[selectedPaymentMethod]?.icon || (
-                      <CreditCard />
-                    )}
-                  </Container>
-                  <Text>
-                    {isStripeLike(selectedPaymentMethod) && cardBrand
-                      ? cardBrand
-                      : "Another step will appear"}
-                  </Text>
-                </div>
+              <div className="mt-5 text-[13px] text-neutral-950">
+                <span className="font-semibold uppercase tracking-[0.05em]">Details:</span>{" "}
+                {isStripeLike(selectedPaymentMethod) && cardBrand
+                  ? cardBrand
+                  : "Proceed to next step to complete"}
               </div>
             </div>
           ) : paidByGiftcard ? (
-            <div className="flex flex-col">
-              <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
+            <div className="flex flex-col w-1/3">
+              <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Payment method
               </Text>
               <Text
-                className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500"
+                className="txt-medium text-ui-fg-subtle"
                 data-testid="payment-method-summary"
               >
                 Gift card

@@ -39,144 +39,56 @@ const Addresses = ({
 
   const [message, formAction] = useActionState(setAddresses, null)
 
+  if (!isOpen) {
+    return null
+  }
+
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-8">
+      <div className="mb-7 flex flex-col items-center justify-center pb-4">
         <Heading
           level="h2"
-          className="flex flex-row text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 gap-x-4 items-baseline"
+          className="text-base font-bold uppercase tracking-[0.05em] text-[#111111] text-center"
         >
-          Shipping Address
-          {!isOpen && <CheckCircleSolid />}
+          Add Delivery Address
         </Heading>
-        {!isOpen && cart?.shipping_address && (
-          <Text>
-            <button
-              onClick={handleEdit}
-              className="text-[10px] uppercase tracking-widest underline font-bold text-gray-900 hover:text-gray-500 transition-colors"
-              data-testid="edit-address-button"
-            >
-              Edit
-            </button>
-          </Text>
-        )}
       </div>
-      {isOpen ? (
-        <form action={formAction}>
-          <div className="pb-8">
-            <ShippingAddress
-              customer={customer}
-              checked={sameAsBilling}
-              onChange={toggleSameAsBilling}
-              cart={cart}
-            />
+      <form action={formAction}>
+        <div className="pb-7">
+          <ShippingAddress
+            customer={customer}
+            checked={sameAsBilling}
+            onChange={toggleSameAsBilling}
+            cart={cart}
+          />
 
-            {!sameAsBilling && (
-              <div>
-                <Heading
-                  level="h2"
-                  className="text-3xl-regular gap-x-4 pb-6 pt-8"
-                >
-                  Billing address
-                </Heading>
+          {!sameAsBilling && (
+            <div>
+              <Heading
+                level="h2"
+                className="pb-6 pt-7 text-base font-bold uppercase tracking-[0.05em] text-[#111111] text-center"
+              >
+                Billing Address
+              </Heading>
 
+              <div className="pt-5">
                 <BillingAddress cart={cart} />
               </div>
-            )}
-            <SubmitButton className="mt-6" data-testid="submit-address-button">
-              Continue to delivery
-            </SubmitButton>
-            <ErrorMessage error={message} data-testid="address-error-message" />
-          </div>
-        </form>
-      ) : (
-        <div>
-          <div className="text-small-regular">
-            {cart && cart.shipping_address ? (
-              <div className="flex items-start gap-x-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                  <div
-                    className="flex flex-col"
-                    data-testid="shipping-address-summary"
-                  >
-                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
-                      Shipping Address
-                    </Text>
-                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                      {cart.shipping_address.first_name}{" "}
-                      {cart.shipping_address.last_name}
-                    </Text>
-                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 break-words">
-                      {cart.shipping_address.address_1}{" "}
-                      {cart.shipping_address.address_2}
-                    </Text>
-                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                      {cart.shipping_address.postal_code},{" "}
-                      {cart.shipping_address.city}
-                    </Text>
-                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                      {cart.shipping_address.country_code?.toUpperCase()}
-                    </Text>
-                  </div>
-
-                  <div
-                    className="flex flex-col"
-                    data-testid="shipping-contact-summary"
-                  >
-                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
-                      Contact
-                    </Text>
-                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                      {cart.shipping_address.phone}
-                    </Text>
-                    <Text className="text-[10px] md:text-xs tracking-wider text-gray-500 break-words">
-                      {cart.email}
-                    </Text>
-                  </div>
-
-                  <div
-                    className="flex flex-col"
-                    data-testid="billing-address-summary"
-                  >
-                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
-                      Billing Address
-                    </Text>
-
-                    {sameAsBilling ? (
-                      <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                        Billing and delivery address are the same.
-                      </Text>
-                    ) : (
-                      <>
-                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                          {cart.billing_address?.first_name}{" "}
-                          {cart.billing_address?.last_name}
-                        </Text>
-                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 break-words">
-                          {cart.billing_address?.address_1}{" "}
-                          {cart.billing_address?.address_2}
-                        </Text>
-                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                          {cart.billing_address?.postal_code},{" "}
-                          {cart.billing_address?.city}
-                        </Text>
-                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
-                          {cart.billing_address?.country_code?.toUpperCase()}
-                        </Text>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <Spinner />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
+          <SubmitButton
+            className="mt-6 h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black"
+            data-testid="submit-address-button"
+          >
+            Confirm Address
+          </SubmitButton>
+          <p className="mt-4 text-center text-[12px] text-neutral-600">
+            By continuing, you confirm you have read the <span className="font-semibold text-black">Privacy Policy</span>
+          </p>
+          <ErrorMessage error={message} data-testid="address-error-message" />
         </div>
-      )}
-      <Divider className="mt-8" />
+      </form>
+      <Divider className="mt-10 border-neutral-200" />
     </div>
   )
 }

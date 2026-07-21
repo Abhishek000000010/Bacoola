@@ -55,15 +55,15 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         clearState={clearState}
         data-testid="account-phone-editor"
       >
-        <div className="grid grid-cols-1 gap-y-2">
+        <div className="grid grid-cols-1 gap-y-4">
           <Input
             label="Phone"
             name="phone"
             type="phone"
             autoComplete="phone"
-            required
             defaultValue={customer.phone ?? ""}
             data-testid="phone-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
         </div>
       </AccountInfo>

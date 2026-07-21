@@ -34,13 +34,14 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
         clearState={clearState}
         data-testid="account-password-editor"
       >
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           <Input
             label="Old password"
             name="old_password"
             required
             type="password"
             data-testid="old-password-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
           <Input
             label="New password"
@@ -48,6 +49,7 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
             name="new_password"
             required
             data-testid="new-password-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
           <Input
             label="Confirm password"
@@ -55,6 +57,7 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
             name="confirm_password"
             required
             data-testid="confirm-password-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
         </div>
       </AccountInfo>

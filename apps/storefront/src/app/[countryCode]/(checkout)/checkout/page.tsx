@@ -3,6 +3,7 @@ import { retrieveCustomer } from "@lib/data/customer"
 import PaymentWrapper from "@modules/checkout/components/payment-wrapper"
 import CheckoutForm from "@modules/checkout/templates/checkout-form"
 import CheckoutSummary from "@modules/checkout/templates/checkout-summary"
+import CheckoutSteps from "@modules/checkout/components/checkout-steps"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -20,14 +21,17 @@ export default async function Checkout() {
   const customer = await retrieveCustomer()
 
   return (
-    <div className="content-container mx-auto grid max-w-[1720px] grid-cols-1 gap-y-10 py-8 small:grid-cols-[minmax(0,1fr)_440px] small:gap-x-16 small:gap-y-0 small:py-12">
-      <div className="w-full small:max-w-[980px]">
-        <PaymentWrapper cart={cart}>
-          <CheckoutForm cart={cart} customer={customer} />
-        </PaymentWrapper>
-      </div>
-      <div className="w-full small:max-w-[440px]">
-        <CheckoutSummary cart={cart} />
+    <div className="content-container mx-auto py-8 small:py-12 max-w-[1024px]">
+      <CheckoutSteps />
+      <div className="grid grid-cols-1 gap-y-10 small:grid-cols-[1fr_340px] small:gap-x-16 small:gap-y-0 mt-8">
+        <div className="w-full small:max-w-[980px]">
+          <PaymentWrapper cart={cart}>
+            <CheckoutForm cart={cart} customer={customer} />
+          </PaymentWrapper>
+        </div>
+        <div className="w-full small:max-w-[340px]">
+          <CheckoutSummary cart={cart} />
+        </div>
       </div>
     </div>
   )

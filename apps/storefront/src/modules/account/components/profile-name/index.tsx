@@ -67,6 +67,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
             required
             defaultValue={customer.first_name ?? ""}
             data-testid="first-name-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
           <Input
             label="Last name"
@@ -74,6 +75,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
             required
             defaultValue={customer.last_name ?? ""}
             data-testid="last-name-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
         </div>
       </AccountInfo>

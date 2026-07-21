@@ -9,13 +9,16 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
+import AccountDropdown from "@modules/layout/components/account-dropdown"
+import { retrieveCustomer } from "@lib/data/customer"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale, categories] = await Promise.all([
+  const [regions, locales, currentLocale, categories, customer] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
     listCategories({ limit: 1000 }),
+    retrieveCustomer(),
   ])
 
   return (
@@ -51,13 +54,17 @@ export default async function Nav() {
                 Search
               </LocalizedClientLink>
               
-              <LocalizedClientLink
-                href="/account"
-                className="hover:text-[#555555] transition-colors duration-200"
-                data-testid="nav-account-link"
-              >
-                Log In
-              </LocalizedClientLink>
+              {customer ? (
+                <AccountDropdown customer={customer} />
+              ) : (
+                <LocalizedClientLink
+                  href="/account"
+                  className="hover:text-[#555555] transition-colors duration-200"
+                  data-testid="nav-account-link"
+                >
+                  Log In
+                </LocalizedClientLink>
+              )}
               
               <LocalizedClientLink
                 href="#"

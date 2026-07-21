@@ -52,7 +52,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         clearState={clearState}
         data-testid="account-email-editor"
       >
-        <div className="grid grid-cols-1 gap-y-2">
+        <div className="grid grid-cols-1 gap-y-4">
           <Input
             label="Email"
             name="email"
@@ -61,6 +61,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
             required
             defaultValue={customer.email}
             data-testid="email-input"
+            inputClassName="transition-all duration-300 ease-in-out focus:border-black focus:ring-[0.5px] focus:ring-black focus:shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:border-neutral-400"
           />
         </div>
       </AccountInfo>

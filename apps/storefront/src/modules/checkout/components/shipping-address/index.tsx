@@ -99,8 +99,8 @@ const ShippingAddress = ({
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
-        <Container className="mb-6 flex flex-col gap-y-4 p-5">
-          <p className="text-small-regular">
+        <Container className="mb-6 flex flex-col gap-y-3 border border-neutral-200 px-5 py-5 shadow-none rounded-none">
+          <p className="text-sm text-neutral-600">
             {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
           </p>
           <AddressSelect
@@ -114,7 +114,7 @@ const ShippingAddress = ({
           />
         </Container>
       )}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <Input
           label="First name"
           name="shipping_address.first_name"
@@ -159,17 +159,23 @@ const ShippingAddress = ({
           required
           data-testid="shipping-postal-code-input"
         />
-        <CountrySelect
-          name="shipping_address.country_code"
-          autoComplete="country"
-          region={cart?.region}
-          value={formData["shipping_address.country_code"]}
-          onChange={handleChange}
-          required
-          data-testid="shipping-country-select"
-        />
-        <div className="flex flex-col gap-2">
-          <label className="text-ui-fg-base text-xs">State / Province</label>
+        <div className="relative w-full">
+          <label className="pointer-events-none absolute left-4 top-3 z-10 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            Country
+            <span className="ml-1 text-rose-500">*</span>
+          </label>
+          <CountrySelect
+            name="shipping_address.country_code"
+            autoComplete="country"
+            region={cart?.region}
+            value={formData["shipping_address.country_code"]}
+            onChange={handleChange}
+            required
+            data-testid="shipping-country-select"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">State / Province</label>
           <Select
             options={State.getStatesOfCountry(formData["shipping_address.country_code"]?.toUpperCase()).map(s => ({ value: s.name, label: s.name, isoCode: s.isoCode }))}
             value={{ value: formData["shipping_address.province"], label: formData["shipping_address.province"] || "Select State" }}
@@ -183,11 +189,11 @@ const ShippingAddress = ({
             isDisabled={!formData["shipping_address.country_code"]}
             placeholder="Search State"
             className="text-sm"
-            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '44px', borderRadius: '0px', borderColor: '#d4d4d4' }) }}
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-ui-fg-base text-xs">City</label>
+        <div className="flex flex-col gap-1">
+          <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">City</label>
           <Select
             options={
               formData["shipping_address.province"] 
@@ -204,7 +210,7 @@ const ShippingAddress = ({
             isDisabled={!formData["shipping_address.province"]}
             placeholder="Search City"
             className="text-sm"
-            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '44px', borderRadius: '0px', borderColor: '#d4d4d4' }) }}
           />
         </div>
       </div>
@@ -222,7 +228,7 @@ const ShippingAddress = ({
         name="shipping_address.city"
         value={formData["shipping_address.city"] || ""}
       />
-      <div className="my-8">
+      <div className="my-6 border-t border-neutral-200 pt-5">
         <Checkbox
           label="Billing address same as shipping address"
           name="same_as_billing"
@@ -231,7 +237,7 @@ const ShippingAddress = ({
           data-testid="billing-address-checkbox"
         />
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="mb-4 grid grid-cols-1 gap-4">
         <Input
           label="Email"
           name="email"

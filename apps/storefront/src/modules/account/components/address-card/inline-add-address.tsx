@@ -25,31 +25,31 @@ export default function InlineAddAddress({
   }, [formState])
 
   return (
-    <div className="w-full max-w-[520px] mx-auto font-sans text-[#111111]">
+    <div className="w-full max-w-[520px] mx-auto font-sans text-[#111111] text-left">
       <form action={formAction} className="flex flex-col w-full gap-y-4">
         
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="firstName">Name</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
           <input
             id="firstName"
             name="first_name"
             required
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+            placeholder="Name"
+            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
           />
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="lastName">Surname</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
           <input
             id="lastName"
             name="last_name"
             required
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+            placeholder="Surname"
+            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
           />
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none">
-          <label className="text-[10px] text-[#999999]" htmlFor="email">E-mail</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex flex-col justify-center bg-white">
+          <label className="text-[9px] uppercase tracking-widest text-[#999999] leading-none" htmlFor="email">E-mail</label>
           <input
             id="email"
             type="email"
@@ -59,23 +59,23 @@ export default function InlineAddAddress({
           />
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] flex items-center focus-within:border-[#111111] bg-white rounded-none">
-          <div className="flex items-center px-4 border-r border-[#e5e5e5] h-[24px] text-[13px]">
+        <div className="w-full border border-[#d0d0d0] h-[48px] flex items-center focus-within:border-[#111111] bg-white transition-colors">
+          <div className="flex items-center px-4 border-r border-[#d0d0d0] h-[24px] text-[13px] shrink-0">
             <span>+91</span>
             <svg className="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
-          <div className="flex-1 h-full px-4 flex flex-col justify-center">
-            <label className="text-[10px] text-[#555555]" htmlFor="phone">Mobile</label>
+          <div className="flex-1 h-full px-4 flex items-center">
             <input
               id="phone"
               name="phone"
-              className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+              placeholder="Mobile"
+              className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
             />
           </div>
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none">
-          <label className="text-[10px] text-[#999999]" htmlFor="countryCode">Country</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex flex-col justify-center bg-white">
+          <label className="text-[9px] uppercase tracking-widest text-[#999999] leading-none" htmlFor="countryCode">Country</label>
           <input type="hidden" name="country_code" value={region.countries?.[0]?.iso_2 || ""} />
           <select
             id="countryCode"
@@ -91,51 +91,33 @@ export default function InlineAddAddress({
           </select>
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="address">Address</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
           <input
             id="address"
             name="address_1"
             required
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+            placeholder="Address"
+            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
           />
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="address_2">Apartment, suite, etc.</label>
-          <input
-            id="address_2"
-            name="address_2"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
-          />
-        </div>
-
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="postalCode">Postcode</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
           <input
             id="postalCode"
             name="postal_code"
             required
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+            placeholder="Postcode"
+            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
           />
         </div>
 
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="city">Town / City</label>
+        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
           <input
             id="city"
             name="city"
             required
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
-          />
-        </div>
-
-        <div className="w-full border border-[#e5e5e5] h-[48px] px-4 flex flex-col justify-center bg-white rounded-none focus-within:border-[#111111]">
-          <label className="text-[10px] text-[#555555]" htmlFor="province">Province / State</label>
-          <input
-            id="province"
-            name="province"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0"
+            placeholder="Town / City"
+            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
           />
         </div>
 
@@ -145,19 +127,19 @@ export default function InlineAddAddress({
           </div>
         )}
 
-        <p className="text-[13px] mt-2 mb-2 text-[#111111] text-left">
+        <p className="text-[13px] mt-6 mb-6 text-[#111111] text-left">
           This will be saved as your default delivery address.
         </p>
 
         <button
           type="submit"
-          className="w-full bg-[#111111] hover:bg-[#333333] text-white transition-colors h-[48px] text-[13px] font-bold"
+          className="w-full bg-[#111111] hover:bg-[#333333] text-white transition-colors h-[48px] text-[12px] font-bold uppercase tracking-widest"
         >
-          Save address
+          SAVE ADDRESS
         </button>
 
-        <p className="text-[11px] mt-2 text-[#111111]">
-          By continuing, you confirm you have read the <a href="#" className="font-bold underline hover:text-[#555555]">Privacy Policy</a>
+        <p className="text-[12px] mt-4 text-[#111111] text-left">
+          By continuing, you confirm you have read the <a href="#" className="font-bold underline underline-offset-2 decoration-[1px] hover:text-[#555555]">Privacy Policy</a>
         </p>
       </form>
     </div>

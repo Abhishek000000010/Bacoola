@@ -31,9 +31,24 @@ const AccountInfo = ({
   const { pending } = useFormStatus()
 
   const handleToggle = () => {
+    if (!state) {
+      // Dispatch event to close all other open sections
+      window.dispatchEvent(new CustomEvent('close-account-info', { detail: label }))
+    }
     clearState()
     setTimeout(() => toggle(), 100)
   }
+
+  useEffect(() => {
+    const handleCloseOthers = (e: Event) => {
+      const customEvent = e as CustomEvent
+      if (customEvent.detail !== label && state) {
+        close()
+      }
+    }
+    window.addEventListener('close-account-info', handleCloseOthers)
+    return () => window.removeEventListener('close-account-info', handleCloseOthers)
+  }, [state, label, close])
 
   useEffect(() => {
     if (isSuccess) {
@@ -119,24 +134,38 @@ const AccountInfo = ({
         <Disclosure.Panel
           static
           className={clx(
-            "transition-[max-height,opacity] duration-300 ease-in-out overflow-visible",
+            "grid transition-all duration-300 ease-in-out",
             {
-              "max-h-[1000px] opacity-100": state,
-              "max-h-0 opacity-0": !state,
+              "grid-rows-[1fr] opacity-100 mt-4": state,
+              "grid-rows-[0fr] opacity-0 mt-0": !state,
             }
           )}
         >
-          <div className="flex flex-col gap-y-2 py-3">
-            <div>{children}</div>
-            <div className="flex items-center justify-end mt-2">
-              <Button
-                isLoading={pending}
-                className="w-full small:max-w-[120px] text-[13px]"
-                type="submit"
-                data-testid="save-button"
+          <div className="overflow-hidden">
+            <div className="flex flex-col gap-y-4 py-1">
+              <div>{children}</div>
+              <div 
+                className={clx(
+                  "flex flex-col w-full mt-4 transition-opacity duration-300 delay-100",
+                  {
+                    "opacity-100": state,
+                    "opacity-0": !state
+                  }
+                )}
               >
-                Save changes
-              </Button>
+                <Button
+                  isLoading={pending}
+                  className="w-full h-[48px] text-[13px] font-bold uppercase tracking-wide bg-[#111111] hover:bg-[#333333] transition-colors rounded-none"
+                  type="submit"
+                  data-testid="save-button"
+                >
+                  SAVE
+                </Button>
+                
+                <p className="mt-4 text-[12px] text-neutral-500">
+                  By saving your details you confirm you have read the <span className="font-bold text-neutral-950">Privacy Policy</span>.
+                </p>
+              </div>
             </div>
           </div>
         </Disclosure.Panel>

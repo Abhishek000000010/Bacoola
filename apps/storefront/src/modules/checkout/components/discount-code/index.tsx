@@ -1,14 +1,13 @@
 "use client"
 
-import { Badge, Heading, Input, Label, Text } from "@modules/common/components/ui"
 import React from "react"
 
 import { applyPromotions } from "@lib/data/cart"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
+import { Badge, Heading, Text } from "@modules/common/components/ui"
 import Trash from "@modules/common/icons/trash"
 import ErrorMessage from "../error-message"
-import { SubmitButton } from "../submit-button"
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart
@@ -19,6 +18,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const [errorMessage, setErrorMessage] = React.useState("")
 
   const { promotions = [] } = cart
+
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
@@ -36,10 +36,12 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     if (!code) {
       return
     }
+
     const input = document.getElementById("promotion-input") as HTMLInputElement
     const codes = promotions
       .filter((p) => p.code !== undefined)
       .map((p) => p.code!)
+
     codes.push(code.toString())
 
     try {
@@ -54,55 +56,53 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   }
 
   return (
-    <div className="w-full bg-white flex flex-col">
-      <div className="txt-medium">
-        <form action={(a) => addPromotionCode(a)} className="w-full mb-5">
-          <Label className="flex gap-x-1 my-2 items-center">
+    <div className="flex w-full flex-col bg-white">
+      <div className="text-xs">
+        <form action={(formData) => addPromotionCode(formData)} className="mb-4 w-full">
+          <div className="flex w-full items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="text-[10px] md:text-xs uppercase tracking-widest font-bold text-gray-900 underline hover:text-gray-500 transition-colors"
+              className="flex w-full items-center justify-between border border-neutral-300 px-5 py-5 text-left text-xs font-semibold uppercase tracking-[0.18em] text-neutral-900 transition-colors hover:border-black focus:outline-none"
               data-testid="add-discount-button"
             >
-              Add Promotion Code(s)
+              <span>Promotional code or gift card</span>
+              <span className="text-[10px]">{isOpen ? "▲" : "▼"}</span>
             </button>
-
-            {/* <Tooltip content="You can add multiple promotion codes">
-              <InformationCircleSolid color="var(--fg-muted)" />
-            </Tooltip> */}
-          </Label>
+          </div>
 
           {isOpen && (
-            <>
+            <div className="mt-3 flex flex-col gap-y-3">
               <div className="flex w-full gap-x-2">
-                <Input
-                  className="size-full"
+                <input
+                  className="h-14 flex-1 border border-neutral-300 bg-white px-4 text-sm tracking-[0.08em] text-neutral-950 placeholder:text-neutral-400 focus:border-black focus:outline-none"
                   id="promotion-input"
                   name="code"
                   type="text"
-                  autoFocus={false}
+                  placeholder="Code"
                   data-testid="discount-input"
                 />
-                <SubmitButton
-                  variant="secondary"
+                <button
+                  type="submit"
+                  className="h-14 shrink-0 bg-black px-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-neutral-900"
                   data-testid="discount-apply-button"
                 >
                   Apply
-                </SubmitButton>
+                </button>
               </div>
 
               <ErrorMessage
                 error={errorMessage}
                 data-testid="discount-error-message"
               />
-            </>
+            </div>
           )}
         </form>
 
         {promotions.length > 0 && (
-          <div className="w-full flex items-center">
-            <div className="flex flex-col w-full">
-              <Heading className="txt-medium mb-2">
+          <div className="flex w-full items-center">
+            <div className="flex w-full flex-col border-t border-neutral-200 pt-4">
+              <Heading className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                 Promotion(s) applied:
               </Heading>
 
@@ -110,14 +110,12 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                 return (
                   <div
                     key={promotion.id}
-                    className="flex items-center justify-between w-full max-w-full mb-2"
+                    className="mb-2 flex w-full max-w-full items-center justify-between"
                     data-testid="discount-row"
                   >
-                    <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
+                    <Text className="flex w-4/5 items-baseline gap-x-1 pr-1 text-sm text-neutral-700">
                       <span className="truncate" data-testid="discount-code">
-                        <Badge
-                          color={promotion.is_automatic ? "green" : "grey"}
-                        >
+                        <Badge color={promotion.is_automatic ? "green" : "grey"}>
                           {promotion.code}
                         </Badge>{" "}
                         (
@@ -125,28 +123,21 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                           promotion.application_method.currency_code !==
                             undefined && (
                             <>
-                              {promotion.application_method.type ===
-                              "percentage"
+                              {promotion.application_method.type === "percentage"
                                 ? `${promotion.application_method.value}%`
                                 : convertToLocale({
                                     amount: +promotion.application_method.value,
                                     currency_code:
-                                      promotion.application_method
-                                        .currency_code,
+                                      promotion.application_method.currency_code,
                                   })}
                             </>
                           )}
                         )
-                        {/* {promotion.is_automatic && (
-                          <Tooltip content="This promotion is automatically applied">
-                            <InformationCircleSolid className="inline text-zinc-400" />
-                          </Tooltip>
-                        )} */}
                       </span>
                     </Text>
                     {!promotion.is_automatic && (
                       <button
-                        className="flex items-center"
+                        className="flex items-center text-neutral-500 transition-colors hover:text-neutral-950"
                         onClick={() => {
                           if (!promotion.code) {
                             return

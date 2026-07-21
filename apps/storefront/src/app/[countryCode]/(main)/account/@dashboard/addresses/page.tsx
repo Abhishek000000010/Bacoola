@@ -28,8 +28,8 @@ export default async function Addresses(props: {
   const hasAddresses = customer.addresses && customer.addresses.length > 0
 
   return (
-    <div className="w-full flex flex-col items-start pt-8 pb-20 font-sans text-[#111111]" data-testid="addresses-page-wrapper">
-      <div className="w-full max-w-[500px]">
+    <div className="w-full flex flex-col items-center pt-8 pb-20 font-sans text-[#111111]" data-testid="addresses-page-wrapper">
+      <div className="w-full">
         
         {hasAddresses ? (
           <>
@@ -43,11 +43,11 @@ export default async function Addresses(props: {
             <AddressBook customer={customer} region={region} />
           </>
         ) : (
-          <div className="w-full flex flex-col items-center text-center max-w-[500px] pt-0 pl-[12px]">
-            <h1 className="text-[28px] font-medium tracking-tight mb-2 text-[#111111]">
-              My addresses
+          <div className="w-full flex flex-col items-center text-center">
+            <h1 className="text-[15px] font-bold uppercase tracking-wider mb-4 text-[#111111]">
+              MY ADDRESSES
             </h1>
-            <p className="text-[14px] font-normal mb-8 max-w-[420px] leading-relaxed text-[#111111]">
+            <p className="text-[13px] font-normal mb-10 max-w-[420px] leading-relaxed text-[#111111]">
               You have still not saved any delivery address. Add one now and save time on your future purchases.
             </p>
             <InlineAddAddress region={region} />

@@ -61,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             name={name}
             placeholder=" "
             required={required}
-            className={`peer block h-16 w-full appearance-none border border-neutral-300 bg-white px-4 pb-3 pt-6 text-[17px] font-normal text-neutral-950 outline-none transition-colors placeholder:text-transparent focus:border-black focus:ring-0 ${
+            className={`peer block h-12 w-full appearance-none border border-neutral-300 bg-white px-4 text-[13px] font-normal text-neutral-950 outline-none transition-colors placeholder:text-transparent focus:border-black focus:ring-0 ${
               inputClassName ?? ""
             }`}
             {...props}
@@ -70,7 +70,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={name}
             onClick={() => inputRef.current?.focus()}
-            className={`pointer-events-none absolute left-4 top-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 transition-colors ${
+            className={`pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[12px] font-normal uppercase tracking-wide text-neutral-500 transition-opacity duration-200 opacity-0 peer-placeholder-shown:opacity-100 peer-focus:opacity-0 ${
               labelClassName ?? ""
             }`}
           >
