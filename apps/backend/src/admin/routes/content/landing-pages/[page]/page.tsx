@@ -231,6 +231,7 @@ export default function LandingPageEditor() {
           onOpenChange={setItemFormOpen} 
           item={selectedItem}
           sectionId={activeSectionId}
+          pageHandle={page}
           onSuccess={handleSuccess}
         />
       )}

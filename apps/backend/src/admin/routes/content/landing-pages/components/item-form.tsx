@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Drawer, Button, Input, Textarea, Label, Switch, Select, RadioGroup, toast } from "@medusajs/ui"
 import { sdk } from "../../../../lib/config"
 import { MediaUploadField } from "./media-upload-field"
@@ -28,10 +28,11 @@ type Props = {
   onOpenChange: (open: boolean) => void
   item: Partial<LandingSectionItem> | null
   sectionId: string
+  pageHandle?: string
   onSuccess: () => void
 }
 
-export function ItemForm({ open, onOpenChange, item, sectionId, onSuccess }: Props) {
+export function ItemForm({ open, onOpenChange, item, sectionId, pageHandle, onSuccess }: Props) {
   const isEdit = !!item?.id
   const [loading, setLoading] = useState(false)
 
@@ -50,6 +51,37 @@ export function ItemForm({ open, onOpenChange, item, sectionId, onSuccess }: Pro
 
   const [desktopImage, setDesktopImage] = useState(item?.desktop_image || "")
   const [mobileImage, setMobileImage] = useState(item?.mobile_image || "")
+
+  const [categories, setCategories] = useState<any[]>([])
+
+  // Fetch product categories and filter by the current page's handle
+  useEffect(() => {
+    if (open && pageHandle) {
+      sdk.client.fetch(`/admin/product-categories?fields=id,name,handle,parent_category_id&limit=1000`)
+        .then(({ product_categories }: any) => {
+          if (!product_categories) return
+          // Find the parent category (e.g. 'men')
+          const parent = product_categories.find((c: any) => c.handle === pageHandle)
+          if (parent) {
+            // Recursively find all descendants
+            const descendants: any[] = []
+            const addChildren = (parentId: string) => {
+              const children = product_categories.filter((c: any) => c.parent_category_id === parentId)
+              descendants.push(...children)
+              children.forEach((c: any) => addChildren(c.id))
+            }
+            addChildren(parent.id)
+            
+            // Sort alphabetically for easier finding
+            descendants.sort((a, b) => a.name.localeCompare(b.name))
+            setCategories(descendants)
+          } else {
+            setCategories([])
+          }
+        })
+        .catch(console.error)
+    }
+  }, [open, pageHandle])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -160,8 +192,20 @@ export function ItemForm({ open, onOpenChange, item, sectionId, onSuccess }: Pro
                   <Input value={buttonText} onChange={(e) => setButtonText(e.target.value)} />
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
-                  <Label>Button Link</Label>
-                  <Input value={buttonLink} onChange={(e) => setButtonLink(e.target.value)} />
+                  <Label>Button Link (Category)</Label>
+                  <Select value={buttonLink} onValueChange={(val: any) => setButtonLink(val)}>
+                    <Select.Trigger><Select.Value placeholder="Select Category..." /></Select.Trigger>
+                    <Select.Content className="z-[999]">
+                      <Select.Item value={`/categories/${pageHandle}`}>
+                        All {pageHandle}
+                      </Select.Item>
+                      {categories.map((cat) => (
+                        <Select.Item key={cat.id} value={`/categories/${cat.handle}`}>
+                          /categories/{cat.handle} ({cat.name})
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select>
                 </div>
               </div>
             </div>

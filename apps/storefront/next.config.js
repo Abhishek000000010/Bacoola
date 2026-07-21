@@ -65,3 +65,4 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+// Triggering Next.js restart

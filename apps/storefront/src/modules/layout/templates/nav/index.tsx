@@ -48,7 +48,7 @@ export default async function Nav() {
             {/* Right Section: Actions */}
             <div className="flex justify-end items-center gap-x-[32px] text-[14px] font-semibold text-[#111111] tracking-wider uppercase h-full">
               <LocalizedClientLink
-                href="/store"
+                href="/search"
                 className="hover:text-[#555555] transition-colors duration-200"
               >
                 Search

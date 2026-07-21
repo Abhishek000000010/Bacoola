@@ -40,12 +40,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       })
   }
 
-  // TODO: Update this to grab the actual max inventory
-  const maxQtyFromInventory = 10
-  const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+  // Update this to grab the actual max inventory from the variant
+  const maxQtyFromInventory = item.variant?.inventory_quantity ?? 10
+  const maxQuantity = item.variant?.manage_inventory ? maxQtyFromInventory : 100
 
   return (
-    <Table.Row className="w-full" data-testid="product-row">
+    <Table.Row className="w-full border-b border-neutral-200/50 last:border-b-0" data-testid="product-row">
       <Table.Cell className="!pl-0 p-4 w-24">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
@@ -64,42 +64,45 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
       <Table.Cell className="text-left py-6">
         <Text
-          className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-900 mb-1"
+          className="text-xs md:text-sm font-bold uppercase tracking-[0.05em] text-neutral-950 mb-1"
           data-testid="product-title"
         >
           {item.product_title}
         </Text>
-        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+        <div className="text-[11px] uppercase tracking-[0.05em] text-neutral-500">
           <LineItemOptions variant={item.variant} data-testid="product-variant" />
         </div>
       </Table.Cell>
 
       {type === "full" && (
         <Table.Cell>
-          <div className="flex gap-2 items-center w-28">
+          <div className="flex gap-4 items-center w-32">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
-            <CartItemSelect
-              value={item.quantity}
-              onChange={(value) => changeQuantity(parseInt(value.target.value))}
-              className="w-14 h-10 p-4"
-              data-testid="product-select-button"
-            >
-              {/* TODO: Update this with the v2 way of managing inventory */}
-              {Array.from(
-                {
-                  length: Math.min(maxQuantity, 10),
-                },
-                (_, i) => (
-                  <option value={i + 1} key={i}>
-                    {i + 1}
-                  </option>
-                )
-              )}
-
-              <option value={1} key={1}>
-                1
-              </option>
-            </CartItemSelect>
+            <div className="flex items-center gap-x-2 border border-neutral-200 p-1">
+              <button
+                className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                onClick={() => changeQuantity(item.quantity - 1)}
+                disabled={item.quantity <= 1 || updating}
+                data-testid="decrease-quantity-button"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+                </svg>
+              </button>
+              <span className="w-6 text-center text-xs font-semibold text-neutral-900" data-testid="product-quantity">
+                {item.quantity}
+              </span>
+              <button
+                className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                onClick={() => changeQuantity(item.quantity + 1)}
+                disabled={item.quantity >= maxQuantity || updating}
+                data-testid="increase-quantity-button"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </button>
+            </div>
             {updating && <Spinner />}
           </div>
           <ErrorMessage error={error} data-testid="product-error-message" />

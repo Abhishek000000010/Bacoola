@@ -24,6 +24,7 @@ export default async function PaginatedProducts({
   countryCode,
   optionValueIds,
   grid = "4",
+  q,
 }: {
   sortBy?: SortOptions
   page: number
@@ -33,9 +34,14 @@ export default async function PaginatedProducts({
   countryCode: string
   optionValueIds?: OptionValueIds
   grid?: string
+  q?: string
 }) {
-  const queryParams: PaginatedProductsParams = {
+  const queryParams: PaginatedProductsParams & { q?: string } = {
     limit: 12,
+  }
+
+  if (q) {
+    queryParams["q"] = q
   }
 
   if (collectionId) {
