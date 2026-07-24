@@ -28,9 +28,9 @@ export default async function WishlistPage(props: {
     response: { products: popularProducts },
   } = await listProducts({
     regionId: region.id,
+    tier: "medium",
     queryParams: {
       limit: 4,
-      fields: "*variants.calculated_price",
     },
   })
 

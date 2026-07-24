@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import FilterRadioGroup from "@modules/common/components/filter-radio-group"
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at"
@@ -25,11 +26,11 @@ const sortOptions = [
   },
 ]
 
-const SortProducts = ({
+const SortProducts = memo(function SortProducts({
   "data-testid": dataTestId,
   sortBy,
   setQueryParams,
-}: SortProductsProps) => {
+}: SortProductsProps) {
   const handleChange = (value: string) => {
     setQueryParams("sortBy", value as SortOptions)
   }
@@ -43,6 +44,6 @@ const SortProducts = ({
       data-testid={dataTestId}
     />
   )
-}
+})
 
 export default SortProducts

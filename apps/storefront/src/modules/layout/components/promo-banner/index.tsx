@@ -8,80 +8,123 @@ interface PromoBannerProps {
   categories: HttpTypes.StoreProductCategory[]
 }
 
+/** Root sections that have their own landing page and sale tree. */
+const ROOT_SECTIONS = ["women", "men", "teen", "kids"]
+
+/** Section used when the current page isn't tied to one (home, cart, account…). */
+const FALLBACK_SECTION = "women"
+
 /**
- * Dynamically displays the sale percentage based on the current category section.
- * When on /categories/women → shows Women's sale %
- * When on /categories/men → shows Men's sale %
- * When on /categories/teen → shows Teen's sale %
- * When on /categories/kids → shows Kids' sale %
- * Fallback: shows Women's sale or the first sale found.
+ * Sale percentage for a category, or null if it isn't a "sale headline" category.
+ * `metadata.sale_percent` wins so the banner follows admin edits; otherwise the
+ * percentage is read off the name (e.g. "Sale 90% off").
  */
+const getSalePercent = (
+  category: HttpTypes.StoreProductCategory
+): number | null => {
+  const meta = (category.metadata as Record<string, unknown> | null)?.sale_percent
+  if (meta !== undefined && meta !== null && `${meta}`.trim() !== "") {
+    const parsed = parseInt(`${meta}`.replace(/[^\d]/g, ""), 10)
+    if (!isNaN(parsed)) return parsed
+  }
+
+  // Only headline sale categories carry a percentage in the name. Their
+  // children ("Tops", "Jeans") are sale items but have no percentage of
+  // their own, so they must not win the lookup.
+  const isSale =
+    /sale/i.test(category.name) || /(^|-)sale(-|$)/i.test(category.handle)
+  if (!isSale) return null
+
+  const match = category.name.match(/(\d+)\s*%/)
+  return match ? parseInt(match[1], 10) : null
+}
+
 const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
   const pathname = usePathname()
 
-  // Determine which root section we're in based on the URL
+  // Strip the locale prefix: "/in/landingpage/men" → ["landingpage", "men"]
   const segments = pathname?.split("/").filter(Boolean) || []
-  // Strip locale code (e.g. "/in/categories/men" → ["categories", "men"])
   const cleanSegments =
     segments.length > 0 && segments[0].length === 2 ? segments.slice(1) : segments
 
-  let currentSection = ""
-  if (cleanSegments[0] === "categories" && cleanSegments[1]) {
-    currentSection = cleanSegments[1].toLowerCase()
+  // A product page belongs to no section, so any percentage shown here is a
+  // guess — and a wrong one contradicts the discount on the product itself.
+  if (cleanSegments[0] === "products") {
+    return null
   }
 
-  // Find the sale category that matches the current section
+  const byId = new Map(categories.map((c) => [c.id, c]))
+
+  /** Walk from a category up to its root, nearest ancestor first. */
+  const ancestorChain = (
+    category: HttpTypes.StoreProductCategory
+  ): HttpTypes.StoreProductCategory[] => {
+    const chain: HttpTypes.StoreProductCategory[] = []
+    let current: HttpTypes.StoreProductCategory | undefined = category
+    // Depth guard: category trees here are 3 deep; this only stops bad data
+    // from looping forever.
+    while (current && chain.length < 10) {
+      chain.push(current)
+      const parentId =
+        current.parent_category?.id ?? (current as any).parent_category_id
+      current = parentId ? byId.get(parentId) : undefined
+    }
+    return chain
+  }
+
+  // Resolve which root section the visitor is browsing.
+  let section = ""
+  let currentCategory: HttpTypes.StoreProductCategory | undefined
+
+  if (cleanSegments[0] === "landingpage" && cleanSegments[1]) {
+    // Landing pages name their section directly: /landingpage/men
+    section = cleanSegments[1].toLowerCase()
+  } else if (cleanSegments[0] === "categories" && cleanSegments[1]) {
+    // Category pages can be several levels deep (tg-sale-tops → teen-girl →
+    // teen), so trace up to the root rather than reading the URL segment.
+    const handle = decodeURIComponent(cleanSegments[1]).toLowerCase()
+    currentCategory = categories.find((c) => c.handle.toLowerCase() === handle)
+    if (currentCategory) {
+      const chain = ancestorChain(currentCategory)
+      section = chain[chain.length - 1].handle.toLowerCase()
+    }
+  }
+
+  if (!ROOT_SECTIONS.includes(section)) {
+    section = FALLBACK_SECTION
+  }
+
+  // Prefer the sale the visitor is actually inside — on a Teen Boy sale page
+  // that's Teen Boy's 54%, not Teen's highest.
   let saleCategory: HttpTypes.StoreProductCategory | undefined
-
-  if (currentSection) {
-    // Look for a sale category whose handle starts with the current section
-    // e.g. "women-sale", "men-sale", "teen-girl-sale", "kids-girls-sale"
-    saleCategory = categories.find(
-      (c) =>
-        c.handle.startsWith(`${currentSection}-sale`) ||
-        c.handle.startsWith(`${currentSection}-`) && c.name.toUpperCase().includes("SALE")
+  if (currentCategory) {
+    saleCategory = ancestorChain(currentCategory).find(
+      (c) => getSalePercent(c) !== null
     )
-
-    // If not found directly, check if we're in a sub-category page
-    // and trace up to the root section
-    if (!saleCategory) {
-      const currentCat = categories.find((c) => c.handle === currentSection)
-      if (currentCat?.parent_category) {
-        const parentHandle = currentCat.parent_category.handle
-        saleCategory = categories.find(
-          (c) =>
-            c.handle.startsWith(`${parentHandle}-sale`) ||
-            (c.handle.includes(parentHandle) && c.name.toUpperCase().includes("SALE"))
-        )
-      }
-    }
   }
 
-  // Fallback: prioritize women's sale, then any sale category
+  // Otherwise take the best sale anywhere in the section, matching the
+  // "SALE UP TO" wording.
   if (!saleCategory) {
-    saleCategory =
-      categories.find((c) => c.handle.includes("women-sale")) ||
-      categories.find(
-        (c) => c.name.toUpperCase().includes("SALE") && c.name.match(/\d+\s*%/)
-      )
+    saleCategory = categories
+      .filter((c) => getSalePercent(c) !== null)
+      .filter((c) => {
+        const chain = ancestorChain(c)
+        return chain[chain.length - 1].handle.toLowerCase() === section
+      })
+      .sort((a, b) => (getSalePercent(b) ?? 0) - (getSalePercent(a) ?? 0))[0]
   }
 
-  // Extract percentage and build text
-  let bannerText = "SALE"
-  let bannerLink = "/store"
-
-  if (saleCategory) {
-    bannerLink = `/categories/${saleCategory.handle}`
-    const match = saleCategory.name.match(/(\d+)\s*%/)
-    if (match) {
-      bannerText = `SALE UP TO ${match[1]}% OFF`
-    } else {
-      bannerText = saleCategory.name.toUpperCase()
-    }
+  if (!saleCategory) {
+    return null
   }
+
+  const percent = getSalePercent(saleCategory)
+  const bannerText =
+    percent !== null ? `SALE UP TO ${percent}% OFF` : saleCategory.name.toUpperCase()
 
   return (
-    <LocalizedClientLink href={bannerLink}>
+    <LocalizedClientLink href={`/categories/${saleCategory.handle}`}>
       <div className="w-full bg-[#B22222] text-white py-2.5 px-4 flex justify-center items-center gap-x-6 text-xs sm:text-sm font-semibold tracking-wider hover:opacity-90 transition-opacity cursor-pointer">
         <span>{bannerText}</span>
         <span className="underline underline-offset-4">SHOP NOW</span>

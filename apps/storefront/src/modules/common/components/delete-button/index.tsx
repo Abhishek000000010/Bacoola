@@ -18,9 +18,6 @@ const DeleteButton = ({
     setIsDeleting(true)
     try {
       await deleteLineItem(id)
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("cart-updated"))
-      }
     } catch (_err) {
       // error handled
     } finally {

@@ -1,7 +1,7 @@
 "use client"
 
 import * as Accordion from "@radix-ui/react-accordion"
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 
 import { ChevronDownMini } from "@medusajs/icons"
 import { sdk } from "@lib/config"
@@ -13,10 +13,10 @@ type OptionsPickerProps = {
   setOptionValueIds: (valueIds: string[]) => void
 }
 
-const OptionsPicker = ({
+const OptionsPicker = memo(function OptionsPicker({
   selectedValueIds,
   setOptionValueIds,
-}: OptionsPickerProps) => {
+}: OptionsPickerProps) {
   const [options, setOptions] = useState<HttpTypes.StoreProductOption[]>([])
   const [openItems, setOpenItems] = useState<string[]>([])
 
@@ -157,6 +157,6 @@ const OptionsPicker = ({
       </Accordion.Root>
     </div>
   )
-}
+})
 
 export default OptionsPicker

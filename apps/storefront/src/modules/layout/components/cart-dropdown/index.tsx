@@ -66,20 +66,7 @@ const CartDropdown = ({
   const pathname = usePathname()
   const router = useRouter()
 
-  // Listen for cart-updated event to immediately refresh server components and open drawer
-  useEffect(() => {
-    const handleCartUpdated = () => {
-      router.refresh()
-      if (!pathname.includes("/cart")) {
-        timedOpen()
-      }
-    }
 
-    window.addEventListener("cart-updated", handleCartUpdated)
-    return () => {
-      window.removeEventListener("cart-updated", handleCartUpdated)
-    }
-  }, [pathname, router])
 
   // open cart dropdown when totalItems changes, and sync itemRef
   useEffect(() => {

@@ -3,8 +3,9 @@
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
+import { cache } from "react"
 
-export const retrieveCollection = async (id: string) => {
+export const retrieveCollection = cache(async (id: string) => {
   const next = {
     ...(await getCacheOptions("collections")),
   }
@@ -17,10 +18,10 @@ export const retrieveCollection = async (id: string) => {
         cache: "force-cache",
       }
     )
-    .then(({ collection }) => collection)
-}
+    .then(({ collection }: any) => collection)
+})
 
-export const listCollections = async (
+export const listCollections = cache(async (
   queryParams: Record<string, string> = {}
 ): Promise<{ collections: HttpTypes.StoreCollection[]; count: number }> => {
   const next = {
@@ -39,10 +40,10 @@ export const listCollections = async (
         cache: "force-cache",
       }
     )
-    .then(({ collections }) => ({ collections, count: collections.length }))
-}
+    .then(({ collections }: any) => ({ collections, count: collections.length }))
+})
 
-export const getCollectionByHandle = async (
+export const getCollectionByHandle = cache(async (
   handle: string
 ): Promise<HttpTypes.StoreCollection | null> => {
   const next = {
@@ -55,5 +56,5 @@ export const getCollectionByHandle = async (
       next,
       cache: "force-cache",
     })
-    .then(({ collections }) => collections[0] || null)
-}
+    .then(({ collections }: any) => collections[0] || null)
+})

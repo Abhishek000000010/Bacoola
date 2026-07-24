@@ -6,29 +6,44 @@ import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 
 import WishlistButton from "@modules/common/components/wishlist-button"
+import { VariantCard } from "@lib/util/variant-cards"
 
 export default function ProductPreview({
   product,
   isFeatured,
   region: _region,
+  card,
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
   region: HttpTypes.StoreRegion
+  /**
+   * Renders this tile as a single colourway instead of the whole product.
+   * Listing pages pass one card per colour; rails and related-product strips
+   * omit it and keep the original one-tile-per-product behaviour.
+   */
+  card?: VariantCard
 }) {
-  const { cheapestPrice } = getProductPrice({
+  const { cheapestPrice, variantPrice } = getProductPrice({
     product,
+    variantId: card?.variantId,
   })
+
+  // A colourway shows its own price; without one the cheapest variant stands in.
+  const displayPrice = variantPrice ?? cheapestPrice
+  const href = card?.href ?? `/products/${product.handle}`
+  const title = card?.title ?? product.title
+  const thumbnail = card?.thumbnail ?? product.thumbnail
 
   if (isFeatured) {
     return (
-      <LocalizedClientLink href={`/products/${product.handle}`} className="group block">
+      <LocalizedClientLink href={href} className="group block">
         <div data-testid="product-wrapper" className="flex flex-col">
           {/* Image Container with hover overlay */}
           <div className="relative overflow-hidden group/image w-full">
             <Thumbnail
-              thumbnail={product.thumbnail}
-              images={product.images}
+              thumbnail={thumbnail}
+              images={card ? undefined : product.images}
               size="full"
               isFeatured={isFeatured}
             />
@@ -48,14 +63,14 @@ export default function ProductPreview({
                <div className="flex flex-col">
                   <Text className="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5">Selection</Text>
                   <Text className="text-xs font-semibold text-gray-900 line-clamp-1" data-testid="product-title">
-                    {product.title}
+                    {title}
                   </Text>
                </div>
                <WishlistButton product={product} iconClassName="w-[18px] h-[18px]" />
             </div>
-            
+
             <div className="mt-1 flex items-center gap-x-2 text-[13px]">
-              {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+              {displayPrice && <PreviewPrice price={displayPrice} />}
             </div>
             
             {/* Color Swatches Mock */}
@@ -70,16 +85,16 @@ export default function ProductPreview({
   }
 
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="group block w-full h-full">
-      <div 
-        data-testid="product-wrapper" 
+    <LocalizedClientLink href={href} className="group block w-full h-full">
+      <div
+        data-testid="product-wrapper"
         className="flex flex-col w-full h-full relative bg-white"
       >
         {/* Mango-style Image Container (Exact 2048x2867 Ratio) */}
         <div className="relative w-full aspect-[2048/2867] overflow-hidden bg-[#F3F3F3]">
           <Thumbnail
-            thumbnail={product.thumbnail}
-            images={product.images}
+            thumbnail={thumbnail}
+            images={card ? undefined : product.images}
             size="full"
             className="w-full h-full object-cover"
           />
@@ -118,10 +133,10 @@ export default function ProductPreview({
                 New Now
               </Text>
               <Text className="text-[12px] text-gray-900 line-clamp-1" data-testid="product-title">
-                {product.title}
+                {title}
               </Text>
               <div className="flex items-center text-[12px] text-gray-900 mt-0.5">
-                {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+                {displayPrice && <PreviewPrice price={displayPrice} />}
               </div>
            </div>
            

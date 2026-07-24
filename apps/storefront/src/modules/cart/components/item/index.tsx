@@ -32,11 +32,6 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       lineId: item.id,
       quantity,
     })
-      .then(() => {
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("cart-updated"))
-        }
-      })
       .catch((err) => {
         setError(err.message)
       })
@@ -45,9 +40,20 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       })
   }
 
-  // Update this to grab the actual max inventory from the variant
-  const maxQtyFromInventory = item.variant?.inventory_quantity ?? 10
-  const maxQuantity = item.variant?.manage_inventory ? maxQtyFromInventory : 100
+  // `inventory_quantity` is absent from the raw cart response and is filled in
+  // by retrieveCart. If it is still missing the stock is genuinely unknown, so
+  // hold the line at the current quantity rather than assuming a default --
+  // guessing high is what allowed 10 of a 6-stock variant into the cart.
+  const stock = item.variant?.inventory_quantity
+  const managed = item.variant?.manage_inventory
+
+  const maxQuantity = !managed
+    ? 100
+    : typeof stock === "number"
+    ? stock
+    : item.quantity
+
+  const atMax = item.quantity >= maxQuantity
 
   if (type === "preview") {
     return (
@@ -135,6 +141,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             </div>
             {updating && <Spinner />}
           </div>
+          {managed && typeof stock === "number" && atMax && (
+            <Text className="text-[11px] text-neutral-500 mt-1">
+              Only {stock} in stock
+            </Text>
+          )}
           <ErrorMessage error={error} data-testid="product-error-message" />
         </Table.Cell>
 

@@ -27,9 +27,6 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     await applyPromotions(
       validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
     )
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("cart-updated"))
-    }
   }
 
   const addPromotionCode = async (formData: FormData) => {
@@ -49,9 +46,6 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
     try {
       await applyPromotions(codes)
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("cart-updated"))
-      }
     } catch (e) {
       setErrorMessage(e instanceof Error ? e.message : String(e))
     }

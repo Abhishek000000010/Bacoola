@@ -154,24 +154,11 @@ export default function CustomProductDetails({
     return false
   }, [selectedVariant])
 
-  const [isAddedSuccess, setIsAddedSuccess] = useState(false)
-
-  // Handle Add to Bag action with optimistic instant response (Amazon/Flipkart speed)
+  // Handle Add to Bag action with accurate loading state
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return
 
     setIsAdding(true)
-    setIsAddedSuccess(true)
-
-    // Fire instant update event to header bag counter
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("cart-updated"))
-    }
-
-    // Reset button success indicator after 1.5s
-    setTimeout(() => {
-      setIsAddedSuccess(false)
-    }, 1500)
 
     try {
       await addToCart({
@@ -204,32 +191,38 @@ export default function CustomProductDetails({
     return product.thumbnail ? [{ url: product.thumbnail }] : []
   }, [selectedVariant, images, product.images, product.thumbnail])
 
+  const memoizedImageGallery = useMemo(() => {
+    return (
+      <div className="lg:col-span-7 flex flex-col gap-y-6">
+        {productImages.map((img, index) => (
+          <div key={img.url || index} className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-50">
+            {img.url ? (
+              <Image
+                src={img.url}
+                alt={`${product.title ?? "Product Image"} angle ${index + 1}`}
+                fill
+                priority={index === 0}
+                loading={index === 0 ? undefined : "lazy"}
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                className="object-cover object-center"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs">
+                NO IMAGE
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }, [productImages, product.title])
+
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-24">
       <div className="max-w-[1550px] mx-auto px-8 sm:px-12 py-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
         
         {/* Left Section: Vertically Stacked Product Images */}
-        <div className="lg:col-span-7 flex flex-col gap-y-6">
-          {productImages.map((img, index) => (
-            <div key={img.url || index} className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-50">
-              {img.url ? (
-                <Image
-                  src={img.url}
-                  alt={`${product.title ?? "Product Image"} angle ${index + 1}`}
-                  fill
-                  priority={index === 0}
-                  loading={index === 0 ? undefined : "lazy"}
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover object-center"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs">
-                  NO IMAGE
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        {memoizedImageGallery}
 
         {/* Right Section: Sticky Info and Purchase Actions */}
         <div className="lg:col-span-5">
@@ -348,9 +341,7 @@ export default function CustomProductDetails({
                 }
                 className="flex-1 py-4 bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-neutral-800 transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
               >
-                {isAddedSuccess
-                  ? "ADDED TO BAG ✓"
-                  : isAdding
+                {isAdding
                   ? "ADDING TO BAG..."
                   : !selectedVariant && (product.variants?.length ?? 0) > 1
                   ? "SELECT OPTIONS"

@@ -1,8 +1,9 @@
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
+import { cache } from "react"
 
-export const listCategories = async (query?: Record<string, unknown>) => {
+export const listCategories = cache(async (query?: Record<string, unknown>) => {
   const next = {
     ...(await getCacheOptions("categories")),
     // The nav fetches this on every page render; categories change rarely, so
@@ -28,9 +29,9 @@ export const listCategories = async (query?: Record<string, unknown>) => {
       }
     )
     .then(({ product_categories }: any) => product_categories)
-}
+})
 
-export const getCategoryByHandle = async (categoryHandle: string[]) => {
+export const getCategoryByHandle = cache(async (categoryHandle: string[]) => {
   const handle = `${categoryHandle.join("/")}`
 
   const next = {
@@ -50,4 +51,4 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       }
     )
     .then(({ product_categories }: any) => product_categories[0])
-}
+})

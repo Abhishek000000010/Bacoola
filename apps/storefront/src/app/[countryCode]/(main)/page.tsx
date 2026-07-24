@@ -6,7 +6,6 @@ import FeaturedProductsShowcase from "@modules/home/components/featured-products
 
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
-import { listProducts } from "@lib/data/products"
 
 export const metadata: Metadata = {
   title: "Bacoola Store | Modern Essentials & Luxury Couture",
@@ -21,26 +20,18 @@ export default async function Home(props: {
 
   const { countryCode } = params
 
-  const region = await getRegion(countryCode)
-
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
+  const [region, { collections }] = await Promise.all([
+    getRegion(countryCode),
+    listCollections({
+      fields: "id, handle, title",
+    }),
+  ])
 
   if (!collections || !region) {
     return null
   }
 
-  // Retrieve priced products from Medusa backend for featured showcase
-  const {
-    response: { products: pricedProducts },
-  } = await listProducts({
-    regionId: region.id,
-    queryParams: {
-      limit: 8,
-      fields: "*variants.calculated_price",
-    },
-  })
+  // Removed unused priced products retrieval
 
   return (
     <>

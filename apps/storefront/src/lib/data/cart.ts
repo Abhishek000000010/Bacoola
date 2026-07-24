@@ -38,7 +38,7 @@ export async function retrieveCart(cartId?: string, fields?: string) {
   const headers = { ...authHeaders }
   const next = { ...cacheOpts }
 
-  return await sdk.client
+  const cart = await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
       method: "GET",
       query: {
@@ -50,6 +50,73 @@ export async function retrieveCart(cartId?: string, fields?: string) {
     })
     .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
     .catch(() => null)
+
+  return cart ? await withVariantInventory(cart, headers) : cart
+}
+
+/**
+ * Fills in `variant.inventory_quantity` on every line item.
+ *
+ * The cart endpoint never returns it: `inventory_quantity` is computed from the
+ * linked inventory items and is only served by /store/products, so asking for
+ * it via `fields` on a cart silently yields undefined no matter how it is
+ * spelled. Anything reading stock off the cart therefore fell back to a
+ * hardcoded default and let customers order more than exists.
+ *
+ * One extra request covers the whole cart, keeping the real number in the same
+ * place every caller already looks.
+ */
+async function withVariantInventory(
+  cart: HttpTypes.StoreCart,
+  headers: Record<string, any>
+): Promise<HttpTypes.StoreCart> {
+  const productIds = [
+    ...new Set(
+      (cart.items ?? [])
+        .map((item: any) => item.variant?.product_id)
+        .filter(Boolean)
+    ),
+  ]
+
+  if (!productIds.length) {
+    return cart
+  }
+
+  const stockByVariant = new Map<string, number>()
+
+  try {
+    const res = await sdk.client.fetch<any>(`/store/products`, {
+      method: "GET",
+      query: {
+        id: productIds,
+        fields: "id,*variants,*variants.inventory_quantity",
+        limit: productIds.length,
+      },
+      headers,
+      cache: "no-store",
+    })
+
+    for (const product of res?.products ?? []) {
+      for (const variant of product?.variants ?? []) {
+        if (typeof variant?.inventory_quantity === "number") {
+          stockByVariant.set(variant.id, variant.inventory_quantity)
+        }
+      }
+    }
+  } catch {
+    // Stock stays unknown rather than wrong; callers keep their own guard and
+    // the server-side check at place-order still blocks an oversell.
+    return cart
+  }
+
+  for (const item of cart.items ?? []) {
+    const variant: any = item.variant
+    if (variant && stockByVariant.has(variant.id)) {
+      variant.inventory_quantity = stockByVariant.get(variant.id)
+    }
+  }
+
+  return cart
 }
 
 export async function getOrSetCart(countryCode: string) {

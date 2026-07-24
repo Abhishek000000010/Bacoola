@@ -47,21 +47,26 @@ const RefinementList = ({
     [pathname, router, searchParams]
   )
 
-  const setQueryParams = (name: string, value: string) =>
-    updateQueryParams((params) => params.set(name, value))
+  const setQueryParams = useCallback(
+    (name: string, value: string) => updateQueryParams((params) => params.set(name, value)),
+    [updateQueryParams]
+  )
 
   const selectedOptionValueIds = useMemo(
     () => parseOptionValueIds(searchParams),
     [searchParams]
   )
 
-  const setOptionValueIds = (valueIds: string[]) =>
-    updateQueryParams((params) => {
-      params.delete(OPTION_VALUE_QUERY_KEY)
-      valueIds.forEach((valueId) =>
-        params.append(OPTION_VALUE_QUERY_KEY, valueId)
-      )
-    })
+  const setOptionValueIds = useCallback(
+    (valueIds: string[]) =>
+      updateQueryParams((params) => {
+        params.delete(OPTION_VALUE_QUERY_KEY)
+        valueIds.forEach((valueId) =>
+          params.append(OPTION_VALUE_QUERY_KEY, valueId)
+        )
+      }),
+    [updateQueryParams]
+  )
 
   return (
     <div className="flex flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem]">

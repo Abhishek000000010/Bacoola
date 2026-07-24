@@ -17,14 +17,14 @@ export async function generateStaticParams() {
 
   try {
     const countryCodes = await listRegions().then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+      regions?.map((r: any) => r.countries?.map((c: any) => c.iso_2)).flat() as string[] | undefined
     )
 
     if (!countryCodes) {
       return []
     }
 
-    const promises = countryCodes.map(async (country) => {
+    const promises = countryCodes.map(async (country: string) => {
       const { response } = await listProducts({
         countryCode: country,
         queryParams: { limit: 100, fields: "handle" },
@@ -39,13 +39,13 @@ export async function generateStaticParams() {
     const countryProducts = await Promise.all(promises)
 
     return countryProducts
-      .flatMap((countryData) =>
-        countryData.products.map((product) => ({
+      .flatMap((countryData: any) =>
+        countryData.products.map((product: any) => ({
           countryCode: countryData.country,
           handle: product.handle,
         }))
       )
-      .filter((param) => param.handle)
+      .filter((param: any) => param.handle)
   } catch (error) {
     console.error(
       `Failed to generate static paths for product pages: ${
@@ -85,6 +85,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const product = await listProducts({
     countryCode: params.countryCode,
     queryParams: { handle },
+    tier: "light",
   }).then(({ response }) => response.products[0])
 
   if (!product) {
@@ -104,19 +105,21 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ProductPage(props: Props) {
   const params = await props.params
-  const region = await getRegion(params.countryCode)
-  const searchParams = await props.searchParams
+  const [region, pricedProduct] = await Promise.all([
+    getRegion(params.countryCode),
+    listProducts({
+      countryCode: params.countryCode,
+      queryParams: { handle: params.handle },
+      tier: "full",
+    }).then(({ response }) => response.products[0]),
+  ])
 
+  const searchParams = await props.searchParams
   const selectedVariantId = searchParams.v_id
 
   if (!region) {
     notFound()
   }
-
-  const pricedProduct = await listProducts({
-    countryCode: params.countryCode,
-    queryParams: { handle: params.handle },
-  }).then(({ response }) => response.products[0])
 
   const images = getImagesForVariant(pricedProduct, selectedVariantId)
 

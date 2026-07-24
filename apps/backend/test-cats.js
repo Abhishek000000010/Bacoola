@@ -1,0 +1,1 @@
+fetch('http://localhost:9000/store/categories').then(r=>r.json()).then(d=>console.log(JSON.stringify(d, null, 2)))

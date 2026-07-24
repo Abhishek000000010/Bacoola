@@ -71,6 +71,7 @@ export async function validateProductPublish(
 
     let currentStatus: string | undefined
     let storedVariants: any[] = []
+    let storedProfileId: string | undefined
 
     if (productId) {
       const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -79,6 +80,7 @@ export async function validateProductPublish(
         fields: [
           "id",
           "status",
+          "shipping_profile.id",
           "variants.id",
           "variants.title",
           "variants.sku",
@@ -89,6 +91,7 @@ export async function validateProductPublish(
       })
       currentStatus = data?.[0]?.status
       storedVariants = data?.[0]?.variants ?? []
+      storedProfileId = data?.[0]?.shipping_profile?.id
     }
 
     const resultingStatus = body.status ?? currentStatus
@@ -96,6 +99,27 @@ export async function validateProductPublish(
     // Only publishing is gated. Drafts, proposals and archives pass untouched.
     if (resultingStatus !== "published") {
       return next()
+    }
+
+    // A product with no shipping profile cannot be checked out at all: the
+    // cart's validate-shipping step matches each item's profile against the
+    // chosen shipping method, an absent one never matches, and completion
+    // throws. The customer pays, no order is created, and nothing reaches
+    // Shiprocket -- so the money is taken with no record to reconcile it
+    // against. Publishing is the last point where this is still cheap to catch.
+    const resultingProfileId =
+      body.shipping_profile_id !== undefined
+        ? body.shipping_profile_id
+        : storedProfileId
+
+    if (!resultingProfileId) {
+      return res.status(400).json({
+        type: "invalid_data",
+        message:
+          `Cannot publish: this product has no shipping profile. ` +
+          `Without one the cart cannot be completed -- the customer's payment goes through ` +
+          `but no order is ever created. Select a shipping profile on the product first.`,
+      })
     }
 
     // Variants named in the request win; otherwise fall back to what is stored.
@@ -195,17 +219,261 @@ export async function validateVariantPublish(
   }
 }
 
+/**
+ * Requires every new product to define a Size option.
+ *
+ * Products created without one render no size picker on the storefront, so the
+ * customer has nothing to choose and the listing's size bar falls back to a
+ * hardcoded XS-XL strip that does not reflect what is actually sellable.
+ *
+ * Enforced on CREATE only. Options are part of the create payload, so this is
+ * the one moment the whole set is visible in a single request; policing later
+ * edits would block ordinary changes to products that predate the rule.
+ */
+const SIZE_OPTION = /^sizes?$/i
+
+export async function validateSizeOption(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  try {
+    const body = (req.body ?? {}) as any
+    const options: any[] = Array.isArray(body.options) ? body.options : []
+
+    const sizeOption = options.find((o) => SIZE_OPTION.test((o?.title ?? "").trim()))
+
+    const values: any[] = Array.isArray(sizeOption?.values) ? sizeOption.values : []
+
+    if (!sizeOption || !values.length) {
+      return res.status(400).json({
+        type: "invalid_data",
+        message:
+          `Cannot create product: a "Size" option with at least one value is required. ` +
+          `Without it the storefront has no size picker to show. ` +
+          `Add an option titled "Size" (e.g. S, M, L, XL) before saving.`,
+      })
+    }
+
+    return next()
+  } catch (err) {
+    return next()
+  }
+}
+
+/**
+ * Root categories that represent a shop section. A product belongs to exactly
+ * one of them.
+ */
+const ROOT_SECTIONS = ["women", "men", "teen", "kids"]
+
+/**
+ * Refuses to link a product into more than one root section.
+ *
+ * A product in two sections is listed under both, so a women's product shows up
+ * on a men's sale page with a men's discount on it. This is invisible in the
+ * admin -- each individual category assignment looks reasonable on its own --
+ * and only surfaces as a customer clicking a men's sale tile and landing on a
+ * women's product page. Categories *within* one section stay unrestricted, so
+ * the normal "Clothing > T-shirts" plus "Sale" pairing still works.
+ */
+async function sectionsOf(req: MedusaRequest, categoryIds: string[]): Promise<Map<string, string>> {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const { data: categories } = await query.graph({
+    entity: "product_category",
+    fields: ["id", "handle", "parent_category_id"],
+  })
+
+  const byId = new Map<string, any>(categories.map((c: any) => [c.id, c]))
+  const sections = new Map<string, string>()
+
+  for (const id of categoryIds) {
+    let current = byId.get(id)
+    let guard = 0
+    while (current?.parent_category_id && guard++ < 10) {
+      current = byId.get(current.parent_category_id)
+    }
+    if (current?.handle) {
+      sections.set(id, current.handle)
+    }
+  }
+
+  return sections
+}
+
+const rejectMultiSection = (res: MedusaResponse, found: string[], detail: string) =>
+  res.status(400).json({
+    type: "invalid_data",
+    message:
+      `Cannot save: this product would belong to ${found.length} sections (${found.join(", ")}). ` +
+      `A product must live in a single section. ${detail}`,
+  })
+
+export async function validateSingleSection(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  try {
+    const body = (req.body ?? {}) as any
+    const productId = (req.params as any)?.id
+
+    // The admin sends either shape depending on the screen used.
+    const incoming: string[] = Array.isArray(body.category_ids)
+      ? body.category_ids
+      : Array.isArray(body.categories)
+      ? body.categories.map((c: any) => c?.id ?? c).filter(Boolean)
+      : []
+
+    // Requests that do not touch categories are none of this guard's business.
+    if (!incoming.length) {
+      return next()
+    }
+
+    const sections = await sectionsOf(req, incoming)
+    const found = [...new Set([...sections.values()])].filter((s) =>
+      ROOT_SECTIONS.includes(s)
+    )
+
+    if (found.length > 1) {
+      return rejectMultiSection(
+        res,
+        found,
+        `Remove the categories that do not belong to the section this product is sold in.`
+      )
+    }
+
+    return next()
+  } catch (err) {
+    return next()
+  }
+}
+
+/**
+ * Guards the other direction: adding products to a category from the category's
+ * own screen, which never touches the product update route above.
+ */
+export async function validateCategoryProducts(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  try {
+    const body = (req.body ?? {}) as any
+    const categoryId = (req.params as any)?.id
+    const add: string[] = Array.isArray(body.add) ? body.add : []
+
+    if (!categoryId || !add.length) {
+      return next()
+    }
+
+    const targetSection = (await sectionsOf(req, [categoryId])).get(categoryId)
+    if (!targetSection || !ROOT_SECTIONS.includes(targetSection)) {
+      return next()
+    }
+
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const { data: products } = await query.graph({
+      entity: "product",
+      fields: ["id", "handle", "categories.id"],
+      filters: { id: add },
+    })
+
+    const conflicts: string[] = []
+
+    for (const product of products as any[]) {
+      const existing = (product.categories ?? []).map((c: any) => c.id)
+      if (!existing.length) continue
+
+      const sections = await sectionsOf(req, existing)
+      const found = [...new Set([...sections.values()])].filter((s) =>
+        ROOT_SECTIONS.includes(s) && s !== targetSection
+      )
+
+      if (found.length) {
+        conflicts.push(`${product.handle} (already in ${found.join(", ")})`)
+      }
+    }
+
+    if (conflicts.length) {
+      return rejectMultiSection(
+        res,
+        [targetSection, "another section"],
+        `Conflicting products: ${conflicts.join("; ")}.`
+      )
+    }
+
+    return next()
+  } catch (err) {
+    return next()
+  }
+}
+
+/**
+ * Refuses to delete a product's last variant.
+ *
+ * A product with no variants cannot be priced, added to a cart, or published --
+ * it is simply broken, and the admin offers no way back except recreating the
+ * variant. Deleting variants one by one makes this easy to walk into, so the
+ * rule lives here rather than only in the bulk-delete widget.
+ */
+export async function validateVariantDelete(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  try {
+    const productId = (req.params as any)?.id
+
+    if (!productId) {
+      return next()
+    }
+
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const { data } = await query.graph({
+      entity: "product",
+      fields: ["id", "variants.id"],
+      filters: { id: productId },
+    })
+
+    const variantCount = data?.[0]?.variants?.length ?? 0
+
+    if (variantCount <= 1) {
+      return res.status(400).json({
+        type: "not_allowed",
+        message:
+          `Cannot delete the last variant: a product needs at least one variant ` +
+          `to be priced, sold, or published. Add another variant first, or delete the product itself.`,
+      })
+    }
+
+    return next()
+  } catch (err) {
+    return next()
+  }
+}
+
 export default defineMiddlewares({
   routes: [
     {
+      matcher: "/admin/products/:id/variants/:variant_id",
+      method: "DELETE",
+      middlewares: [validateVariantDelete],
+    },
+    {
       matcher: "/admin/products",
       method: "POST",
-      middlewares: [validateProductPublish],
+      middlewares: [validateSizeOption, validateProductPublish, validateSingleSection],
     },
     {
       matcher: "/admin/products/:id",
       method: "POST",
-      middlewares: [validateProductPublish],
+      middlewares: [validateProductPublish, validateSingleSection],
+    },
+    {
+      matcher: "/admin/product-categories/:id/products",
+      method: "POST",
+      middlewares: [validateCategoryProducts],
     },
     {
       matcher: "/admin/products/:id/variants",

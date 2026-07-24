@@ -1,6 +1,7 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { OptionValueIds } from "@lib/util/product-option-filters"
+import { getVariantCards } from "@lib/util/variant-cards"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -74,6 +75,7 @@ export default async function PaginatedProducts({
     sortBy,
     countryCode,
     optionValueIds,
+    tier: "medium",
   })
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
@@ -107,13 +109,18 @@ export default async function PaginatedProducts({
         className={`grid ${gridClasses} w-full gap-x-[2px] gap-y-8 bg-white`}
         data-testid="products-list"
       >
-        {products.map((p) => {
-          return (
-            <li key={p.id}>
-              <ProductPreview product={p} region={region} />
+        {/*
+          One tile per colourway rather than per product. Note this makes the
+          number of tiles per page vary, since paging is still counted in
+          products -- a 12-product page of two-colour shirts renders 24 tiles.
+        */}
+        {products.flatMap((p) =>
+          getVariantCards(p).map((card) => (
+            <li key={card.key}>
+              <ProductPreview product={p} region={region} card={card} />
             </li>
-          )
-        })}
+          ))
+        )}
       </ul>
       {totalPages > 1 && (
         <Pagination
