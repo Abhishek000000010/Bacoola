@@ -13,6 +13,8 @@ import AccountDropdown from "@modules/layout/components/account-dropdown"
 import PromoBanner from "@modules/layout/components/promo-banner"
 import { retrieveCustomer } from "@lib/data/customer"
 
+import WishlistNavButton from "@modules/layout/components/wishlist-nav-button"
+
 export default async function Nav() {
   const [regions, locales, currentLocale, categories, customer] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
@@ -71,12 +73,7 @@ export default async function Nav() {
                 </LocalizedClientLink>
               )}
               
-              <LocalizedClientLink
-                href="#"
-                className="hover:text-[#555555] transition-colors duration-200"
-              >
-                Wishlist
-              </LocalizedClientLink>
+              <WishlistNavButton />
               
               <div className="h-full flex items-center">
                 <Suspense

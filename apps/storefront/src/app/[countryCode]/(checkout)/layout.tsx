@@ -8,14 +8,18 @@ export default function CheckoutLayout({
 }) {
   return (
     <div className="relative w-full bg-white small:min-h-screen">
-      <div className="h-[92px] border-b border-neutral-200 bg-white">
+      <div className="h-16 border-b border-neutral-200 bg-white">
         <nav className="content-container flex h-full items-center justify-center">
           <LocalizedClientLink
             href="/"
-            className="text-[2.15rem] font-normal uppercase tracking-[0.28em] text-neutral-950 transition-colors hover:text-neutral-700"
+            className="flex items-center hover:opacity-80 transition-opacity duration-200"
             data-testid="store-link"
           >
-            BACOOLA
+            <img
+              src="/images/bacoola-logo.png"
+              alt="Bacoola"
+              className="h-[18px] w-auto select-none"
+            />
           </LocalizedClientLink>
         </nav>
       </div>

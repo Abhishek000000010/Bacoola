@@ -152,6 +152,10 @@ const Shipping: React.FC<ShippingProps> = ({
     setError(null)
   }, [isOpen])
 
+  if (!isOpen) {
+    return null
+  }
+
   return (
     <div className="bg-white">
       <div className="mb-8 flex flex-row items-center justify-between border-b border-neutral-200 pb-4">
@@ -201,7 +205,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 {hasPickupOptions && (
                   <RadioGroup
                     value={showPickupOptions}
-                    onChange={(_value) => {
+                    onChange={(_value: any) => {
                       const id = _pickupMethods.find(
                         (option) => !option.insufficient_inventory
                       )?.id
@@ -238,7 +242,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 )}
                 <RadioGroup
                   value={shippingMethodId}
-                  onChange={(v) => {
+                  onChange={(v: any) => {
                     if (v) {
                       return handleSetShippingMethod(v, "shipping")
                     }
@@ -313,7 +317,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 <div className="pb-8 md:pt-0 pt-2">
                   <RadioGroup
                     value={shippingMethodId}
-                    onChange={(v) => {
+                    onChange={(v: any) => {
                       if (v) {
                         return handleSetShippingMethod(v, "pickup")
                       }
@@ -372,9 +376,21 @@ const Shipping: React.FC<ShippingProps> = ({
               error={error}
               data-testid="delivery-option-error-message"
             />
+            <div className="pt-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => router.push(pathname + "?step=address", { scroll: false })}
+              className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-950 transition-colors flex items-center gap-x-2 py-3"
+              data-testid="back-to-address-button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Back to Address
+            </button>
             <Button
               size="large"
-              className="mt-2 h-14 w-full rounded-none bg-black px-6 text-xs font-semibold uppercase tracking-[0.2em] text-white hover:bg-neutral-900 small:w-auto small:min-w-[320px]"
+              className="h-14 w-full rounded-none bg-black px-6 text-xs font-semibold uppercase tracking-[0.2em] text-white hover:bg-neutral-900 small:w-auto small:min-w-[280px]"
               onClick={handleSubmit}
               isLoading={isLoading}
               disabled={!cart.shipping_methods?.[0]}
@@ -382,6 +398,7 @@ const Shipping: React.FC<ShippingProps> = ({
             >
               Continue to payment
             </Button>
+          </div>
           </div>
         </>
       ) : (

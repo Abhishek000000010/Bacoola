@@ -14,7 +14,7 @@ import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
 const CartDropdown = ({
@@ -64,14 +64,32 @@ const CartDropdown = ({
   }, [activeTimer])
 
   const pathname = usePathname()
+  const router = useRouter()
 
-  // open cart dropdown when modifying the cart items, but only if we're not on the cart page
+  // Listen for cart-updated event to immediately refresh server components and open drawer
   useEffect(() => {
-    if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
-      timedOpen()
+    const handleCartUpdated = () => {
+      router.refresh()
+      if (!pathname.includes("/cart")) {
+        timedOpen()
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalItems, itemRef.current])
+
+    window.addEventListener("cart-updated", handleCartUpdated)
+    return () => {
+      window.removeEventListener("cart-updated", handleCartUpdated)
+    }
+  }, [pathname, router])
+
+  // open cart dropdown when totalItems changes, and sync itemRef
+  useEffect(() => {
+    if (itemRef.current !== totalItems) {
+      if (itemRef.current < totalItems && !pathname.includes("/cart")) {
+        timedOpen()
+      }
+      itemRef.current = totalItems
+    }
+  }, [totalItems, pathname])
 
   return (
     <div

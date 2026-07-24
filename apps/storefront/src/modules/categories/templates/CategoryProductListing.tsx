@@ -5,6 +5,8 @@ import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
+import CategorySubmenuBar from "../components/category-submenu-bar"
+
 interface CategoryProductListingProps {
   category: HttpTypes.StoreProductCategory
   parents: HttpTypes.StoreProductCategory[]
@@ -22,6 +24,9 @@ export default function CategoryProductListing({
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16">
       
+      {/* Category Submenu Bar */}
+      <CategorySubmenuBar category={category} subcategories={category.category_children} parentHandle={parents?.[0]?.handle} />
+
       {/* Top Header / Control Bar */}
       <div className="w-full border-b border-neutral-100 py-6 px-8 sm:px-12 flex justify-between items-center select-none bg-white">
         <div className="flex gap-x-8 items-center">

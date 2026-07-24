@@ -5,7 +5,9 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 
-export default async function ProductPreview({
+import WishlistButton from "@modules/common/components/wishlist-button"
+
+export default function ProductPreview({
   product,
   isFeatured,
   region: _region,
@@ -14,15 +16,6 @@ export default async function ProductPreview({
   isFeatured?: boolean
   region: HttpTypes.StoreRegion
 }) {
-  // const pricedProduct = await listProducts({
-  //   regionId: region.id,
-  //   queryParams: { id: [product.id!] },
-  // }).then(({ response }) => response.products[0])
-
-  // if (!pricedProduct) {
-  //   return null
-  // }
-
   const { cheapestPrice } = getProductPrice({
     product,
   })
@@ -58,11 +51,7 @@ export default async function ProductPreview({
                     {product.title}
                   </Text>
                </div>
-               <button className="text-gray-400 hover:text-black transition-colors shrink-0">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[18px] h-[18px]">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                 </svg>
-               </button>
+               <WishlistButton product={product} iconClassName="w-[18px] h-[18px]" />
             </div>
             
             <div className="mt-1 flex items-center gap-x-2 text-[13px]">
@@ -86,8 +75,8 @@ export default async function ProductPreview({
         data-testid="product-wrapper" 
         className="flex flex-col w-full h-full relative bg-white"
       >
-        {/* Mango-style Image Container */}
-        <div className="relative w-full aspect-[3/4] overflow-hidden">
+        {/* Mango-style Image Container (Exact 2048x2867 Ratio) */}
+        <div className="relative w-full aspect-[2048/2867] overflow-hidden bg-[#F3F3F3]">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
@@ -136,12 +125,7 @@ export default async function ProductPreview({
               </div>
            </div>
            
-           {/* Heart Icon */}
-           <button className="text-gray-900 hover:text-gray-500 transition-colors shrink-0 mt-0.5">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-             </svg>
-           </button>
+           <WishlistButton product={product} iconClassName="w-4 h-4" />
         </div>
       </div>
     </LocalizedClientLink>

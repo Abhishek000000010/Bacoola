@@ -26,7 +26,7 @@ export const listCartShippingMethods = async (cartId: string) => {
         cache: "force-cache",
       }
     )
-    .then(({ shipping_options }) => shipping_options)
+    .then(({ shipping_options }: any) => shipping_options)
     .catch(() => {
       return null
     })
@@ -61,8 +61,8 @@ export const calculatePriceForShippingOption = async (
         next,
       }
     )
-    .then(({ shipping_option }) => shipping_option)
-    .catch((_e) => {
+    .then(({ shipping_option }: any) => shipping_option)
+    .catch((_e: any) => {
       return null
     })
 }

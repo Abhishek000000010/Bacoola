@@ -30,13 +30,13 @@ export async function retrieveCart(cartId?: string, fields?: string) {
     return null
   }
 
-  const headers = {
-    ...(await getAuthHeaders()),
-  }
+  const [authHeaders, cacheOpts] = await Promise.all([
+    getAuthHeaders(),
+    getCacheOptions("carts"),
+  ])
 
-  const next = {
-    ...(await getCacheOptions("carts")),
-  }
+  const headers = { ...authHeaders }
+  const next = { ...cacheOpts }
 
   return await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
@@ -46,7 +46,7 @@ export async function retrieveCart(cartId?: string, fields?: string) {
       },
       headers,
       next,
-      cache: "force-cache",
+      cache: "no-store",
     })
     .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
     .catch(() => null)
@@ -153,10 +153,11 @@ export async function addToCart({
       headers
     )
     .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
+      const [cartCacheTag, fulfillmentCacheTag] = await Promise.all([
+        getCacheTag("carts"),
+        getCacheTag("fulfillment"),
+      ])
       revalidateTag(cartCacheTag)
-
-      const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
     })
     .catch(medusaError)

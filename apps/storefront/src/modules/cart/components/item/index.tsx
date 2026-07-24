@@ -32,6 +32,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       lineId: item.id,
       quantity,
     })
+      .then(() => {
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("cart-updated"))
+        }
+      })
       .catch((err) => {
         setError(err.message)
       })
@@ -44,15 +49,41 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQtyFromInventory = item.variant?.inventory_quantity ?? 10
   const maxQuantity = item.variant?.manage_inventory ? maxQtyFromInventory : 100
 
+  if (type === "preview") {
+    return (
+      <div className="flex gap-x-4 py-5 border-b border-neutral-200/60 last:border-b-0 w-full" data-testid="product-row">
+        <LocalizedClientLink href={`/products/${item.product_handle}`} className="shrink-0 w-[97px] h-[136px] bg-neutral-100 relative overflow-hidden">
+          <Thumbnail thumbnail={item.thumbnail} images={item.variant?.product?.images} size="full" className="object-cover absolute inset-0 w-full h-full" />
+        </LocalizedClientLink>
+        <div className="flex flex-col flex-1 text-xs text-neutral-800 justify-between">
+          <div className="flex justify-between items-start gap-x-2">
+            <div className="flex flex-col pr-2">
+              <LocalizedClientLink href={`/products/${item.product_handle}`}>
+                <Text className="text-sm font-normal text-neutral-900 leading-tight mb-2 hover:text-black" data-testid="product-title">{item.product_title}</Text>
+              </LocalizedClientLink>
+              <div className="text-neutral-600 flex flex-col gap-y-0.5 text-xs">
+                <div>Quantity: <span className="text-neutral-900">{item.quantity}</span></div>
+                <LineItemOptions variant={item.variant} data-testid="product-variant" />
+              </div>
+            </div>
+            <div className="text-right text-sm font-medium text-neutral-900 shrink-0">
+              <LineItemPrice item={item} style="tight" currencyCode={currencyCode} />
+            </div>
+          </div>
+          <div className="pt-2">
+            <DeleteButton id={item.id} data-testid="product-delete-button" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Table.Row className="w-full border-b border-neutral-200/50 last:border-b-0" data-testid="product-row">
       <Table.Cell className="!pl-0 p-4 w-24">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
-          className={clx("flex", {
-            "w-16": type === "preview",
-            "small:w-24 w-12": type === "full",
-          })}
+          className="flex small:w-24 w-12"
         >
           <Thumbnail
             thumbnail={item.thumbnail}
@@ -74,8 +105,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </div>
       </Table.Cell>
 
-      {type === "full" && (
-        <Table.Cell>
+      <Table.Cell>
           <div className="flex gap-4 items-center w-32">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
             <div className="flex items-center gap-x-2 border border-neutral-200 p-1">
@@ -107,34 +137,16 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           </div>
           <ErrorMessage error={error} data-testid="product-error-message" />
         </Table.Cell>
-      )}
 
-      {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
+      <Table.Cell className="hidden small:table-cell">
           <LineItemUnitPrice
             item={item}
             style="tight"
             currencyCode={currencyCode}
           />
         </Table.Cell>
-      )}
-
       <Table.Cell className="!pr-0">
-        <span
-          className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
-          })}
-        >
-          {type === "preview" && (
-            <span className="flex gap-x-1 ">
-              <Text className="text-ui-fg-muted">{item.quantity}x </Text>
-              <LineItemUnitPrice
-                item={item}
-                style="tight"
-                currencyCode={currencyCode}
-              />
-            </span>
-          )}
+        <span className="!pr-0">
           <LineItemPrice
             item={item}
             style="tight"

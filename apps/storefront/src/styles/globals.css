@@ -30,19 +30,33 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  .no-scrollbar::-webkit-scrollbar,
+  .scrollbar-none::-webkit-scrollbar,
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
-  .no-scrollbar::-webkit-scrollbar-track {
-    background-color: transparent;
+  .no-scrollbar::-webkit-scrollbar-track,
+  .scrollbar-none::-webkit-scrollbar-track,
+  .scrollbar-hide::-webkit-scrollbar-track {
+    background-color: transparent !important;
   }
 
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  .no-scrollbar,
+  .scrollbar-none,
+  .scrollbar-hide {
+    -ms-overflow-style: none !important; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
   }
 
   input:focus ~ label,

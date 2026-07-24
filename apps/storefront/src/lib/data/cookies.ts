@@ -24,12 +24,12 @@ export const getCacheTag = async (tag: string): Promise<string> => {
     const cacheId = cookies.get("_medusa_cache_id")?.value
 
     if (!cacheId) {
-      return ""
+      return tag
     }
 
     return `${tag}-${cacheId}`
   } catch {
-    return ""
+    return tag
   }
 }
 

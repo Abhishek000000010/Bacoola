@@ -15,7 +15,7 @@ export const listRegions = async () => {
       next,
       cache: "force-cache",
     })
-    .then(({ regions }) => regions)
+    .then(({ regions }: any) => regions)
 }
 
 export const retrieveRegion = async (id: string) => {
@@ -29,7 +29,7 @@ export const retrieveRegion = async (id: string) => {
       next,
       cache: "force-cache",
     })
-    .then(({ region }) => region)
+    .then(({ region }: any) => region)
 }
 
 const regionMap = new Map<string, HttpTypes.StoreRegion>()
@@ -45,8 +45,8 @@ export const getRegion = async (countryCode: string) => {
     return null
   }
 
-  regions.forEach((region) => {
-    region.countries?.forEach((c) => {
+  regions.forEach((region: any) => {
+    region.countries?.forEach((c: any) => {
       regionMap.set(c?.iso_2 ?? "", region)
     })
   })

@@ -8,10 +8,10 @@ import MegaMenu from "../navigation/MegaMenu"
 
 const NAV_LINKS = [
   { label: "Home", href: "/", key: "home" },
-  { label: "Women", href: "/categories/women", key: "women" },
-  { label: "Men", href: "/categories/men", key: "men" },
-  { label: "Teen", href: "/categories/teen", key: "teen" },
-  { label: "Kids", href: "/categories/kids", key: "kids" },
+  { label: "Women", href: "/landingpage/women", key: "women" },
+  { label: "Men", href: "/landingpage/men", key: "men" },
+  { label: "Teen", href: "/landingpage/teen", key: "teen" },
+  { label: "Kids", href: "/landingpage/kids", key: "kids" },
 ]
 
 import { HttpTypes } from "@medusajs/types"

@@ -135,16 +135,25 @@ export default function ProductActions({
 
   const inView = useIntersection(actionsRef, "0px")
 
-  // add the selected variant to the cart
+  const [isAddedSuccess, setIsAddedSuccess] = useState(false)
+
+  // add the selected variant to the cart with instant feedback
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
+    setIsAddedSuccess(true)
     setAddError(null)
 
-    // Without this catch a rejected addToCart skips setIsAdding(false) and the
-    // button reads "Loading..." forever with nothing explaining why -- which is
-    // exactly what a variant with no price does.
+    // Fire instant update event to header bag counter
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cart-updated"))
+    }
+
+    setTimeout(() => {
+      setIsAddedSuccess(false)
+    }, 1500)
+
     try {
       await addToCart({
         variantId: selectedVariant.id,
@@ -217,13 +226,15 @@ export default function ProductActions({
                isLoading={isAdding}
                data-testid="add-product-button"
              >
-               {!hasPrice
-                 ? "Unavailable"
-                 : !selectedVariant
-                 ? "Select options"
-                 : !inStock || !isValidVariant
-                 ? "Out of stock"
-                 : "Add"}
+                {isAddedSuccess
+                  ? "ADDED TO BAG ✓"
+                  : !hasPrice
+                  ? "Unavailable"
+                  : !selectedVariant
+                  ? "Select options"
+                  : !inStock || !isValidVariant
+                  ? "Out of stock"
+                  : "Add"}
              </Button>
              <button className="w-12 h-full flex items-center justify-center border border-black bg-white hover:bg-gray-50 transition-colors shrink-0">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">

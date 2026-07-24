@@ -27,6 +27,9 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     await applyPromotions(
       validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
     )
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cart-updated"))
+    }
   }
 
   const addPromotionCode = async (formData: FormData) => {
@@ -46,6 +49,9 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
     try {
       await applyPromotions(codes)
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cart-updated"))
+      }
     } catch (e) {
       setErrorMessage(e instanceof Error ? e.message : String(e))
     }
@@ -63,28 +69,40 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="flex w-full items-center justify-between border border-neutral-300 px-5 py-5 text-left text-xs font-semibold uppercase tracking-[0.18em] text-neutral-900 transition-colors hover:border-black focus:outline-none"
+              className="flex w-full items-center justify-between border-b border-neutral-200 py-4 text-left text-xs font-normal text-neutral-900 transition-colors hover:text-black focus:outline-none"
               data-testid="add-discount-button"
             >
-              <span>Promotional code</span>
-              <span className="text-[10px]">{isOpen ? "▲" : "▼"}</span>
+              <span className="text-sm font-normal text-neutral-900">Promotional code or gift card</span>
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="currentColor" 
+                viewBox="0 0 16 16" 
+                width="16" 
+                height="16" 
+                className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+              >
+                <path d="M13.354 5.854 8 11.207 2.646 5.854l.708-.708L8 9.793l4.647-4.647z" />
+              </svg>
             </button>
           </div>
 
           {isOpen && (
-            <div className="mt-3 flex flex-col gap-y-3">
+            <div className="mt-4 flex flex-col gap-y-3 pb-2">
+              <label htmlFor="promotion-input" className="text-xs text-neutral-600 font-normal">
+                Code or card
+              </label>
               <div className="flex w-full gap-x-2">
                 <input
-                  className="h-14 flex-1 border border-neutral-300 bg-white px-4 text-sm tracking-[0.08em] text-neutral-950 placeholder:text-neutral-400 focus:border-black focus:outline-none"
+                  className="h-12 flex-1 border border-neutral-300 bg-white px-4 text-xs tracking-wider text-neutral-950 placeholder:text-neutral-400 focus:border-black focus:outline-none"
                   id="promotion-input"
                   name="code"
                   type="text"
-                  placeholder="Code"
+                  placeholder=""
                   data-testid="discount-input"
                 />
                 <button
                   type="submit"
-                  className="h-14 shrink-0 bg-black px-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-neutral-900"
+                  className="h-12 shrink-0 bg-neutral-950 px-6 text-xs font-medium text-white transition-colors duration-300 hover:bg-neutral-800"
                   data-testid="discount-apply-button"
                 >
                   Apply

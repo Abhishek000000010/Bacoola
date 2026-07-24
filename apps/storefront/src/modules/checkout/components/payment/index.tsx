@@ -113,6 +113,10 @@ const Payment = ({
     setError(null)
   }, [isOpen])
 
+  if (!isOpen) {
+    return null
+  }
+
   return (
     <div className="bg-white">
       <div className="flex flex-row items-center justify-between mb-8 border-b border-neutral-200 pb-4">
@@ -179,21 +183,34 @@ const Payment = ({
             data-testid="payment-method-error-message"
           />
 
-          <Button
-            size="large"
-            className="mt-6 h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black"
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            disabled={
-              (isStripeLike(selectedPaymentMethod) && !cardComplete) ||
-              !selectedPaymentMethod
-            }
-            data-testid="submit-payment-button"
-          >
-            {!activeSession && isStripeLike(selectedPaymentMethod)
-              ? " Enter card details"
-              : "Continue to review"}
-          </Button>
+          <div className="mt-6 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => router.push(pathname + "?step=delivery", { scroll: false })}
+              className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-950 transition-colors flex items-center gap-x-2 py-3"
+              data-testid="back-to-delivery-button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Back to Delivery
+            </button>
+            <Button
+              size="large"
+              className="h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black small:w-auto small:min-w-[280px]"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+              disabled={
+                (isStripeLike(selectedPaymentMethod) && !cardComplete) ||
+                !selectedPaymentMethod
+              }
+              data-testid="submit-payment-button"
+            >
+              {!activeSession && isStripeLike(selectedPaymentMethod)
+                ? " Enter card details"
+                : "Continue to review"}
+            </Button>
+          </div>
         </div>
 
         <div className={isOpen ? "hidden" : "block"}>

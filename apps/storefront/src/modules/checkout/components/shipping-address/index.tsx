@@ -114,7 +114,7 @@ const ShippingAddress = ({
           />
         </Container>
       )}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-y-6">
         <Input
           label="First name"
           name="shipping_address.first_name"
@@ -237,7 +237,7 @@ const ShippingAddress = ({
           data-testid="billing-address-checkbox"
         />
       </div>
-      <div className="mb-4 grid grid-cols-1 gap-4">
+      <div className="mb-4 grid grid-cols-1 gap-y-6">
         <Input
           label="Email"
           name="email"

@@ -42,6 +42,6 @@ export const getLandingSections = async (page: string) => {
       next,
       cache: "no-store",
     })
-    .then(({ sections }) => sections)
+    .then(({ sections }: any) => sections)
     .catch(() => [] as LandingSection[])
 }

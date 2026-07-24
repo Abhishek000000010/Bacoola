@@ -10,8 +10,10 @@ import { OptionValueIds } from "@lib/util/product-option-filters"
 // Import unified architecture components
 import LandingRenderer from "@modules/home/components/landing-renderer"
 import CategoryProductListing from "./CategoryProductListing"
+import SubcategorySlider from "../components/subcategory-slider"
 
 import { getLandingSections } from "@lib/data/landing-pages"
+import { listCategories } from "@lib/data/categories"
 
 const EDITORIAL_CATEGORIES = ["women", "men", "kids", "teen", "home"]
 
@@ -43,15 +45,31 @@ export default async function CategoryTemplate({
   }
   getParents(category)
 
-  // Collect this category and all descendant IDs so we fetch products from all subcategories
+  // Collect category IDs from this category, its descendants, and matching equivalent categories by name
+  const allCategories = await listCategories({ limit: 500 }).catch(() => [])
+
+  const targetName = category.name?.toLowerCase().trim()
   const allCategoryIds: string[] = []
+
   const collectIds = (cat: HttpTypes.StoreProductCategory) => {
-    allCategoryIds.push(cat.id)
-    if (cat.category_children) {
+    if (cat?.id && !allCategoryIds.includes(cat.id)) {
+      allCategoryIds.push(cat.id)
+    }
+    if (cat?.category_children) {
       cat.category_children.forEach(collectIds)
     }
   }
   collectIds(category)
+
+  // Fallback: match any categories in the store with identical category names (e.g. Sale vs Clothing categories)
+  if (targetName && allCategories.length > 0) {
+    allCategories.forEach((cat: any) => {
+      const catName = cat.name?.toLowerCase().trim()
+      if (catName === targetName) {
+        collectIds(cat)
+      }
+    })
+  }
 
   const productGrid = (
     <Suspense fallback={<SkeletonProductGrid numberOfProducts={category.products?.length ?? 8} />}>
@@ -65,29 +83,7 @@ export default async function CategoryTemplate({
     </Suspense>
   )
 
-  // Unified Architecture for Landing Pages
-  if (EDITORIAL_CATEGORIES.includes(category.handle)) {
-    const cmsSections = await getLandingSections(category.handle)
-    return (
-      <div className="relative w-full flex flex-col bg-neutral-900">
-        <LandingRenderer sections={cmsSections || []} pageName={category.handle} />
-        
-        {/* Render product grid below editorial flow */}
-        <div className="w-full bg-white">
-          <div className="content-container py-12 md:py-24">
-            <div className="flex flex-col gap-8">
-              <h2 className="text-3xl font-medium tracking-tight uppercase border-b pb-4 border-neutral-200 text-neutral-900">
-                Shop {category.name}
-              </h2>
-              {productGrid}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Fallback to normal Product Listing Page (PLP) for subcategories
+  // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
     <CategoryProductListing category={category} parents={parents}>
       {productGrid}

@@ -23,6 +23,6 @@ export const listLocales = async (): Promise<Locale[] | null> => {
       next,
       cache: "force-cache",
     })
-    .then(({ locales }) => locales)
+    .then(({ locales }: any) => locales)
     .catch(() => null)
 }

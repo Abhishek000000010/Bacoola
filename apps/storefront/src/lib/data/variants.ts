@@ -33,6 +33,6 @@ export const retrieveVariant = async (
         cache: "force-cache",
       }
     )
-    .then(({ variant }) => variant)
+    .then(({ variant }: any) => variant)
     .catch(() => null)
 }

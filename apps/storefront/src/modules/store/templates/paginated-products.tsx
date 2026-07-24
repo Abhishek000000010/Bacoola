@@ -85,6 +85,22 @@ export default async function PaginatedProducts({
     gridClasses = "grid-cols-3 small:grid-cols-4 medium:grid-cols-6";
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-24 px-4 text-center">
+        <div className="w-16 h-16 mb-6 text-neutral-300">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <h3 className="text-2xl font-medium text-neutral-900 tracking-tight mb-3">No products found</h3>
+        <p className="text-neutral-500 max-w-md mx-auto text-sm">
+          We couldn't find any products in this category. Check back later or explore our other collections.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <>
       <ul

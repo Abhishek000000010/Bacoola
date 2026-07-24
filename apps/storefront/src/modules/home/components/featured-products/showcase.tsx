@@ -15,26 +15,13 @@ interface FeaturedProductsShowcaseProps {
   subtitle?: string
 }
 
-// Simple interactive wishlist button component
-const WishlistButton: React.FC = () => {
-  const [active, setActive] = useState(false)
-  return (
-    <button
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setActive(!active)
-      }}
-      className="p-2.5 bg-white/80 hover:bg-white text-black rounded-full backdrop-blur-sm shadow-sm transition-all duration-200 focus:outline-none"
-      aria-label="Add to wishlist"
-    >
-      <Heart
-        size={16}
-        className={active ? "fill-red-600 text-red-600 scale-110 transition-transform" : "text-black"}
-        strokeWidth={1.8}
-      />
-    </button>
-  )
+import WishlistButton from "@modules/common/components/wishlist-button"
+
+interface FeaturedProductsShowcaseProps {
+  products: HttpTypes.StoreProduct[]
+  region: HttpTypes.StoreRegion
+  title?: string
+  subtitle?: string
 }
 
 export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> = ({
@@ -87,7 +74,7 @@ export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> =
                   
                   {/* Wishlist Heart Icon */}
                   <div className="absolute top-3 right-3 z-30">
-                    <WishlistButton />
+                    <WishlistButton product={product} className="p-2 bg-white/80 hover:bg-white rounded-full shadow-sm" iconClassName="w-4 h-4" />
                   </div>
 
                   {/* First image (Thumbnail) */}

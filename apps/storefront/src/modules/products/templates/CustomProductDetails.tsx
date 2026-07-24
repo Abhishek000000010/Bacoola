@@ -8,6 +8,7 @@ import { addToCart } from "@lib/data/cart"
 import { isEqual } from "lodash"
 import ProductPrice from "../components/product-price"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import WishlistButton from "@modules/common/components/wishlist-button"
 
 interface CustomProductDetailsProps {
   product: HttpTypes.StoreProduct
@@ -153,11 +154,25 @@ export default function CustomProductDetails({
     return false
   }, [selectedVariant])
 
-  // Handle Add to Bag action
+  const [isAddedSuccess, setIsAddedSuccess] = useState(false)
+
+  // Handle Add to Bag action with optimistic instant response (Amazon/Flipkart speed)
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return
 
     setIsAdding(true)
+    setIsAddedSuccess(true)
+
+    // Fire instant update event to header bag counter
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cart-updated"))
+    }
+
+    // Reset button success indicator after 1.5s
+    setTimeout(() => {
+      setIsAddedSuccess(false)
+    }, 1500)
+
     try {
       await addToCart({
         variantId: selectedVariant.id,
@@ -333,7 +348,9 @@ export default function CustomProductDetails({
                 }
                 className="flex-1 py-4 bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-neutral-800 transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
               >
-                {isAdding
+                {isAddedSuccess
+                  ? "ADDED TO BAG ✓"
+                  : isAdding
                   ? "ADDING TO BAG..."
                   : !selectedVariant && (product.variants?.length ?? 0) > 1
                   ? "SELECT OPTIONS"
@@ -341,13 +358,11 @@ export default function CustomProductDetails({
                   ? "OUT OF STOCK"
                   : "ADD TO BAG"}
               </button>
-              <button
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                className="p-4 border border-neutral-200 hover:border-neutral-400 transition-colors focus:outline-none rounded-sm"
-                aria-label="Add to favorites"
-              >
-                <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "text-red-500 fill-red-500" : "text-neutral-800"}`} />
-              </button>
+              <WishlistButton
+                product={product}
+                iconClassName="w-5 h-5"
+                className="p-4 border border-neutral-200 hover:border-neutral-400 rounded-sm shrink-0"
+              />
             </div>
 
 

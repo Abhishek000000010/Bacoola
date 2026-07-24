@@ -19,14 +19,14 @@ export const retrieveOrder = async (id: string) => {
       method: "GET",
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
+          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*shipping_methods",
       },
       headers,
       next,
       cache: "force-cache",
     })
-    .then(({ order }) => order)
-    .catch((err) => medusaError(err))
+    .then(({ order }: any) => order)
+    .catch((err: any) => medusaError(err))
 }
 
 export const listOrders = async (
@@ -56,8 +56,8 @@ export const listOrders = async (
       next,
       cache: "force-cache",
     })
-    .then(({ orders }) => orders)
-    .catch((err) => medusaError(err))
+    .then(({ orders }: any) => orders)
+    .catch((err: any) => medusaError(err))
 }
 
 export const createTransferRequest = async (
@@ -89,8 +89,8 @@ export const createTransferRequest = async (
       },
       headers
     )
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }))
+    .then(({ order }: any) => ({ success: true, error: null, order }))
+    .catch((err: any) => ({ success: false, error: err.message, order: null }))
 }
 
 export const acceptTransferRequest = async (id: string, token: string) => {
@@ -98,8 +98,8 @@ export const acceptTransferRequest = async (id: string, token: string) => {
 
   return await sdk.store.order
     .acceptTransfer(id, { token }, {}, headers)
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }))
+    .then(({ order }: any) => ({ success: true, error: null, order }))
+    .catch((err: any) => ({ success: false, error: err.message, order: null }))
 }
 
 export const declineTransferRequest = async (id: string, token: string) => {
@@ -107,6 +107,6 @@ export const declineTransferRequest = async (id: string, token: string) => {
 
   return await sdk.store.order
     .declineTransfer(id, { token }, {}, headers)
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }))
+    .then(({ order }: any) => ({ success: true, error: null, order }))
+    .catch((err: any) => ({ success: false, error: err.message, order: null }))
 }

@@ -17,33 +17,31 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
 
   return (
     <div
-      className={clx("border-t border-neutral-200", {
+      className={clx("border-t border-neutral-200 mt-6", {
         "overflow-x-hidden overflow-y-scroll no-scrollbar max-h-[420px]":
           hasOverflow,
       })}
     >
-      <Table>
-        <Table.Body data-testid="items-table">
-          {items
-            ? items
-                .sort((a, b) => {
-                  return (a.created_at ?? "") > (b.created_at ?? "") ? -1 : 1
-                })
-                .map((item) => {
-                  return (
-                    <Item
-                      key={item.id}
-                      item={item}
-                      type="preview"
-                      currencyCode={cart.currency_code}
-                    />
-                  )
-                })
-            : repeat(5).map((i) => {
-                return <SkeletonLineItem key={i} />
-              })}
-        </Table.Body>
-      </Table>
+      <div data-testid="items-table" className="flex flex-col">
+        {items
+          ? items
+              .sort((a, b) => {
+                return (a.created_at ?? "") > (b.created_at ?? "") ? -1 : 1
+              })
+              .map((item) => {
+                return (
+                  <Item
+                    key={item.id}
+                    item={item}
+                    type="preview"
+                    currencyCode={cart.currency_code}
+                  />
+                )
+              })
+          : repeat(5).map((i) => {
+              return <SkeletonLineItem key={i} />
+            })}
+      </div>
     </div>
   )
 }

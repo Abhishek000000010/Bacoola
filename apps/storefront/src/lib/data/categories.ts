@@ -27,7 +27,7 @@ export const listCategories = async (query?: Record<string, unknown>) => {
         next,
       }
     )
-    .then(({ product_categories }) => product_categories)
+    .then(({ product_categories }: any) => product_categories)
 }
 
 export const getCategoryByHandle = async (categoryHandle: string[]) => {
@@ -38,17 +38,16 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
+    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
       `/store/product-categories`,
       {
         query: {
-          fields: "*category_children",
+          fields: "*category_children, *parent_category, *parent_category.category_children",
           include_descendants_tree: true,
           handle,
         },
         next,
-        cache: "no-store",
       }
     )
-    .then(({ product_categories }) => product_categories[0])
+    .then(({ product_categories }: any) => product_categories[0])
 }

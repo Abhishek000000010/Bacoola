@@ -12,25 +12,11 @@ interface CarouselProps {
   region: HttpTypes.StoreRegion
 }
 
-const WishlistButton: React.FC = () => {
-  const [active, setActive] = useState(false)
-  return (
-    <button
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setActive(!active)
-      }}
-      className="p-1.5 bg-white/90 hover:bg-white text-black rounded-full shadow-sm transition-all duration-200 focus:outline-none"
-      aria-label="Add to wishlist"
-    >
-      <Heart
-        size={14}
-        className={active ? "fill-red-600 text-red-600 scale-110 transition-transform" : "text-black"}
-        strokeWidth={1.8}
-      />
-    </button>
-  )
+import WishlistButton from "@modules/common/components/wishlist-button"
+
+interface CarouselProps {
+  products: HttpTypes.StoreProduct[]
+  region: HttpTypes.StoreRegion
 }
 
 export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
@@ -109,7 +95,7 @@ export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
 
                   {/* Wishlist Button absolute overlay */}
                   <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <WishlistButton />
+                    <WishlistButton product={product} className="p-1.5 bg-white/90 hover:bg-white rounded-full shadow-sm" iconClassName="w-3.5 h-3.5" />
                   </div>
 
                   {/* Sizes overlay bottom hover */}

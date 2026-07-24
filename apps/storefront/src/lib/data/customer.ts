@@ -42,29 +42,26 @@ async function requestVerificationEmail(email: string, token: string) {
 
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
-    const authHeaders = await getAuthHeaders()
+    const [authHeaders, cacheOpts] = await Promise.all([
+      getAuthHeaders(),
+      getCacheOptions("customers"),
+    ])
 
-    if (!authHeaders) return null
+    if (!authHeaders || !("authorization" in authHeaders)) return null
 
-    const headers = {
-      ...authHeaders,
-    }
+    const headers = { ...authHeaders }
+    const next = { ...cacheOpts }
 
-    const next = {
-      ...(await getCacheOptions("customers")),
-    }
-
-    return await sdk.client
-      .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
-        method: "GET",
-        query: {
-          fields: "*orders",
-        },
-        headers,
-        next,
-        cache: "force-cache",
-      })
-      .then(({ customer }) => customer)
+    return await (sdk.client.fetch as any)(`/store/customers/me`, {
+      method: "GET",
+      query: {
+        fields: "*orders",
+      },
+      headers,
+      next,
+      cache: "no-store",
+    })
+      .then(({ customer }: any) => customer)
       .catch(() => null)
   }
 
@@ -75,7 +72,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
 
   const updateRes = await sdk.store.customer
     .update(body, {}, headers)
-    .then(({ customer }) => customer)
+    .then(({ customer }: any) => customer)
     .catch(medusaError)
 
   const cacheTag = await getCacheTag("customers")
@@ -101,7 +98,7 @@ export async function signup(
       email: customerForm.email,
       password,
     })
-  } catch (error) {
+  } catch (error: any) {
     const fetchError = error as FetchError
     // An existing identity (for example, an admin user with the same email) is
     // expected and handled: the customer can still log in to link a customer
@@ -311,7 +308,7 @@ export const addCustomerAddress = async (
       revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       return { success: false, error: err.toString() }
     })
 }
@@ -330,7 +327,7 @@ export const deleteCustomerAddress = async (
       revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       return { success: false, error: err.toString() }
     })
 }
@@ -375,7 +372,7 @@ export const updateCustomerAddress = async (
       revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       return { success: false, error: err.toString() }
     })
 }
