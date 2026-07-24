@@ -15,7 +15,7 @@ const TeenSwitcher: React.FC = () => {
             <button
               key={sub}
               onClick={() => setActiveSub(sub)}
-              className={`flex-1 text-center py-1.5 text-xs tracking-wider uppercase rounded-sm transition-all duration-300 focus:outline-none ${
+              className={`flex-1 text-center py-1.5 text-xs tracking-wider uppercase rounded-none transition-all duration-300 focus:outline-none ${
                 isActive ? "bg-white text-black shadow-sm font-semibold" : "text-neutral-500 hover:text-neutral-700"
               }`}
             >

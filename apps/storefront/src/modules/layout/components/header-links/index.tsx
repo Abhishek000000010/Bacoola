@@ -7,7 +7,6 @@ import { clx } from "@modules/common/components/ui"
 import MegaMenu from "../navigation/MegaMenu"
 
 const NAV_LINKS = [
-  { label: "Home", href: "/", key: "home" },
   { label: "Women", href: "/landingpage/women", key: "women" },
   { label: "Men", href: "/landingpage/men", key: "men" },
   { label: "Teen", href: "/landingpage/teen", key: "teen" },
@@ -42,11 +41,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
       timeoutRef.current = null
     }
 
-    if (key === "home") {
-      setActiveCategory(null)
-    } else {
-      setActiveCategory(key)
-    }
+    setActiveCategory(key)
   }
 
   // Handle cursor leaving a link trigger
@@ -74,6 +69,8 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
     <div className="flex items-center gap-x-[28px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
+        const isHighlighted = activeCategory ? activeCategory === key : active
+
         return (
           <div
             key={label}
@@ -84,14 +81,20 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "relative h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
+                "h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none group",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >
-              {label}
-              {active && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#111111]" />
-              )}
+              <span className="relative py-1 overflow-hidden">
+                {label}
+                <span
+                  className={clx(
+                    "absolute -bottom-[2px] left-0 h-[2px] bg-[#111111] transition-transform duration-300 ease-out w-full",
+                    isHighlighted ? "scale-x-100" : "scale-x-0"
+                  )}
+                  style={{ transformOrigin: "left" }}
+                />
+              </span>
             </LocalizedClientLink>
           </div>
         )

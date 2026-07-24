@@ -72,6 +72,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
   const colWidth = 265
   const expandedWidth = 530
   const baseWidth = 416
+  const currentBaseWidth = lastCategory === "kids" ? 500 : baseWidth
 
   return (
     <>
@@ -90,7 +91,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
         className={`fixed top-[56px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col shadow-2xl overflow-hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ width: isOpen && level3Categories.length > 0 ? `${expandedWidth}px` : `${baseWidth}px` }}
+        style={{ width: isOpen && level3Categories.length > 0 ? `${expandedWidth}px` : `${currentBaseWidth}px` }}
       >
         {/* Close button (always top right of the whole box) */}
         <div className="absolute top-4 right-4 z-50">
@@ -105,7 +106,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
 
         {/* Top Header for Tabs (spans both columns) */}
         {needsTabs && (
-          <div className="w-full pl-10 pr-4 pt-12 pb-2 flex flex-nowrap items-center gap-3 overflow-hidden shrink-0">
+          <div className="w-full pl-10 pr-4 pt-12 pb-2 flex flex-nowrap items-center gap-3 overflow-x-auto shrink-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
             {level2Categories.map(tab => {
               const isActive = activeTabId === tab.id || (!activeTabId && level2Categories[0]?.id === tab.id)
               return (
@@ -163,9 +164,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                       }}
                       className={`w-full text-left py-1 text-[12px] uppercase tracking-wide font-bold transition-all duration-200 ${
                         hoveredLevel2Id === cat.id
-                          ? `underline underline-offset-[4px] decoration-[1.5px] ${isSale ? 'text-[#c22026] decoration-[#c22026]' : 'text-black decoration-black'}`
+                          ? `underline underline-offset-[4px] decoration-[1.5px] ${isSale ? 'text-[#BA0000] decoration-[#BA0000]' : 'text-black decoration-black'}`
                           : isSale
-                          ? "text-[#c22026]"
+                          ? "text-[#BA0000]"
                           : "text-neutral-500 hover:text-black"
                       }`}
                     >

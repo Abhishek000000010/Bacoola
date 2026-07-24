@@ -17,7 +17,7 @@ const KidsSwitcher: React.FC = () => {
             <button
               key={sub}
               onClick={() => setActiveSub(sub)}
-              className={`flex-none px-3 py-1.5 text-[10px] sm:text-xs tracking-wider uppercase rounded-sm transition-all duration-300 whitespace-nowrap focus:outline-none ${
+              className={`flex-none px-3 py-1.5 text-[10px] sm:text-xs tracking-wider uppercase rounded-none transition-all duration-300 whitespace-nowrap focus:outline-none ${
                 isActive ? "bg-white text-black shadow-sm font-semibold" : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
