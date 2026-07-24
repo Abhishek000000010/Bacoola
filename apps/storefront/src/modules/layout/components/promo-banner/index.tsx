@@ -53,6 +53,12 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
     return null
   }
 
+  // Once the visitor is in the cart or checkout they are past browsing; a sale
+  // link here only pulls them out of the purchase flow.
+  if (cleanSegments[0] === "cart" || cleanSegments[0] === "checkout") {
+    return null
+  }
+
   const byId = new Map(categories.map((c) => [c.id, c]))
 
   /** Walk from a category up to its root, nearest ancestor first. */
@@ -65,7 +71,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
     // from looping forever.
     while (current && chain.length < 10) {
       chain.push(current)
-      const parentId =
+      const parentId: string | undefined =
         current.parent_category?.id ?? (current as any).parent_category_id
       current = parentId ? byId.get(parentId) : undefined
     }
@@ -125,7 +131,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
 
   return (
     <LocalizedClientLink href={`/categories/${saleCategory.handle}`}>
-      <div className="w-full bg-[#B22222] text-white py-2.5 px-4 flex justify-center items-center gap-x-6 text-xs sm:text-sm font-semibold tracking-wider hover:opacity-90 transition-opacity cursor-pointer">
+      <div className="w-full bg-[#BA0000] text-white py-2.5 px-4 flex justify-center items-center gap-x-6 text-xs sm:text-sm font-semibold tracking-wider hover:opacity-90 transition-opacity cursor-pointer">
         <span>{bannerText}</span>
         <span className="underline underline-offset-4">SHOP NOW</span>
       </div>

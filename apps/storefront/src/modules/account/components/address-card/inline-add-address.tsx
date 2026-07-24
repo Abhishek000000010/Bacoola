@@ -133,7 +133,7 @@ export default function InlineAddAddress({
 
         <button
           type="submit"
-          className="w-full bg-[#111111] hover:bg-[#333333] text-white transition-colors h-[48px] text-[12px] font-bold uppercase tracking-widest"
+          className="w-full border border-black bg-black text-white hover:bg-white hover:text-black transition-colors h-[48px] text-xs font-semibold uppercase tracking-widest"
         >
           SAVE ADDRESS
         </button>

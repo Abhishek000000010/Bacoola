@@ -36,7 +36,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       
       <LocalizedClientLink href="/" passHref>
         <button 
-          className="bg-neutral-950 text-white text-[12px] font-bold uppercase tracking-[0.1em] px-16 py-4 hover:bg-neutral-800 transition-colors focus:outline-none"
+          className="border border-black bg-black text-white hover:bg-white hover:text-black text-xs font-semibold uppercase tracking-[0.1em] px-16 py-4 transition-colors focus:outline-none"
           data-testid="continue-shopping-button"
         >
           See what&apos;s new

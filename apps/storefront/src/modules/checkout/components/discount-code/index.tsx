@@ -96,7 +96,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                 />
                 <button
                   type="submit"
-                  className="h-12 shrink-0 bg-neutral-950 px-6 text-xs font-medium text-white transition-colors duration-300 hover:bg-neutral-800"
+                  className="h-12 shrink-0 border border-black bg-black px-6 text-xs font-semibold uppercase tracking-[0.1em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
                   data-testid="discount-apply-button"
                 >
                   Apply

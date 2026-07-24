@@ -65,7 +65,7 @@ export const Newsletter: React.FC = () => {
               />
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-[0.25em] hover:bg-neutral-800 transition-colors rounded-none whitespace-nowrap"
+                className="w-full sm:w-auto px-8 py-3 border border-black bg-black text-white text-xs font-semibold uppercase tracking-[0.25em] hover:bg-white hover:text-black transition-colors rounded-none whitespace-nowrap"
               >
                 Subscribe
               </button>

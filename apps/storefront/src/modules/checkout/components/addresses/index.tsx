@@ -78,7 +78,7 @@ const Addresses = ({
             </div>
           )}
           <SubmitButton
-            className="mt-6 h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black"
+            className="mt-6 h-[50px] w-full rounded-none px-6 tracking-[0.05em]"
             data-testid="submit-address-button"
           >
             Confirm Address

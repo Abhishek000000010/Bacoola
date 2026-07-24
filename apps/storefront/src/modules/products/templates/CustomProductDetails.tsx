@@ -261,7 +261,7 @@ export default function CustomProductDetails({
                             <button
                               key={val}
                               onClick={() => setOptionValue(option.id, val)}
-                              className={`w-3 h-4 rounded-[1px] border focus:outline-none transition-all duration-200 ${
+                              className={`w-3 h-4 rounded-none border focus:outline-none transition-all duration-200 ${
                                 isSelected ? "border-black scale-110" : "border-neutral-200"
                               }`}
                               style={{ backgroundColor: hex }}
@@ -316,7 +316,7 @@ export default function CustomProductDetails({
                         <button
                           key={val}
                           onClick={() => setOptionValue(option.id, val)}
-                          className={`px-4 py-2 border text-xs font-semibold rounded-sm transition-all focus:outline-none ${
+                          className={`px-4 py-2 border text-xs font-semibold rounded-none transition-all focus:outline-none ${
                             isSelected
                               ? "border-black bg-black text-white"
                               : "border-neutral-200 hover:border-neutral-400 text-neutral-800"
@@ -339,7 +339,7 @@ export default function CustomProductDetails({
                   (product.variants?.length ?? 0) > 0 &&
                   (!isValidVariant || !selectedVariant || !inStock || isAdding)
                 }
-                className="flex-1 py-4 bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-neutral-800 transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
+                className="flex-1 py-4 border border-black bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-white hover:text-black transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:border-neutral-200 disabled:cursor-not-allowed"
               >
                 {isAdding
                   ? "ADDING TO BAG..."
@@ -352,7 +352,7 @@ export default function CustomProductDetails({
               <WishlistButton
                 product={product}
                 iconClassName="w-5 h-5"
-                className="p-4 border border-neutral-200 hover:border-neutral-400 rounded-sm shrink-0"
+                className="p-4 border border-neutral-200 hover:border-neutral-400 rounded-none shrink-0"
               />
             </div>
 

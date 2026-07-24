@@ -390,7 +390,7 @@ const Shipping: React.FC<ShippingProps> = ({
             </button>
             <Button
               size="large"
-              className="h-14 w-full rounded-none bg-black px-6 text-xs font-semibold uppercase tracking-[0.2em] text-white hover:bg-neutral-900 small:w-auto small:min-w-[280px]"
+              className="h-14 w-full rounded-none px-6 tracking-[0.2em] small:w-auto small:min-w-[280px]"
               onClick={handleSubmit}
               isLoading={isLoading}
               disabled={!cart.shipping_methods?.[0]}

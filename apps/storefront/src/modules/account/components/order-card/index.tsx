@@ -100,7 +100,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           Order ID: {order.id}
         </span>
         <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
-          <Button data-testid="order-details-link" variant="secondary" className="text-xs py-1.5 px-4">
+          <Button data-testid="order-details-link" variant="secondary" className="py-1.5 px-4">
             See details
           </Button>
         </LocalizedClientLink>

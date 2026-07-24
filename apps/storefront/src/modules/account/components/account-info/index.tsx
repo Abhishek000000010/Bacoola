@@ -155,7 +155,7 @@ const AccountInfo = ({
               >
                 <Button
                   isLoading={pending}
-                  className="w-full h-[48px] text-[13px] font-bold uppercase tracking-wide bg-[#111111] hover:bg-[#333333] transition-colors rounded-none"
+                  className="w-full h-[48px] tracking-wide transition-colors rounded-none"
                   type="submit"
                   data-testid="save-button"
                 >

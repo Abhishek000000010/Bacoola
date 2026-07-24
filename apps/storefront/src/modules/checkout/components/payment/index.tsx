@@ -197,7 +197,7 @@ const Payment = ({
             </button>
             <Button
               size="large"
-              className="h-[50px] w-full rounded-none bg-[#111111] px-6 text-[13px] font-bold uppercase tracking-[0.05em] text-white hover:bg-black small:w-auto small:min-w-[280px]"
+              className="h-[50px] w-full rounded-none px-6 tracking-[0.05em] small:w-auto small:min-w-[280px]"
               onClick={handleSubmit}
               isLoading={isLoading}
               disabled={

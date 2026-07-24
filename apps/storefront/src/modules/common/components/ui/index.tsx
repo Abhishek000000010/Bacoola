@@ -82,14 +82,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={clsx(
-          "inline-flex gap-2 items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          variant === "primary" && "bg-black text-white hover:bg-gray-800",
+          // Buttons are a single house style: uppercase, semi-bold, and on
+          // hover they invert to a white face with black text.
+          // Buttons share one type size across the whole store, so `size` only
+          // changes the box (height and padding), never the text.
+          "inline-flex gap-2 items-center justify-center rounded-none uppercase text-xs font-semibold tracking-[0.1em] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          variant === "primary" &&
+            "bg-black text-white border-black hover:bg-white hover:text-black",
           variant === "secondary" &&
-            "bg-white text-black border border-gray-200 hover:bg-gray-50",
-          variant === "transparent" && "bg-transparent hover:bg-gray-100",
-          size === "small" && "h-8 px-3 text-sm",
+            "bg-white text-black border-black hover:bg-black hover:text-white",
+          // Ghost buttons sit on top of other surfaces, so the white-face hover
+          // would punch a hole in them; they keep the subtle tint instead.
+          variant === "transparent" &&
+            "bg-transparent border-transparent hover:bg-gray-100",
+          size === "small" && "h-8 px-3",
           size === "medium" && "h-10 px-4",
-          size === "large" && "h-12 px-6 text-lg",
+          size === "large" && "h-12 px-6",
           className
         )}
         {...props}
@@ -178,7 +186,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       <button
         ref={ref}
         className={clsx(
-          "inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2",
+          "inline-flex items-center justify-center rounded-none p-2 hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2",
           className
         )}
         {...props}

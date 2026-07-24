@@ -209,7 +209,7 @@ export default function CategoryProductListing({
         <div className="p-6 border-t border-neutral-100 bg-neutral-50/50">
           <button
             onClick={() => setIsFilterOpen(false)}
-            className="w-full py-4 bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-neutral-800 transition-colors"
+            className="w-full py-4 border border-black bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-white hover:text-black transition-colors"
           >
             SHOW PRODUCTS
           </button>

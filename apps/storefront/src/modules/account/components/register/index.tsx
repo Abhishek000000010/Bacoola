@@ -153,7 +153,7 @@ const Register = ({ setCurrentView }: Props) => {
         <div className="flex flex-col gap-y-3 mt-2">
           <button
             type="submit"
-            className="w-full h-[52px] bg-black hover:bg-neutral-900 text-white font-semibold text-xs tracking-[0.15em] uppercase transition-colors rounded-none flex items-center justify-center"
+            className="w-full h-[52px] border border-black bg-black text-white hover:bg-white hover:text-black font-semibold text-xs tracking-[0.15em] uppercase transition-colors rounded-none flex items-center justify-center"
             data-testid="register-button"
           >
             Create Account
