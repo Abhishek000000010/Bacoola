@@ -1,7 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import {
-  createProductOptionsWorkflow,
+  createAndLinkProductOptionsToProductWorkflow,
   createProductVariantsWorkflow,
   updateProductVariantsWorkflow,
 } from "@medusajs/medusa/core-flows"
@@ -148,8 +148,16 @@ export default async function addSizesToProducts({
       // The option is ADDED rather than the option set being replaced. Replacing
       // it deletes the rows existing variants point at, which fails with
       // "Cannot set field 'id' of Product product option to null".
-      await createProductOptionsWorkflow(container).run({
-        input: { product_options: [{ product_id: product.id, title: "Size", values: SIZES }] },
+      //
+      // Options became many-to-many with products in Medusa 2.16, so creating
+      // one no longer attaches it -- createProductOptionsWorkflow would leave
+      // the Size option floating, linked to nothing. This workflow creates and
+      // links in one step, and is what the admin batch route uses.
+      await createAndLinkProductOptionsToProductWorkflow(container).run({
+        input: {
+          product_id: product.id,
+          add: [{ title: "Size", values: SIZES }],
+        },
       })
 
       // Existing variants have no Size value yet; give them one before any new
