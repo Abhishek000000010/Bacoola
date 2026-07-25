@@ -24,9 +24,3 @@ build
 !.yarn/versions
 
 .medusa
-
-# Generated Medusa admin dashboard build output — must be rebuilt on every
-# deploy, never committed. A stale committed copy here silently shadows the
-# freshly built admin, hiding any custom widgets/routes added after the copy
-# was committed.
-/public/admin
