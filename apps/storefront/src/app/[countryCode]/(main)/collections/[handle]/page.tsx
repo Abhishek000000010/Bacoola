@@ -32,7 +32,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
-  const collection = await getCollectionByHandle(params.handle)
+  let collection: StoreCollection | undefined
+
+  try {
+    collection = await getCollectionByHandle(params.handle)
+  } catch {
+    notFound()
+  }
 
   if (!collection) {
     notFound()
@@ -52,9 +58,13 @@ export default async function CollectionPage(props: Props) {
   const { sortBy, page } = searchParams
   const optionValueIds = parseOptionValueIds(searchParams)
 
-  const collection = await getCollectionByHandle(params.handle).then(
-    (collection) => collection
-  )
+  let collection: StoreCollection | undefined
+
+  try {
+    collection = await getCollectionByHandle(params.handle)
+  } catch {
+    notFound()
+  }
 
   if (!collection) {
     notFound()

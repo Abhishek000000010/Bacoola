@@ -55,7 +55,13 @@ export default async function CategoryPage(props: Props) {
   const { sortBy, page } = searchParams
   const optionValueIds = parseOptionValueIds(searchParams)
 
-  const productCategory = await getCategoryByHandle(params.category)
+  let productCategory: HttpTypes.StoreProductCategory | undefined
+
+  try {
+    productCategory = await getCategoryByHandle(params.category)
+  } catch {
+    notFound()
+  }
 
   if (!productCategory) {
     notFound()
