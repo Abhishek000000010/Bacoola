@@ -23,8 +23,11 @@ export const PRODUCT_LIMIT = 12
 
 // Render collection pages on demand instead of prebuilding one per collection ×
 // country at build time (that blew past Vercel's 45-minute build limit).
-// Pages build on first request and are cached (ISR) via `revalidate`.
-export const revalidate = 3600
+// Forced fully dynamic (no ISR) because this page reads `searchParams`
+// (sortBy/page/optionValueIds) — mixing that with `revalidate` made Next
+// attempt a static shell, hit the dynamic searchParams read mid-render, and
+// crash instead of bailing out to dynamic rendering cleanly.
+export const dynamic = "force-dynamic"
 
 export async function generateStaticParams() {
   return []

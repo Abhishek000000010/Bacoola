@@ -12,9 +12,12 @@ type Props = {
 }
 
 // Render product pages on demand instead of prebuilding the whole catalog at
-// build time. Prerendering every product blew past Vercel's 45-minute build
-// limit; pages now build on first request and are cached (ISR) via `revalidate`.
-export const revalidate = 3600
+// build time (prerendering every product blew past Vercel's 45-minute build
+// limit). Forced fully dynamic (no ISR) because this page reads `searchParams`
+// (`v_id`) — mixing that with `revalidate` made Next attempt a static shell,
+// hit the dynamic searchParams read mid-render, and crash instead of bailing
+// out to dynamic rendering cleanly.
+export const dynamic = "force-dynamic"
 
 export async function generateStaticParams() {
   return []
