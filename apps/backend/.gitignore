@@ -24,3 +24,11 @@ build
 !.yarn/versions
 
 .medusa
+
+# Generated Medusa admin dashboard build output — must be rebuilt on every
+# deploy, never committed. A stale committed copy here previously shadowed
+# the freshly built admin at ./public/admin, hiding custom widgets/routes.
+# Now that the deploy runs `medusa start` from .medusa/server (per Medusa's
+# documented production flow), the real build output lives at
+# .medusa/server/public/admin, and this path is unused — safe to ignore.
+/public/admin
