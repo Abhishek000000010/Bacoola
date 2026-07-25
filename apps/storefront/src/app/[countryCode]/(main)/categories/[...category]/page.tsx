@@ -19,35 +19,13 @@ type Props = {
   >
 }
 
+// Render category pages on demand instead of prebuilding one per category ×
+// country at build time (that blew past Vercel's 45-minute build limit).
+// Pages build on first request and are cached (ISR) via `revalidate`.
+export const revalidate = 3600
+
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV !== "production") {
-    return []
-  }
-
-  const product_categories = await listCategories()
-
-  if (!product_categories) {
-    return []
-  }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  const categoryHandles = product_categories.map(
-    (category: HttpTypes.StoreProductCategory) => category.handle
-  )
-
-  const staticParams = countryCodes
-    ?.map((countryCode: string | undefined) =>
-      categoryHandles.map((handle: string) => ({
-        countryCode,
-        category: [handle],
-      }))
-    )
-    .flat()
-
-  return staticParams
+  return []
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

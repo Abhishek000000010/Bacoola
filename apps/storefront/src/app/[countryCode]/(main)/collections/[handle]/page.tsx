@@ -21,41 +21,13 @@ type Props = {
 
 export const PRODUCT_LIMIT = 12
 
+// Render collection pages on demand instead of prebuilding one per collection ×
+// country at build time (that blew past Vercel's 45-minute build limit).
+// Pages build on first request and are cached (ISR) via `revalidate`.
+export const revalidate = 3600
+
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV !== "production") {
-    return []
-  }
-
-  const { collections } = await listCollections({
-    fields: "handle",
-  })
-
-  if (!collections) {
-    return []
-  }
-
-  const countryCodes = await listRegions().then(
-    (regions: StoreRegion[]) =>
-      regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
-        .filter(Boolean) as string[]
-  )
-
-  const collectionHandles = collections.map(
-    (collection: StoreCollection) => collection.handle
-  )
-
-  const staticParams = countryCodes
-    ?.map((countryCode: string) =>
-      collectionHandles.map((handle: string | undefined) => ({
-        countryCode,
-        handle,
-      }))
-    )
-    .flat()
-
-  return staticParams
+  return []
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

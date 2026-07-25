@@ -10,50 +10,13 @@ type Props = {
   searchParams: Promise<{ v_id?: string }>
 }
 
+// Render product pages on demand instead of prebuilding the whole catalog at
+// build time. Prerendering every product blew past Vercel's 45-minute build
+// limit; pages now build on first request and are cached (ISR) via `revalidate`.
+export const revalidate = 3600
+
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV !== "production") {
-    return []
-  }
-
-  try {
-    const countryCodes = await listRegions().then((regions) =>
-      regions?.map((r: any) => r.countries?.map((c: any) => c.iso_2)).flat() as string[] | undefined
-    )
-
-    if (!countryCodes) {
-      return []
-    }
-
-    const promises = countryCodes.map(async (country: string) => {
-      const { response } = await listProducts({
-        countryCode: country,
-        queryParams: { limit: 100, fields: "handle" },
-      })
-
-      return {
-        country,
-        products: response.products,
-      }
-    })
-
-    const countryProducts = await Promise.all(promises)
-
-    return countryProducts
-      .flatMap((countryData: any) =>
-        countryData.products.map((product: any) => ({
-          countryCode: countryData.country,
-          handle: product.handle,
-        }))
-      )
-      .filter((param: any) => param.handle)
-  } catch (error) {
-    console.error(
-      `Failed to generate static paths for product pages: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }.`
-    )
-    return []
-  }
+  return []
 }
 
 function getImagesForVariant(
