@@ -1,23 +1,23 @@
-const path = require("path")
 const checkEnvVariables = require("./check-env-variables")
 
 checkEnvVariables()
 
 /**
- * The backend pulls in React 18 (Medusa's admin dashboard needs it) and npm
- * hoists it to the workspace root, while the storefront keeps React 19 nested
- * in its own node_modules. Storefront UI dependencies (@headlessui/react,
- * @medusajs/ui, react-select, ...) get hoisted to the root too, so they resolve
- * React from the root and hand back elements created by a different React than
- * the one rendering them. The mismatched $$typeof symbol makes React reject
- * valid elements as plain objects -- "Minified React error #31" during
- * prerender. Pinning React to the storefront's copy keeps both apps on the
- * version they expect.
+ * React de-duplication:
+ * This monorepo has React 18 (backend/Medusa admin) and React 19 (storefront)
+ * on disk. We deliberately do NOT alias `react` / `react-dom` / `jsx-runtime`
+ * here. Next.js already rewrites every React import in the storefront bundle --
+ * app code AND hoisted node_modules UI libs (@medusajs/ui, @headlessui/react,
+ * react-select, ...) -- to its own single bundled React 19, keeping one copy
+ * across the server and client boundary.
+ *
+ * Manually aliasing these to the npm copy instead splits the bundle across two
+ * React instances and breaks prerendering: elements minted by one instance are
+ * rejected by the other ("Minified React error #31" from a jsx-runtime
+ * mismatch), and Next's own App Router runtime loses its dispatcher ("Cannot
+ * read properties of null (reading 'useContext')" in OuterLayoutRouter from a
+ * react-dom mismatch). Let Next own the de-duplication.
  */
-const reactAliases = {
-  react: path.dirname(require.resolve("react/package.json")),
-  "react-dom": path.dirname(require.resolve("react-dom/package.json")),
-}
 
 /**
  * Medusa Cloud-related environment variables
@@ -30,20 +30,6 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
  */
 const nextConfig = {
   reactStrictMode: true,
-  // Applies to `next build` / webpack.
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      ...reactAliases,
-    }
-    return config
-  },
-  turbopack: {
-    resolveAlias: {
-      react: "./node_modules/react",
-      "react-dom": "./node_modules/react-dom",
-    },
-  },
   experimental: {
     serverMinification: false,
   },
@@ -99,4 +85,3 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
-// Triggering Next.js restart

@@ -165,7 +165,6 @@ const CartDropdown = ({
                                 <LineItemOptions
                                   variant={item.variant}
                                   data-testid="cart-item-variant"
-                                  data-value={item.variant}
                                 />
                                 <span
                                   className="text-xs text-gray-500 mt-1"
