@@ -158,88 +158,16 @@ const Shipping: React.FC<ShippingProps> = ({
 
   return (
     <div className="bg-white">
-      <div className="mb-8 flex flex-row items-center justify-between border-b border-neutral-200 pb-4">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row items-baseline gap-x-2 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-950",
-            {
-              "opacity-50 pointer-events-none select-none":
-                !isOpen && cart.shipping_methods?.length === 0,
-            }
-          )}
-        >
+      <div className="mb-5 flex flex-col justify-center mt-6">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.05em] text-black">
           Delivery Method
-          {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && (
-            <CheckCircleSolid />
-          )}
-        </Heading>
-        {!isOpen &&
-          cart?.shipping_address &&
-          cart?.billing_address &&
-          cart?.email && (
-            <div>
-              <button
-                onClick={handleEdit}
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:text-neutral-950"
-                data-testid="edit-delivery-button"
-              >
-                Edit
-              </button>
-            </div>
-          )}
+        </h2>
       </div>
       {isOpen ? (
         <>
           <div className="grid">
-            <div className="flex flex-col">
-              <span className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-950">
-                Shipping method
-              </span>
-              <span className="mb-5 text-sm text-neutral-500">
-                How would you like you order delivered
-              </span>
-            </div>
             <div data-testid="delivery-options-container">
-              <div className="pb-8 md:pt-0 pt-2">
-                {hasPickupOptions && (
-                  <RadioGroup
-                    value={showPickupOptions}
-                    onChange={(_value: any) => {
-                      const id = _pickupMethods.find(
-                        (option) => !option.insufficient_inventory
-                      )?.id
-
-                      if (id) {
-                        handleSetShippingMethod(id, "pickup")
-                      }
-                    }}
-                  >
-                    <Radio
-                      value={PICKUP_OPTION_ON}
-                      data-testid="delivery-option-radio"
-                      className={clx(
-                        "mb-2 flex cursor-pointer items-center justify-between border border-neutral-300 px-5 py-5 text-sm transition-colors hover:border-black",
-                        {
-                          "border-black":
-                            showPickupOptions === PICKUP_OPTION_ON,
-                        }
-                      )}
-                    >
-                      <div className="flex items-center gap-x-4">
-                        <MedusaRadio
-                          checked={showPickupOptions === PICKUP_OPTION_ON}
-                        />
-                        <span className="text-sm font-normal text-neutral-950">
-                          Pick up your order
-                        </span>
-                      </div>
-                      <span className="justify-self-end text-sm text-neutral-950">
-                        -
-                      </span>
-                    </Radio>
-                  </RadioGroup>
-                )}
+              <div className="pb-4">
                 <RadioGroup
                   value={shippingMethodId}
                   onChange={(v: any) => {
@@ -261,24 +189,22 @@ const Shipping: React.FC<ShippingProps> = ({
                         data-testid="delivery-option-radio"
                         disabled={isDisabled}
                         className={clx(
-                          "mb-2 flex cursor-pointer items-center justify-between border border-neutral-300 px-5 py-5 text-sm transition-colors hover:border-black",
+                          "flex cursor-pointer items-center justify-between border p-4 mb-3 transition-colors text-[11px] font-bold text-black uppercase tracking-[0.05em]",
                           {
-                            "border-black":
-                              option.id === shippingMethodId,
-                            "cursor-not-allowed opacity-50":
-                              isDisabled,
+                            "border-black": option.id === shippingMethodId,
+                            "border-neutral-300 hover:border-black": option.id !== shippingMethodId,
+                            "cursor-not-allowed opacity-50": isDisabled,
                           }
                         )}
                       >
-                        <div className="flex items-center gap-x-4">
-                          <MedusaRadio
-                            checked={option.id === shippingMethodId}
-                          />
-                          <span className="text-sm font-normal text-neutral-950">
-                            {option.name}
-                          </span>
+                        <div className="flex items-center gap-x-3">
+                          {/* Home Icon */}
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 shrink-0">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                          </svg>
+                          <span>{option.name}</span>
                         </div>
-                        <span className="justify-self-end text-sm text-neutral-950">
+                        <span className="text-neutral-500 font-normal">
                           {option.price_type === "flat" ? (
                             convertToLocale({
                               amount: option.amount!,
@@ -299,6 +225,16 @@ const Shipping: React.FC<ShippingProps> = ({
                     )
                   })}
                 </RadioGroup>
+              </div>
+            </div>
+            
+            {/* Delivery Time Message */}
+            <div className="mt-2 mb-6">
+              <div className="text-[13px] text-neutral-950">
+                <span className="font-bold uppercase tracking-[0.05em] mr-1">Delivery:</span> Friday, 21 Aug - Tuesday, 8 Sept
+              </div>
+              <div className="mt-1 text-[12px] text-neutral-600 leading-tight">
+                This may be slightly later than estimated, due to increased orders during sales.
               </div>
             </div>
           </div>
@@ -376,29 +312,26 @@ const Shipping: React.FC<ShippingProps> = ({
               error={error}
               data-testid="delivery-option-error-message"
             />
-            <div className="pt-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
-            <button
-              type="button"
-              onClick={() => router.push(pathname + "?step=address", { scroll: false })}
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-950 transition-colors flex items-center gap-x-2 py-3"
-              data-testid="back-to-address-button"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-              </svg>
-              Back to Address
-            </button>
-            <Button
-              size="large"
-              className="h-14 w-full rounded-none px-6 tracking-[0.2em] small:w-auto small:min-w-[280px]"
-              onClick={handleSubmit}
-              isLoading={isLoading}
-              disabled={!cart.shipping_methods?.[0]}
-              data-testid="submit-delivery-option-button"
-            >
-              Continue to payment
-            </Button>
-          </div>
+            <div className="pt-5 flex flex-col gap-4">
+              <Button
+                size="large"
+                className="h-[50px] w-full rounded-none px-6 bg-black text-white text-[11px] font-bold uppercase tracking-[0.05em] hover:bg-neutral-800"
+                onClick={handleSubmit}
+                isLoading={isLoading}
+                disabled={!cart.shipping_methods?.[0]}
+                data-testid="submit-delivery-option-button"
+              >
+                Continue to Payment
+              </Button>
+              <button
+                type="button"
+                onClick={() => router.push(pathname + "?step=address", { scroll: false })}
+                className="text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-600 hover:text-neutral-950 transition-colors py-2"
+                data-testid="back-to-address-button"
+              >
+                Back to Address
+              </button>
+            </div>
           </div>
         </>
       ) : (

@@ -27,17 +27,17 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
 
   return (
     <div className="py-2">
-      <div className="flex flex-col gap-y-2.5 text-sm text-neutral-800 font-normal">
+      <div className="flex flex-col gap-y-2 text-[13px] text-neutral-900 font-medium">
         <div className="flex items-center justify-between">
           <span>Subtotal</span>
-          <span className="font-normal text-neutral-900" data-testid="cart-subtotal" data-value={item_subtotal || 0}>
+          <span className="font-normal" data-testid="cart-subtotal" data-value={item_subtotal || 0}>
             {convertToLocale({ amount: item_subtotal ?? 0, currency_code })}
           </span>
         </div>
 
         <div className="flex items-center justify-between">
           <span>Delivery</span>
-          <span className="font-normal text-neutral-900" data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
+          <span className="font-normal" data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
             {shipping_subtotal === 0 || !shipping_subtotal 
               ? "Free" 
               : convertToLocale({ amount: shipping_subtotal, currency_code })}
@@ -59,21 +59,13 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             </span>
           </div>
         )}
-
-        {!!tax_total && (
-          <div className="flex items-center justify-between text-neutral-600 text-xs">
-            <span>Taxes</span>
-            <span data-testid="cart-taxes" data-value={tax_total || 0}>
-              {convertToLocale({ amount: tax_total ?? 0, currency_code })}
-            </span>
-          </div>
-        )}
       </div>
 
-      <div className="my-4 border-b border-neutral-200" />
-
-      <div className="flex items-center justify-between text-neutral-950 font-bold text-base pt-1">
-        <span>Total</span>
+      <div className="flex items-start justify-between text-neutral-900 font-bold text-[13px] mt-6">
+        <div className="flex flex-col">
+          <span>TOTAL</span>
+          {!!tax_total && <span className="text-[10px] font-normal text-neutral-500 mt-1 uppercase">Includes taxes</span>}
+        </div>
         <span
           data-testid="cart-total"
           data-value={total || 0}
@@ -81,8 +73,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           {convertToLocale({ amount: total ?? 0, currency_code })}
         </span>
       </div>
-
-      <div className="my-4 border-b border-neutral-200" />
     </div>
   )
 }

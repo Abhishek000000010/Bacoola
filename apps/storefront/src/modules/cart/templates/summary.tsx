@@ -26,21 +26,26 @@ const Summary = ({ cart }: SummaryProps) => {
   const step = getCheckoutStep(cart)
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <Heading level="h2" className="text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 mb-4">
-        Summary
-      </Heading>
-      <DiscountCode cart={cart} />
-      <Divider />
+    <div className="flex flex-col w-full">
       <CartTotals totals={cart} />
+      
       <LocalizedClientLink
         href={"/checkout?step=" + step}
         data-testid="checkout-button"
       >
-        <Button className="w-full h-12 rounded-none tracking-widest mt-2">
-           Go to checkout
+        <Button className="w-full h-12 bg-black text-white hover:bg-neutral-800 transition-colors rounded-none uppercase tracking-widest text-[13px] font-semibold mt-6 mb-8 shadow-none border-none">
+          Checkout
         </Button>
       </LocalizedClientLink>
+
+      <DiscountCode cart={cart} />
+
+      <div className="mt-6 flex flex-col gap-y-2 pt-6 border-t border-gray-100">
+        <span className="text-[12px] text-neutral-800 font-medium">Free returns in 30 days</span>
+        <LocalizedClientLink href="/returns" className="text-[11px] font-semibold uppercase tracking-widest text-neutral-900 hover:underline">
+          View delivery and returns
+        </LocalizedClientLink>
+      </div>
     </div>
   )
 }

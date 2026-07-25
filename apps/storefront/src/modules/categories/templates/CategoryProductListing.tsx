@@ -22,16 +22,16 @@ export default function CategoryProductListing({
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   return (
-    <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16">
+    <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16 overflow-x-hidden">
       
       {/* Category Submenu Bar */}
       <CategorySubmenuBar category={category} subcategories={category.category_children} parentHandle={parents?.[0]?.handle} />
 
       {/* Top Header / Control Bar */}
-      <div className="w-full border-b border-neutral-100 py-6 px-8 sm:px-12 flex justify-between items-center select-none bg-white">
+      <div className="w-full border-b border-neutral-100 py-4 md:py-6 px-4 sm:px-12 flex justify-between items-center select-none bg-white">
         <div className="flex gap-x-8 items-center">
-          {/* Breadcrumbs and Title */}
-          <div className="flex flex-wrap items-center gap-x-2 text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-[#111111]">
+          {/* Breadcrumbs and Title (Hidden on mobile) */}
+          <div className="hidden md:flex flex-wrap items-center gap-x-2 text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-[#111111]">
             {parents &&
               parents.map((parent) => (
                 <span key={parent.id} className="text-neutral-400 flex items-center">
@@ -46,14 +46,14 @@ export default function CategoryProductListing({
 
           <button
             onClick={() => setIsFilterOpen(true)}
-            className="text-xs uppercase tracking-[0.2em] font-semibold border-b border-black pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors duration-200"
+            className="text-xs uppercase tracking-[0.15em] md:tracking-[0.2em] font-semibold md:border-b md:border-black pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors duration-200"
           >
             FILTER AND ORDER
           </button>
         </div>
 
-        {/* 1, 2, or 4 Column Layout controls (Visible on Medium+ screens) */}
-        <div className="hidden md:flex gap-x-4 items-center">
+        {/* 1, 2, or 4 Column Layout controls (Visible on all screens now) */}
+        <div className="flex gap-x-4 items-center">
           <button
             onClick={() => setCols(1)}
             className={`p-1.5 focus:outline-none transition-colors duration-200 ${
@@ -61,44 +61,68 @@ export default function CategoryProductListing({
             }`}
             aria-label="1 Column Layout"
           >
-            <div className="w-[3px] h-5 bg-current" />
+            {/* Mobile Icon (Mango Style - large square) */}
+            <div className="md:hidden w-[14px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
+            {/* Desktop Icon (Original) */}
+            <div className="hidden md:block w-[3px] h-5 bg-current" />
+            {cols === 1 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
           </button>
+          
           <button
             onClick={() => setCols(2)}
-            className={`p-1.5 focus:outline-none flex gap-0.5 transition-colors duration-200 ${
+            className={`p-1.5 focus:outline-none flex flex-col items-center transition-colors duration-200 ${
               cols === 2 ? "text-black" : "text-neutral-300 hover:text-neutral-500"
             }`}
             aria-label="2 Columns Layout"
           >
-            <div className="w-[3px] h-5 bg-current" />
-            <div className="w-[3px] h-5 bg-current" />
+            {/* Mobile Icon (Mango Style - divided square) */}
+            <div className="md:hidden flex gap-[2px]">
+              <div className="w-[6px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
+              <div className="w-[6px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
+            </div>
+            {/* Desktop Icon (Original) */}
+            <div className="hidden md:flex gap-0.5">
+              <div className="w-[3px] h-5 bg-current" />
+              <div className="w-[3px] h-5 bg-current" />
+            </div>
+            {cols === 2 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
           </button>
+
           <button
             onClick={() => setCols(4)}
-            className={`p-1.5 focus:outline-none flex gap-0.5 transition-colors duration-200 ${
+            className={`p-1.5 focus:outline-none flex flex-col items-center transition-colors duration-200 ${
               cols === 4 ? "text-black" : "text-neutral-300 hover:text-neutral-500"
             }`}
             aria-label="4 Columns Layout"
           >
-            <div className="grid grid-cols-2 gap-0.5">
+            {/* Mobile Icon (Mango Style - 4 squares) */}
+            <div className="md:hidden grid grid-cols-2 gap-[2px]">
+              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
+              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
+              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
+              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
+            </div>
+            {/* Desktop Icon (Original) */}
+            <div className="hidden md:grid grid-cols-2 gap-0.5">
               <div className="w-[3px] h-2 bg-current" />
               <div className="w-[3px] h-2 bg-current" />
               <div className="w-[3px] h-2 bg-current" />
               <div className="w-[3px] h-2 bg-current" />
             </div>
+            {cols === 4 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
           </button>
         </div>
       </div>
 
       {/* Grid Container wrapping children paginated lists */}
-      <div className="px-8 sm:px-12 py-10 max-w-[1550px] mx-auto">
+      <div className="px-0 sm:px-12 py-6 sm:py-10 w-full">
         <div
           className={`transition-all duration-300 ${
             cols === 1
               ? "[&_ul]:!grid-cols-1 max-w-xl mx-auto"
               : cols === 2
-              ? "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
-              : "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 md:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
+              ? "[&_ul]:!grid-cols-2 sm:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
+              : "[&_ul]:!grid-cols-4 sm:[&_ul]:!grid-cols-2 md:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8 [&_.pp-m-title]:!text-[10px] [&_.pp-m-title]:!leading-tight [&_.pp-m-title]:!line-clamp-1 [&_.pp-m-price]:!text-[10px] [&_.pp-m-details]:!px-1 [&_.pp-m-details]:!pt-2 [&_.pp-m-details]:!pb-3 [&_.pp-plus]:!h-6 [&_.pp-plus]:!w-6"
           }`}
         >
           {children}

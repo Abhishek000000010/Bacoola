@@ -63,31 +63,33 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="flex w-full items-center justify-between border-b border-neutral-200 py-4 text-left text-xs font-normal text-neutral-900 transition-colors hover:text-black focus:outline-none"
+              className="flex w-full items-center justify-between py-4 px-5 text-left text-xs font-normal text-neutral-900 transition-colors hover:text-black focus:outline-none"
               data-testid="add-discount-button"
             >
-              <span className="text-sm font-normal text-neutral-900">Promotional code or gift card</span>
+              <span className="text-[13px] font-normal text-neutral-900">Promotional code or gift card</span>
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
-                fill="currentColor" 
-                viewBox="0 0 16 16" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.5"
+                viewBox="0 0 24 24" 
                 width="16" 
                 height="16" 
                 className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
               >
-                <path d="M13.354 5.854 8 11.207 2.646 5.854l.708-.708L8 9.793l4.647-4.647z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
             </button>
           </div>
 
           {isOpen && (
-            <div className="mt-4 flex flex-col gap-y-3 pb-2">
-              <label htmlFor="promotion-input" className="text-xs text-neutral-600 font-normal">
+            <div className="px-5 pb-5 pt-2 flex flex-col gap-y-3">
+              <label htmlFor="promotion-input" className="text-[13px] text-neutral-800 font-normal">
                 Code or card
               </label>
-              <div className="flex w-full gap-x-2">
+              <div className="flex w-full">
                 <input
-                  className="h-12 flex-1 border border-neutral-300 bg-white px-4 text-xs tracking-wider text-neutral-950 placeholder:text-neutral-400 focus:border-black focus:outline-none"
+                  className="min-w-0 h-12 flex-1 border border-neutral-300 border-r-0 bg-white px-4 text-[13px] text-neutral-950 placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-0"
                   id="promotion-input"
                   name="code"
                   type="text"
@@ -96,7 +98,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                 />
                 <button
                   type="submit"
-                  className="h-12 shrink-0 border border-black bg-black px-6 text-xs font-semibold uppercase tracking-[0.1em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
+                  className="h-12 shrink-0 bg-black px-6 text-[11px] font-bold uppercase tracking-[0.05em] text-white transition-colors duration-300 hover:bg-neutral-800"
                   data-testid="discount-apply-button"
                 >
                   Apply

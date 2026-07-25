@@ -85,87 +85,81 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   }
 
   return (
-    <Table.Row className="w-full border-b border-neutral-200/50 last:border-b-0" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
-        <LocalizedClientLink
-          href={`/products/${item.product_handle}`}
-          className="flex small:w-24 w-12"
-        >
-          <Thumbnail
-            thumbnail={item.thumbnail}
-            images={item.variant?.product?.images}
-            size="square"
-          />
-        </LocalizedClientLink>
-      </Table.Cell>
+    <div className="flex gap-x-4 w-full" data-testid="product-row">
+      <LocalizedClientLink
+        href={`/products/${item.product_handle}`}
+        className="w-[120px] sm:w-[160px] aspect-[3/4] shrink-0 bg-neutral-100 overflow-hidden relative"
+      >
+        <Thumbnail
+          thumbnail={item.thumbnail}
+          images={item.variant?.product?.images}
+          size="full"
+          className="object-cover absolute inset-0 w-full h-full"
+        />
+      </LocalizedClientLink>
 
-      <Table.Cell className="text-left py-6">
-        <Text
-          className="text-xs md:text-sm font-bold uppercase tracking-[0.05em] text-neutral-950 mb-1"
-          data-testid="product-title"
-        >
-          {item.product_title}
-        </Text>
-        <div className="text-[11px] uppercase tracking-[0.05em] text-neutral-500">
-          <LineItemOptions variant={item.variant} data-testid="product-variant" />
+      <div className="flex flex-col flex-1 py-1 relative">
+        <div className="absolute top-0 right-0 flex gap-x-3 items-center">
+          <button className="text-neutral-400 hover:text-black transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+          </button>
+          <DeleteButton id={item.id} className="text-neutral-400 hover:text-black" data-testid="product-delete-button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </DeleteButton>
         </div>
-      </Table.Cell>
 
-      <Table.Cell>
-          <div className="flex gap-4 items-center w-32">
-            <DeleteButton id={item.id} data-testid="product-delete-button" />
-            <div className="flex items-center gap-x-2 border border-neutral-200 p-1">
-              <button
-                className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
-                onClick={() => changeQuantity(item.quantity - 1)}
-                disabled={item.quantity <= 1 || updating}
-                data-testid="decrease-quantity-button"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
-                </svg>
-              </button>
-              <span className="w-6 text-center text-xs font-semibold text-neutral-900" data-testid="product-quantity">
-                {item.quantity}
-              </span>
-              <button
-                className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
-                onClick={() => changeQuantity(item.quantity + 1)}
-                disabled={item.quantity >= maxQuantity || updating}
-                data-testid="increase-quantity-button"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-              </button>
-            </div>
+        <div className="pr-16 flex flex-col gap-y-1">
+          <LocalizedClientLink href={`/products/${item.product_handle}`}>
+            <Text className="text-[13px] font-normal text-neutral-900 leading-snug" data-testid="product-title">
+              {item.product_title}
+            </Text>
+          </LocalizedClientLink>
+          <div className="text-[13px] font-normal text-neutral-900">
+            <LineItemPrice item={item} style="tight" currencyCode={currencyCode} />
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-y-3 text-[13px]">
+          <div className="flex items-center gap-x-4 text-neutral-900">
+            <button
+              className="w-5 h-5 flex items-center justify-center text-neutral-500 hover:text-black transition-colors disabled:opacity-30"
+              onClick={() => changeQuantity(item.quantity - 1)}
+              disabled={item.quantity <= 1 || updating}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+              </svg>
+            </button>
+            <span className="font-medium text-[13px]">{item.quantity}</span>
+            <button
+              className="w-5 h-5 flex items-center justify-center text-neutral-500 hover:text-black transition-colors disabled:opacity-30"
+              onClick={() => changeQuantity(item.quantity + 1)}
+              disabled={item.quantity >= maxQuantity || updating}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
             {updating && <Spinner />}
           </div>
-          {managed && typeof stock === "number" && atMax && (
-            <Text className="text-[11px] text-neutral-500 mt-1">
-              Only {stock} in stock
-            </Text>
-          )}
-          <ErrorMessage error={error} data-testid="product-error-message" />
-        </Table.Cell>
 
-      <Table.Cell className="hidden small:table-cell">
-          <LineItemUnitPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </Table.Cell>
-      <Table.Cell className="!pr-0">
-        <span className="!pr-0">
-          <LineItemPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </span>
-      </Table.Cell>
-    </Table.Row>
+          <div className="flex items-center text-neutral-600 mt-1">
+            <div className="text-[12px] font-normal text-neutral-600 flex items-center gap-x-1">
+              <LineItemOptions variant={item.variant} data-testid="product-variant" />
+            </div>
+            <button className="text-[11px] uppercase tracking-wider text-neutral-500 underline ml-2 hover:text-black transition-colors">
+              Edit
+            </button>
+          </div>
+        </div>
+
+        <ErrorMessage error={error} data-testid="product-error-message" className="mt-2" />
+      </div>
+    </div>
   )
 }
 

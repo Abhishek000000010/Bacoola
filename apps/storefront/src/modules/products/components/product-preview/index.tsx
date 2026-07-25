@@ -123,10 +123,20 @@ export default function ProductPreview({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
              </svg>
           </div>
+
+          {/* Quick-add "+" (mobile only, Mango style) */}
+          <div
+            aria-hidden="true"
+            className="pp-plus small:hidden absolute bottom-0 right-0 z-10 flex h-7 w-7 items-center justify-center bg-white shadow-[0_1px_4px_rgba(0,0,0,0.12)]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-3.5 h-3.5 text-[#111111]">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+            </svg>
+          </div>
         </div>
 
-        {/* Mango-style Details Section */}
-        <div className="flex justify-between items-start pt-3 px-1">
+        {/* DESKTOP Details Section (Unchanged) */}
+        <div className="hidden small:flex justify-between items-start pt-3 px-1">
            <div className="flex flex-col gap-y-0.5">
               {/* Optional New Badge Mock */}
               <Text className="text-[9px] text-gray-900 uppercase tracking-widest font-semibold mb-0.5">
@@ -141,6 +151,20 @@ export default function ProductPreview({
            </div>
            
            <WishlistButton product={product} iconClassName="w-4 h-4" />
+        </div>
+
+        {/* MOBILE Details Section (Mango Style) */}
+        <div className="pp-m-details flex small:hidden flex-col pt-3 px-2 pb-4">
+           <div className="flex justify-between items-start gap-x-2">
+              <Text className="pp-m-title text-[12px] text-[#333333] leading-snug line-clamp-2" data-testid="product-title">
+                {title}
+              </Text>
+              <WishlistButton product={product} iconClassName="pp-m-heart w-4 h-4 flex-shrink-0 text-[#333333]" />
+           </div>
+
+           <div className="pp-m-price mt-1 text-[11.5px]">
+              {displayPrice && <PreviewPrice price={displayPrice} isMobileLayout={true} />}
+           </div>
         </div>
       </div>
     </LocalizedClientLink>

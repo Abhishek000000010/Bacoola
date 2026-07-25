@@ -16,12 +16,12 @@ export default function Footer() {
 
         <form
           onSubmit={(event) => event.preventDefault()}
-          className="flex w-full max-w-[500px] flex-row items-stretch"
+          className="flex w-full max-w-[500px] flex-row items-center"
         >
-          <div className="flex flex-1 flex-col border border-gray-300 bg-white text-left px-3 pt-2 relative">
+          <div className="flex flex-1 flex-col border border-gray-300 bg-white text-left px-3 relative h-[48px] justify-center">
             <label
               htmlFor="newsletter-form-email-input"
-              className="text-[11px] font-normal text-gray-500 absolute top-2 left-3"
+              className="text-[10px] font-normal text-gray-500 absolute top-1.5 left-3"
             >
               E-mail
             </label>
@@ -33,7 +33,7 @@ export default function Footer() {
               aria-required="true"
               placeholder=""
               required
-              className="h-[46px] w-full bg-transparent pt-3 text-[13px] font-normal text-[#111111] focus:outline-none"
+              className="w-full bg-transparent pt-3 text-[13px] font-normal text-[#111111] focus:outline-none"
             />
           </div>
 
@@ -68,7 +68,7 @@ export default function Footer() {
         </button>
       </div>
 
-      <div className="flex w-full flex-wrap justify-center gap-x-8 gap-y-3 border-b border-neutral-100 px-6 pb-16">
+      <div className="flex w-full flex-wrap justify-center gap-x-5 gap-y-5 sm:gap-x-8 sm:gap-y-3 border-b border-neutral-100 px-4 pb-12 sm:px-6 sm:pb-16">
         <a href="https://instagram.com" target="_blank" rel="noreferrer" className={footerLinkClass}>
           Instagram
         </a>
@@ -95,7 +95,7 @@ export default function Footer() {
         </a>
       </div>
 
-      <div className="mx-auto grid w-full max-w-none grid-cols-2 justify-items-start gap-x-8 gap-y-12 px-8 py-16 sm:px-10 md:grid-cols-4 xl:px-12">
+      <div className="mx-auto grid w-full max-w-none grid-cols-1 sm:grid-cols-2 justify-items-start gap-x-8 gap-y-10 px-8 py-12 sm:gap-y-12 sm:px-10 sm:py-16 md:grid-cols-4 xl:px-12">
         <div className="flex flex-col items-start gap-y-5">
           <LocalizedClientLink href="/help" className={footerLinkClass}>
             Help

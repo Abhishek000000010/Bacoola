@@ -38,9 +38,11 @@ const nextConfig = {
     }
     return config
   },
-  // Applies to `next dev --turbopack`, which does not read the webpack config.
   turbopack: {
-    resolveAlias: reactAliases,
+    resolveAlias: {
+      react: "./node_modules/react",
+      "react-dom": "./node_modules/react-dom",
+    },
   },
   experimental: {
     serverMinification: false,

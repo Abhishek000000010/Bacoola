@@ -24,15 +24,19 @@ type SideMenuProps = {
 const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, categories = [] }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<CategoryKey>("women")
+  const [activeSubcategory, setActiveSubcategory] = useState<HttpTypes.StoreProductCategory | null>(null)
   
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
 
   // Open and close helper functions
   const openDrawer = () => setIsOpen(true)
-  const closeDrawer = () => setIsOpen(false)
+  const closeDrawer = () => {
+    setIsOpen(false)
+    setTimeout(() => setActiveSubcategory(null), 300) // Reset after animation
+  }
 
-  // Listen for Escape key (handled by Headless UI Dialog automatically, but good to ensure)
+  // Listen for Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeDrawer()
@@ -47,9 +51,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
       <button
         data-testid="nav-menu-button"
         onClick={openDrawer}
-        className="relative h-full flex items-center text-xs uppercase tracking-[0.2em] font-semibold transition-all ease-out duration-200 focus:outline-none hover:text-neutral-500"
+        className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:opacity-70"
       >
-        Menu
+        <span className="hidden small:block text-xs uppercase tracking-[0.2em] font-semibold hover:text-neutral-500">
+          Menu
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-[#111111] small:hidden">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
       </button>
 
       {/* Navigation Drawer */}
@@ -81,90 +90,180 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                   leaveFrom="translate-x-0"
                   leaveTo="-translate-x-full"
                 >
-                  <DialogPanel className="pointer-events-auto w-screen max-w-full sm:max-w-[360px] md:max-w-[420px]">
-                    <div className="flex h-full flex-col bg-white shadow-xl select-none">
-                      {/* Top Bar with Tabs and Close button */}
-                      <div className="relative flex flex-col pt-8">
-                        <div className="absolute top-4 right-4 z-50">
+                  <DialogPanel className="pointer-events-auto w-screen max-w-full sm:max-w-[360px] md:max-w-[420px] bg-white shadow-xl overflow-hidden">
+                    {/* Double-width sliding container */}
+                    <div className={`flex w-full h-full transition-transform duration-300 ease-in-out ${activeSubcategory ? '-translate-x-full' : 'translate-x-0'}`}>
+                      
+                      {/* MAIN PANEL */}
+                      <div className="w-full flex-shrink-0 h-full flex flex-col bg-white select-none relative">
+                        {/* Top Bar with Tabs and Close button */}
+                        <div className="flex items-center justify-between border-b border-neutral-100 pl-8 pr-4 py-4">
+                          {/* Top Category Tabs (Women, Men, Teen, Kids) */}
+                          <CategoryTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                          
                           <button
                             onClick={closeDrawer}
                             data-testid="close-menu-button"
-                            className="p-2 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
+                            className="p-2 ml-4 flex-shrink-0 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
                             aria-label="Close panel"
                           >
                             <XMark className="w-6 h-6 stroke-[1.2px]" />
                           </button>
                         </div>
 
-                        {/* Top Category Tabs (Women, Men, Teen, Kids) */}
-                        <CategoryTabs activeTab={activeTab} onTabChange={setActiveTab} />
-                      </div>
+                        {/* Main Menu Scrollable Body */}
+                        <div className="relative flex-1 overflow-y-auto px-8 py-4 scrollbar-none">
+                          
+                          {/* View All Link for the active tab category */}
+                          <LocalizedClientLink
+                            href={`/landingpage/${activeTab}`}
+                            onClick={closeDrawer}
+                            className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200 mb-2"
+                          >
+                            VIEW ALL
+                          </LocalizedClientLink>
 
-                      {/* Main Menu Scrollable Body */}
-                      <div className="relative flex-1 overflow-y-auto px-8 py-4 scrollbar-none">
-                        {categories
-                          .filter((c) => c.parent_category_id === categories.find((cat) => cat.handle === activeTab)?.id)
-                          .map((cat) => (
-                            <LocalizedClientLink
-                              key={cat.id}
-                              href={`/categories/${cat.handle}`}
-                              onClick={closeDrawer}
-                              className={`block w-full text-left py-2 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
-                                cat.name.toUpperCase().includes("SALE")
-                                  ? "text-[#D01313] hover:text-[#B01010]"
-                                  : "text-[#111111] hover:text-neutral-500"
-                              }`}
+                          {categories
+                            .filter((c) => c.parent_category_id === categories.find((cat) => cat.handle === activeTab)?.id)
+                            .map((cat) => {
+                              const hasChildren = categories.some((c) => c.parent_category_id === cat.id);
+                              
+                              if (hasChildren) {
+                                return (
+                                  <button
+                                    key={cat.id}
+                                    onClick={() => setActiveSubcategory(cat)}
+                                    className={`block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                                      cat.name.toUpperCase().includes("SALE")
+                                        ? "text-[#D01313] hover:text-[#B01010]"
+                                        : "text-[#111111] hover:text-neutral-500"
+                                    }`}
+                                  >
+                                    {cat.name}
+                                  </button>
+                                );
+                              }
+
+                              return (
+                                <LocalizedClientLink
+                                  key={cat.id}
+                                  href={`/categories/${cat.handle}`}
+                                  onClick={closeDrawer}
+                                  className={`block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                                    cat.name.toUpperCase().includes("SALE")
+                                      ? "text-[#D01313] hover:text-[#B01010]"
+                                      : "text-[#111111] hover:text-neutral-500"
+                                  }`}
+                                >
+                                  {cat.name}
+                                </LocalizedClientLink>
+                              );
+                            })}
+                        </div>
+
+                        {/* Bottom Footer Section (Country / Language selection) */}
+                        <div className="border-t border-neutral-100 px-8 py-6 flex flex-col gap-y-4 bg-neutral-50/50">
+                          {!!locales?.length && (
+                            <div
+                              className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
+                              onMouseEnter={languageToggleState.open}
+                              onMouseLeave={languageToggleState.close}
                             >
-                              {cat.name}
-                            </LocalizedClientLink>
-                          ))}
-                      </div>
+                              <LanguageSelect
+                                toggleState={languageToggleState}
+                                locales={locales}
+                                currentLocale={currentLocale}
+                              />
+                              <ArrowRightMini
+                                className={clx(
+                                  "transition-transform duration-150 w-4 h-4",
+                                  languageToggleState.state ? "-rotate-90" : ""
+                                )}
+                              />
+                            </div>
+                          )}
 
-                      {/* Bottom Footer Section (Country / Language selection) */}
-                      <div className="border-t border-neutral-100 px-8 py-6 flex flex-col gap-y-4 bg-neutral-50/50">
-                        {!!locales?.length && (
                           <div
                             className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
-                            onMouseEnter={languageToggleState.open}
-                            onMouseLeave={languageToggleState.close}
+                            onMouseEnter={countryToggleState.open}
+                            onMouseLeave={countryToggleState.close}
                           >
-                            <LanguageSelect
-                              toggleState={languageToggleState}
-                              locales={locales}
-                              currentLocale={currentLocale}
-                            />
+                            {regions && (
+                              <CountrySelect
+                                toggleState={countryToggleState}
+                                regions={regions}
+                              />
+                            )}
                             <ArrowRightMini
                               className={clx(
                                 "transition-transform duration-150 w-4 h-4",
-                                languageToggleState.state ? "-rotate-90" : ""
+                                countryToggleState.state ? "-rotate-90" : ""
                               )}
                             />
                           </div>
-                        )}
 
-                        <div
-                          className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
-                          onMouseEnter={countryToggleState.open}
-                          onMouseLeave={countryToggleState.close}
-                        >
-                          {regions && (
-                            <CountrySelect
-                              toggleState={countryToggleState}
-                              regions={regions}
-                            />
-                          )}
-                          <ArrowRightMini
-                            className={clx(
-                              "transition-transform duration-150 w-4 h-4",
-                              countryToggleState.state ? "-rotate-90" : ""
-                            )}
-                          />
-                        </div>
-
-                        <div className="text-[10px] text-neutral-400 uppercase tracking-widest mt-2 select-none">
-                          © {new Date().getFullYear()} Bacoola. All rights reserved.
+                          <div className="text-[10px] text-neutral-400 uppercase tracking-widest mt-2 select-none">
+                            © {new Date().getFullYear()} Bacoola. All rights reserved.
+                          </div>
                         </div>
                       </div>
+
+                      {/* SUBMENU PANEL */}
+                      <div className="w-full flex-shrink-0 h-full flex flex-col bg-white select-none">
+                        {activeSubcategory && (
+                          <>
+                            {/* Submenu Header */}
+                            <div className="flex items-center justify-between pl-4 pr-4 pt-4 pb-4 border-b border-neutral-100">
+                              <div className="flex items-center gap-x-2">
+                                <button
+                                  onClick={() => setActiveSubcategory(null)}
+                                  className="p-2 text-[#111111] hover:text-neutral-500 transition-colors focus:outline-none"
+                                  aria-label="Back"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                                  </svg>
+                                </button>
+                                <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#111111]">
+                                  {activeSubcategory.name} <span className="text-neutral-400 ml-1">{activeTab}</span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={closeDrawer}
+                                className="p-2 text-neutral-400 hover:text-black transition-colors focus:outline-none"
+                              >
+                                <XMark className="w-6 h-6 stroke-[1.2px]" />
+                              </button>
+                            </div>
+
+                            {/* Submenu Scrollable List */}
+                            <div className="flex-1 overflow-y-auto px-8 py-6 scrollbar-none">
+                              <LocalizedClientLink
+                                href={`/categories/${activeSubcategory.handle}`}
+                                onClick={closeDrawer}
+                                className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200 mb-2"
+                              >
+                                SEE ALL
+                              </LocalizedClientLink>
+
+                              {categories
+                                .filter((c) => c.parent_category_id === activeSubcategory.id)
+                                .filter((c) => c.name.toUpperCase() !== "SEE ALL")
+                                .map((subcat) => (
+                                  <LocalizedClientLink
+                                    key={subcat.id}
+                                    href={`/categories/${subcat.handle}`}
+                                    onClick={closeDrawer}
+                                    className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200"
+                                  >
+                                    {subcat.name}
+                                  </LocalizedClientLink>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+
                     </div>
                   </DialogPanel>
                 </TransitionChild>

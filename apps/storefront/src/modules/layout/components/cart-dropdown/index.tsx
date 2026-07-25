@@ -87,10 +87,24 @@ const CartDropdown = ({
       <Popover className="relative h-full">
         <PopoverButton className="h-full focus:outline-none">
           <LocalizedClientLink
-            className="text-[14px] font-semibold uppercase tracking-wider text-[#111111] hover:text-[#555555] transition-colors duration-200"
+            className="hover:opacity-70 transition-opacity duration-200 flex items-center"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Bag (${totalItems})`}</LocalizedClientLink>
+          >
+            <span className="hidden small:block text-[14px] font-semibold uppercase tracking-wider text-[#111111]">
+              {`Bag (${totalItems})`}
+            </span>
+            <div className="small:hidden relative flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] text-[#111111]">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+              </svg>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                  {totalItems}
+                </span>
+              )}
+            </div>
+          </LocalizedClientLink>
         </PopoverButton>
         <Transition
           show={cartDropdownOpen}

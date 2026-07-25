@@ -15,14 +15,14 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({ activeTab, onTabChange }) =
   ]
 
   return (
-    <div className="flex border-b border-neutral-100 px-8 py-4 relative select-none">
+    <div className="flex flex-1 relative select-none gap-x-5 overflow-x-auto scrollbar-none">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.key
         return (
           <button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
-            className={`flex-1 text-center py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 relative focus:outline-none ${
+            className={`py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 relative focus:outline-none whitespace-nowrap ${
               isActive ? "text-black font-bold" : "text-neutral-400 hover:text-neutral-600"
             }`}
           >

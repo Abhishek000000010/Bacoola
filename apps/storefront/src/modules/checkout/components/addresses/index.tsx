@@ -46,13 +46,10 @@ const Addresses = ({
 
   return (
     <div className="bg-white">
-      <div className="mb-7 flex flex-col items-center justify-center pb-4">
-        <Heading
-          level="h2"
-          className="text-base font-bold uppercase tracking-[0.05em] text-[#111111] text-center"
-        >
-          Add Delivery Address
-        </Heading>
+      <div className="mb-5 flex flex-col justify-center">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.05em] text-black">
+          Delivery Details
+        </h2>
       </div>
       <form action={formAction}>
         <div className="pb-7">
@@ -77,14 +74,35 @@ const Addresses = ({
               </div>
             </div>
           )}
+
+          {/* Account Creation Simulation for UI purposes */}
+          <div className="mt-8 mb-6">
+            <p className="text-[13px] text-neutral-800 mb-4">
+              Create your account in one step and manage your orders easily (optional)
+            </p>
+            <div className="mb-4">
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full h-12 px-4 border border-neutral-300 text-[13px] text-neutral-900 placeholder:text-neutral-500 focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="flex items-start gap-x-3">
+              <input type="checkbox" id="newsletter" className="mt-1 h-4 w-4 border-neutral-300 text-black focus:ring-black" />
+              <label htmlFor="newsletter" className="text-[13px] text-neutral-800">
+                I would like personalised offers, news and the latest trends
+              </label>
+            </div>
+          </div>
+
           <SubmitButton
-            className="mt-6 h-[50px] w-full rounded-none px-6 tracking-[0.05em]"
+            className="mt-2 h-[50px] w-full rounded-none bg-black text-white px-6 text-[11px] font-bold uppercase tracking-[0.05em] hover:bg-neutral-800"
             data-testid="submit-address-button"
           >
-            Confirm Address
+            Continue to Payment
           </SubmitButton>
-          <p className="mt-4 text-center text-[12px] text-neutral-600">
-            By continuing, you confirm you have read the <span className="font-semibold text-black">Privacy Policy</span>
+          <p className="mt-4 text-center text-[11px] text-neutral-600">
+            By continuing, you confirm you have read the <span className="font-bold text-black border-b border-black cursor-pointer hover:text-neutral-500 hover:border-neutral-500">Privacy Policy</span>
           </p>
           <ErrorMessage error={message} data-testid="address-error-message" />
         </div>
