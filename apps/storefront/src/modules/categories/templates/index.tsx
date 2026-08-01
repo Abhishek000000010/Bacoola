@@ -107,8 +107,14 @@ export default async function CategoryTemplate({
   // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
     <CategoryProductListing
-      category={category}
-      parents={parents}
+      // Crumbs only -- passing the categories themselves would drag their whole
+      // child/parent subtree into the page (see CategoryCrumb).
+      category={{ id: category.id, name: category.name }}
+      parents={parents.map((p) => ({
+        id: p.id,
+        name: p.name,
+        handle: p.handle,
+      }))}
       categoryIds={allCategoryIds}
       countryCode={countryCode}
       sortBy={sort}

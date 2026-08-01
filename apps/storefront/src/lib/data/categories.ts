@@ -22,8 +22,12 @@ import { cache } from "react"
  * descendant-id collection, search) must NOT use this -- omit `fields` and take
  * the default.
  */
+// `rank` is deliberately absent: nothing in the nav reads it, and it was 490
+// numbers serialised into every page on the site. `metadata` is fetched whole
+// because the store API can't select a single JSON key, but Nav strips it down
+// to the one entry the promo banner reads before handing it to the client.
 export const CATEGORY_LINK_FIELDS =
-  "id,name,handle,parent_category_id,metadata,rank"
+  "id,name,handle,parent_category_id,metadata"
 
 export const listCategories = cache(async (query?: Record<string, unknown>) => {
   const next = {

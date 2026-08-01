@@ -7,6 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
+import { ProductCard, toProductCards } from "@lib/util/product-cards"
 import { cache } from "react"
 
 type ProductListQueryParams = (HttpTypes.FindParams &
@@ -304,7 +305,7 @@ export async function loadStoreProducts({
   countryCode: string
   optionValueIds?: OptionValueIds
   q?: string
-}): Promise<{ products: HttpTypes.StoreProduct[]; nextPage: number | null }> {
+}): Promise<{ cards: ProductCard[]; nextPage: number | null }> {
   const queryParams: ProductListQueryParams & { q?: string } = { limit: 12 }
 
   if (q) queryParams.q = q
@@ -327,7 +328,9 @@ export async function loadStoreProducts({
     tier: "medium",
   })
 
-  return { products, nextPage }
+  // Split into colourway tiles here rather than in the browser: the raw variant
+  // list is the bulk of the payload, and this way it never crosses the wire.
+  return { cards: toProductCards(products), nextPage }
 }
 
 // A category opts into sale pricing by carrying metadata.sale_percent (0<n<100),

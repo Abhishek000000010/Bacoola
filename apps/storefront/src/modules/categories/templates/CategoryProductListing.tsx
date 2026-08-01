@@ -9,9 +9,23 @@ import { getCategoryFacets } from "@lib/data/category-facets"
 import { CardFacet, FacetIndex } from "@lib/util/product-filters"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
+/**
+ * Just the header crumb, not the category.
+ *
+ * A `StoreProductCategory` carries `category_children` and a `parent_category`
+ * chain, so handing one to a client component serialises a whole subtree into
+ * the page -- on /categories/men that was 1185 category records to render a
+ * breadcrumb and a heading. Callers pass these fields and nothing else.
+ */
+export type CategoryCrumb = {
+  id: string
+  name?: string | null
+  handle?: string | null
+}
+
 interface CategoryProductListingProps {
-  category: HttpTypes.StoreProductCategory
-  parents: HttpTypes.StoreProductCategory[]
+  category: CategoryCrumb
+  parents: CategoryCrumb[]
   /** Defaults to just this category when the caller has no wider set. */
   categoryIds?: string[]
   countryCode?: string

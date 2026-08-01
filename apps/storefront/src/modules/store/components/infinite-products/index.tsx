@@ -1,9 +1,8 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { HttpTypes } from "@medusajs/types"
+import { useCallback, useEffect, useRef, useState } from "react"
 
-import { getVariantCards } from "@lib/util/variant-cards"
+import { ProductCard } from "@lib/util/product-cards"
 import { loadStoreProducts } from "@lib/data/products"
 import { OptionValueIds } from "@lib/util/product-option-filters"
 import ProductPreview from "@modules/products/components/product-preview"
@@ -24,26 +23,28 @@ export type InfiniteProductsLoadParams = {
 /**
  * The listing grid as one continuous, infinitely scrolling column.
  *
- * Page one is rendered on the server and handed in as `initialProducts`; further
+ * Page one is rendered on the server and handed in as `initialCards`; further
  * pages are pulled in as the shopper nears the bottom, via the loadStoreProducts
  * server action. Each colourway tile reveals with the same fade-in used by the
  * "You may also like" strip, so cards ease in as they scroll into view instead
  * of the page snapping between numbered pages.
+ *
+ * Tiles arrive pre-split and pre-trimmed (see `toProductCards`). Doing the
+ * colourway split here instead meant every raw variant had to be serialised
+ * into the page to feed it -- the bulk of a category page's weight.
  */
 export default function InfiniteProducts({
-  initialProducts,
+  initialCards,
   initialNextPage,
-  region,
   gridClasses,
   loadParams,
 }: {
-  initialProducts: HttpTypes.StoreProduct[]
+  initialCards: ProductCard[]
   initialNextPage: number | null
-  region: HttpTypes.StoreRegion
   gridClasses: string
   loadParams: InfiniteProductsLoadParams
 }) {
-  const [products, setProducts] = useState(initialProducts)
+  const [cards, setCards] = useState(initialCards)
   const [nextPage, setNextPage] = useState(initialNextPage)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -59,11 +60,11 @@ export default function InfiniteProducts({
     setIsLoading(true)
 
     try {
-      const { products: more, nextPage: newNextPage } = await loadStoreProducts({
+      const { cards: more, nextPage: newNextPage } = await loadStoreProducts({
         page: nextPage,
         ...loadParams,
       })
-      setProducts((prev) => [...prev, ...more])
+      setCards((prev) => [...prev, ...more])
       setNextPage(newNextPage)
     } catch {
       // Leave nextPage as-is so nearing the sentinel again can retry.
@@ -90,23 +91,16 @@ export default function InfiniteProducts({
     return () => observer.disconnect()
   }, [loadMore, nextPage])
 
-  // One tile per colourway, matching the paginated grid it replaces.
-  const cards = useMemo(
-    () =>
-      products.flatMap((p) => getVariantCards(p).map((card) => ({ p, card }))),
-    [products]
-  )
-
   return (
     <>
       <ul
         className={`grid ${gridClasses} w-full gap-x-[2px] gap-y-12 bg-white`}
         data-testid="products-list"
       >
-        {cards.map(({ p, card }) => (
+        {cards.map(({ product, card }) => (
           <li key={card.key}>
             <FadeIn randomize={true}>
-              <ProductPreview product={p} region={region} card={card} />
+              <ProductPreview product={product} card={card} />
             </FadeIn>
           </li>
         ))}

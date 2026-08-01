@@ -28,6 +28,22 @@ export default async function Nav() {
     retrieveCustomer(),
   ])
 
+  // The nav renders on every page and hands this list to three client
+  // components, so each field here is paid for site-wide. Only `sale_percent`
+  // is ever read off metadata (by PromoBanner); the rest of the blob -- and the
+  // ancestor shape the store API returns alongside it -- is dropped here rather
+  // than serialised into every page.
+  const navCategories = categories.map((c: any) => ({
+    id: c.id,
+    name: c.name,
+    handle: c.handle,
+    parent_category_id: c.parent_category_id,
+    metadata:
+      c.metadata?.sale_percent != null
+        ? { sale_percent: c.metadata.sale_percent }
+        : null,
+  }))
+
   return (
     <>
     <div className="sticky top-0 inset-x-0 z-50">
@@ -39,7 +55,7 @@ export default async function Nav() {
             
             {/* Left Section: Navigation links */}
             <div className="flex justify-start items-center h-full">
-              <HeaderLinks categories={categories} />
+              <HeaderLinks categories={navCategories} />
             </div>
 
             {/* Center Section: Store Logo */}
@@ -97,7 +113,7 @@ export default async function Nav() {
             {/* Left: Mobile SideMenu & Phone Logo */}
             <div className="flex-1 basis-0 flex items-center justify-start gap-x-4 h-full">
               <div className="h-full flex items-center">
-                <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} categories={categories} />
+                <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} categories={navCategories} />
               </div>
               <LocalizedClientLink
                 href="/"
@@ -168,7 +184,7 @@ export default async function Nav() {
     </div>
 
     {/* Promotional Red Banner - non-sticky, scrolls away while the header stays pinned */}
-    <PromoBanner categories={categories} />
+    <PromoBanner categories={navCategories} />
     </>
   )
 }

@@ -14,12 +14,16 @@ import { VariantCard } from "@lib/util/variant-cards"
 export default function ProductPreview({
   product,
   isFeatured,
-  region: _region,
   card,
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
-  region: HttpTypes.StoreRegion
+  /**
+   * Unused, and optional so callers can stop sending it. This is a client
+   * component, so anything passed here is serialised into the page for every
+   * tile on it -- a whole region object per card, for nothing.
+   */
+  region?: HttpTypes.StoreRegion
   /**
    * Renders this tile as a single colourway instead of the whole product.
    * Listing pages pass one card per colour; rails and related-product strips

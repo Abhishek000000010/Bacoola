@@ -1,6 +1,7 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { OptionValueIds } from "@lib/util/product-option-filters"
+import { toProductCards } from "@lib/util/product-cards"
 import InfiniteProducts from "@modules/store/components/infinite-products"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -113,9 +114,8 @@ export default async function PaginatedProducts({
       // Re-fetching for a new sort/filter changes this key, so the client grid
       // remounts with the fresh first page instead of appending onto the old one.
       key={JSON.stringify({ sort, collectionId, categoryId, productsIds, optionValueIds, q })}
-      initialProducts={products}
+      initialCards={toProductCards(products)}
       initialNextPage={nextPage}
-      region={region}
       gridClasses={gridClasses}
       loadParams={{
         sortBy: sort,
