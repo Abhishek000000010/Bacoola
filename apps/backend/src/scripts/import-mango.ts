@@ -102,7 +102,7 @@ export default async function importMango({ container }: { container: MedusaCont
       const handle = generateHandle(title, prodIndex);
       const description = "Premium quality T-shirt from Mango.";
       
-      const images = []
+      const images: { url: string }[] = []
       if (thumbnail) images.push({ url: thumbnail })
       if (img1) images.push({ url: img1 })
       if (img2) images.push({ url: img2 })
