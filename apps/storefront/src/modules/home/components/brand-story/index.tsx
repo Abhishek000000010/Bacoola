@@ -14,7 +14,7 @@ export const BrandStory: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-xs font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-6"
+          className="text-xs lg:text-sm font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-6"
         >
           Our Philosophy
         </motion.span>
@@ -41,7 +41,7 @@ export const BrandStory: React.FC = () => {
         >
           <LocalizedClientLink
             href="/store"
-            className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-[#111111] border-b-[1.5px] border-black pb-1 hover:text-neutral-500 hover:border-neutral-400 transition-colors duration-300"
+            className="text-[12px] lg:text-[14px] sm:text-xs lg:text-sm font-semibold uppercase tracking-[0.3em] text-[#111111] border-b-[1.5px] border-black pb-1 hover:text-neutral-500 hover:border-neutral-400 transition-colors duration-300"
           >
             Learn More
           </LocalizedClientLink>

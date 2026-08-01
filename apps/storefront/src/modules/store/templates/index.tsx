@@ -43,7 +43,7 @@ const StoreTemplate = ({
         {/* Filter & Order Header */}
         <div className="flex justify-between items-center mb-2 text-sm font-medium tracking-wide">
            <div className="flex gap-4 items-center relative z-20 group">
-              <span className="cursor-pointer hover:underline uppercase text-xs md:text-sm font-bold tracking-wider">Filter and order</span>
+              <span className="nav-underline cursor-pointer uppercase text-xs lg:text-sm md:text-sm font-bold tracking-wider">Filter and order</span>
               {/* Dropdown for functional existing RefinementList */}
               <div className="absolute top-full left-0 bg-white shadow-elevation-card-rest rounded-lg p-2 hidden group-hover:block w-[300px] border border-gray-100 transition-opacity">
                 <RefinementList sortBy={sort} />

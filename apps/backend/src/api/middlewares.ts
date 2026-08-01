@@ -5,6 +5,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { parseSalePercent } from "../lib/sale-prices"
 
 /**
  * Refuses to publish a product whose variants lack shipping dimensions.
@@ -72,6 +73,7 @@ export async function validateProductPublish(
     let currentStatus: string | undefined
     let storedVariants: any[] = []
     let storedProfileId: string | undefined
+    let storedOptions: any[] = []
 
     if (productId) {
       const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -81,6 +83,8 @@ export async function validateProductPublish(
           "id",
           "status",
           "shipping_profile.id",
+          "options.title",
+          "options.values.value",
           "variants.id",
           "variants.title",
           "variants.sku",
@@ -92,6 +96,7 @@ export async function validateProductPublish(
       currentStatus = data?.[0]?.status
       storedVariants = data?.[0]?.variants ?? []
       storedProfileId = data?.[0]?.shipping_profile?.id
+      storedOptions = data?.[0]?.options ?? []
     }
 
     const resultingStatus = body.status ?? currentStatus
@@ -119,6 +124,25 @@ export async function validateProductPublish(
           `Cannot publish: this product has no shipping profile. ` +
           `Without one the cart cannot be completed -- the customer's payment goes through ` +
           `but no order is ever created. Select a shipping profile on the product first.`,
+      })
+    }
+
+    // A "Size" option with at least one value is required to publish. Without it
+    // the storefront has no size picker and falls back to a hardcoded XS-XL strip
+    // that does not reflect what is actually sellable. Gated at publish (not
+    // create) so a product can be drafted first and sized before going live.
+    // Options named in the request win; otherwise fall back to what is stored.
+    const options: any[] = Array.isArray(body.options) ? body.options : storedOptions
+    const sizeOption = options.find((o) => SIZE_OPTION.test((o?.title ?? "").trim()))
+    const sizeValues: any[] = Array.isArray(sizeOption?.values) ? sizeOption.values : []
+
+    if (!sizeOption || !sizeValues.length) {
+      return res.status(400).json({
+        type: "invalid_data",
+        message:
+          `Cannot publish: a "Size" option with at least one value is required. ` +
+          `Without it the storefront has no size picker to show. ` +
+          `Add an option titled "Size" (e.g. S, M, L, XL) before publishing.`,
       })
     }
 
@@ -220,18 +244,15 @@ export async function validateVariantPublish(
 }
 
 /**
- * Requires every new product to define a Size option.
- *
- * Products created without one render no size picker on the storefront, so the
- * customer has nothing to choose and the listing's size bar falls back to a
- * hardcoded XS-XL strip that does not reflect what is actually sellable.
- *
- * Enforced on CREATE only. Options are part of the create payload, so this is
- * the one moment the whole set is visible in a single request; policing later
- * edits would block ordinary changes to products that predate the rule.
+ * Matches an option titled "Size" / "Sizes" (case-insensitive). A published
+ * product must carry one -- enforced by validateProductPublish, which gates at
+ * publish rather than create so products can be drafted first and sized before
+ * going live.
  */
 const SIZE_OPTION = /^sizes?$/i
 
+// Retained for callers/tests that still reference it; publish gating now lives
+// in validateProductPublish.
 export async function validateSizeOption(
   req: MedusaRequest,
   res: MedusaResponse,
@@ -262,61 +283,93 @@ export async function validateSizeOption(
 }
 
 /**
- * Root categories that represent a shop section. A product belongs to exactly
- * one of them.
- */
-const ROOT_SECTIONS = ["women", "men", "teen", "kids"]
-
-/**
- * Refuses to link a product into more than one root section.
+ * Enforces that a product lives in a single sub-category.
  *
- * A product in two sections is listed under both, so a women's product shows up
- * on a men's sale page with a men's discount on it. This is invisible in the
- * admin -- each individual category assignment looks reasonable on its own --
- * and only surfaces as a customer clicking a men's sale tile and landing on a
- * women's product page. Categories *within* one section stay unrestricted, so
- * the normal "Clothing > T-shirts" plus "Sale" pairing still works.
+ * A "sub-category" is any real, non-sale category (e.g. "Men > T-shirts"). A
+ * product may be linked to exactly one of them, plus any number of sale
+ * categories -- a sale category being one that (itself or via an ancestor)
+ * carries `metadata.sale_percent`. So "Men > T-shirts" + "Men > Sale" is fine,
+ * but "Men > T-shirts" + "Men > Jeans" is not.
+ *
+ * This makes "same category" unambiguous, which the storefront's price-ranked
+ * recommendations rely on: each product resolves to one category, so the set of
+ * products to recommend (and sort by nearest price) has a single clear source.
+ *
+ * Linking to both a category and its own ancestor (e.g. "Men" and
+ * "Men > T-shirts") counts as one membership -- the deepest node wins.
  */
-async function sectionsOf(req: MedusaRequest, categoryIds: string[]): Promise<Map<string, string>> {
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const { data: categories } = await query.graph({
-    entity: "product_category",
-    fields: ["id", "handle", "parent_category_id"],
-  })
-
-  const byId = new Map<string, any>(categories.map((c: any) => [c.id, c]))
-  const sections = new Map<string, string>()
-
-  for (const id of categoryIds) {
-    let current = byId.get(id)
-    let guard = 0
-    while (current?.parent_category_id && guard++ < 10) {
-      current = byId.get(current.parent_category_id)
-    }
-    if (current?.handle) {
-      sections.set(id, current.handle)
-    }
-  }
-
-  return sections
+type Cat = {
+  id: string
+  handle?: string
+  parent_category_id?: string | null
+  metadata?: Record<string, unknown> | null
 }
 
-const rejectMultiSection = (res: MedusaResponse, found: string[], detail: string) =>
+async function loadCategories(req: MedusaRequest): Promise<Map<string, Cat>> {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const { data } = await query.graph({
+    entity: "product_category",
+    fields: ["id", "handle", "parent_category_id", "metadata"],
+  })
+  return new Map<string, Cat>((data as Cat[]).map((c) => [c.id, c]))
+}
+
+// The category and its ancestors, nearest first (index 0 is the category itself).
+function ancestorsOf(byId: Map<string, Cat>, id: string): Cat[] {
+  const chain: Cat[] = []
+  let current = byId.get(id)
+  let guard = 0
+  while (current && guard++ < 20) {
+    chain.push(current)
+    current = current.parent_category_id ? byId.get(current.parent_category_id) : undefined
+  }
+  return chain
+}
+
+// A category is "sale" when it or any ancestor declares metadata.sale_percent.
+function isSaleCategory(byId: Map<string, Cat>, id: string): boolean {
+  return ancestorsOf(byId, id).some(
+    (c) => parseSalePercent(c.metadata?.sale_percent) !== null
+  )
+}
+
+/**
+ * The distinct non-sale sub-categories a set of memberships resolves to. A
+ * category that is a strict ancestor of another selected category is dropped, so
+ * a path like "Men" + "Men > T-shirts" collapses to just the leaf.
+ */
+function distinctSubCategories(byId: Map<string, Cat>, categoryIds: string[]): Cat[] {
+  const nonSale = [...new Set(categoryIds)].filter(
+    (id) => byId.has(id) && !isSaleCategory(byId, id)
+  )
+  const leaves = nonSale.filter(
+    (id) =>
+      !nonSale.some(
+        (other) =>
+          other !== id && ancestorsOf(byId, other).slice(1).some((a) => a.id === id)
+      )
+  )
+  return leaves.map((id) => byId.get(id)!)
+}
+
+const labelOf = (c: Cat): string => c.handle ?? c.id
+
+const rejectMultiCategory = (res: MedusaResponse, found: Cat[], detail: string) =>
   res.status(400).json({
     type: "invalid_data",
     message:
-      `Cannot save: this product would belong to ${found.length} sections (${found.join(", ")}). ` +
-      `A product must live in a single section. ${detail}`,
+      `Cannot save: this product would belong to ${found.length} sub-categories ` +
+      `(${found.map(labelOf).join(", ")}). A product must live in a single ` +
+      `sub-category (sale categories aside). ${detail}`,
   })
 
-export async function validateSingleSection(
+export async function validateSingleCategory(
   req: MedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction
 ) {
   try {
     const body = (req.body ?? {}) as any
-    const productId = (req.params as any)?.id
 
     // The admin sends either shape depending on the screen used.
     const incoming: string[] = Array.isArray(body.category_ids)
@@ -330,16 +383,14 @@ export async function validateSingleSection(
       return next()
     }
 
-    const sections = await sectionsOf(req, incoming)
-    const found = [...new Set([...sections.values()])].filter((s) =>
-      ROOT_SECTIONS.includes(s)
-    )
+    const byId = await loadCategories(req)
+    const subCategories = distinctSubCategories(byId, incoming)
 
-    if (found.length > 1) {
-      return rejectMultiSection(
+    if (subCategories.length > 1) {
+      return rejectMultiCategory(
         res,
-        found,
-        `Remove the categories that do not belong to the section this product is sold in.`
+        subCategories,
+        `Keep only the one sub-category this product actually belongs to.`
       )
     }
 
@@ -367,8 +418,11 @@ export async function validateCategoryProducts(
       return next()
     }
 
-    const targetSection = (await sectionsOf(req, [categoryId])).get(categoryId)
-    if (!targetSection || !ROOT_SECTIONS.includes(targetSection)) {
+    const byId = await loadCategories(req)
+
+    // Adding a product into a sale category never creates a second sub-category,
+    // so it is always allowed.
+    if (isSaleCategory(byId, categoryId)) {
       return next()
     }
 
@@ -383,22 +437,18 @@ export async function validateCategoryProducts(
 
     for (const product of products as any[]) {
       const existing = (product.categories ?? []).map((c: any) => c.id)
-      if (!existing.length) continue
+      const resulting = distinctSubCategories(byId, [...existing, categoryId])
 
-      const sections = await sectionsOf(req, existing)
-      const found = [...new Set([...sections.values()])].filter((s) =>
-        ROOT_SECTIONS.includes(s) && s !== targetSection
-      )
-
-      if (found.length) {
-        conflicts.push(`${product.handle} (already in ${found.join(", ")})`)
+      if (resulting.length > 1) {
+        const others = resulting.filter((c) => c.id !== categoryId)
+        conflicts.push(`${product.handle} (already in ${others.map(labelOf).join(", ")})`)
       }
     }
 
     if (conflicts.length) {
-      return rejectMultiSection(
+      return rejectMultiCategory(
         res,
-        [targetSection, "another section"],
+        [byId.get(categoryId)!, { id: "other", handle: "another sub-category" }],
         `Conflicting products: ${conflicts.join("; ")}.`
       )
     }
@@ -463,12 +513,12 @@ export default defineMiddlewares({
     {
       matcher: "/admin/products",
       method: "POST",
-      middlewares: [validateSizeOption, validateProductPublish, validateSingleSection],
+      middlewares: [validateProductPublish, validateSingleCategory],
     },
     {
       matcher: "/admin/products/:id",
       method: "POST",
-      middlewares: [validateProductPublish, validateSingleSection],
+      middlewares: [validateProductPublish, validateSingleCategory],
     },
     {
       matcher: "/admin/product-categories/:id/products",

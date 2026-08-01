@@ -31,7 +31,7 @@ export default async function Profile() {
       data-testid="profile-page-wrapper"
     >
       <div className="w-full max-w-[420px]">
-        <h1 className="text-[13px] font-bold uppercase tracking-wide mb-[34px]">
+        <h1 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wide mb-[34px]">
           MY DETAILS
         </h1>
         
@@ -45,7 +45,7 @@ export default async function Profile() {
           <ProfileGender customer={customer} />
           
           <div className="w-full flex items-start mt-[4px]">
-            <button className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none">
+            <button className="text-[12px] lg:text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none">
               Delete Account
             </button>
           </div>
@@ -67,17 +67,17 @@ const DetailRow = ({ label, value, action, "data-testid": dataTestid }: DetailRo
     <div className="w-full mb-[28px]" data-testid={dataTestid}>
       <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-start gap-x-4">
         <div className="flex flex-col items-start">
-          <span className="text-[14px] font-semibold leading-[1.3] text-[#111111]">
+          <span className="text-[12px] lg:text-[14px] font-semibold leading-[1.3] text-[#111111]">
             {label}
           </span>
-          <span className="mt-[2px] text-[14px] font-normal leading-[1.6] text-[#111111]">
+          <span className="mt-[2px] text-[12px] lg:text-[14px] font-normal leading-[1.6] text-[#111111]">
             {value}
           </span>
         </div>
         <div className="flex justify-start pt-0">
           <button
             type="button"
-            className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
+            className="text-[12px] lg:text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
           >
             {action}
           </button>

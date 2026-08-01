@@ -7,6 +7,7 @@ import { HttpTypes, StoreRegion } from "@medusajs/types"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { parseOptionValueIds } from "@lib/util/product-option-filters"
+import { parseFilterParams } from "@lib/util/product-filters"
 
 type Props = {
   params: Promise<{ category: string[]; countryCode: string }>
@@ -57,6 +58,7 @@ export default async function CategoryPage(props: Props) {
   const params = await props.params
   const { sortBy, page } = searchParams
   const optionValueIds = parseOptionValueIds(searchParams)
+  const filters = parseFilterParams(searchParams)
 
   let productCategory: HttpTypes.StoreProductCategory | undefined
 
@@ -77,6 +79,7 @@ export default async function CategoryPage(props: Props) {
       page={page}
       countryCode={params.countryCode}
       optionValueIds={optionValueIds}
+      filters={filters}
     />
   )
 }

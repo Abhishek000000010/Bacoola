@@ -66,7 +66,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   }
 
   return (
-    <div className="flex items-center gap-x-[28px] h-full relative">
+    <div className="flex items-center gap-x-[20px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         const isHighlighted = activeCategory ? activeCategory === key : active
@@ -81,19 +81,21 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none group",
+                "h-full flex items-center text-[12px] leading-none font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none group",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >
-              <span className="relative py-1 overflow-hidden">
+              {/* Shared .nav-underline (Mango-style fade). nav-underline-active
+                  keeps the line lit while the mega menu is open; :hover covers
+                  the rest. No vertical padding on the span so the line hugs the
+                  text at the same ~4px gap as the Search/Bag links. */}
+              <span
+                className={clx(
+                  "nav-underline",
+                  isHighlighted && "nav-underline-active"
+                )}
+              >
                 {label}
-                <span
-                  className={clx(
-                    "absolute -bottom-[2px] left-0 h-[2px] bg-[#111111] transition-transform duration-300 ease-out w-full",
-                    isHighlighted ? "scale-x-100" : "scale-x-0"
-                  )}
-                  style={{ transformOrigin: "left" }}
-                />
               </span>
             </LocalizedClientLink>
           </div>

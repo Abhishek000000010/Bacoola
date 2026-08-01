@@ -30,13 +30,13 @@ export const Newsletter: React.FC = () => {
           />
           <button
             type="submit"
-            className="border border-black bg-white hover:bg-black hover:text-white text-black text-xs font-semibold tracking-widest uppercase px-8 py-3.5 transition-all duration-300 shrink-0"
+            className="border border-black bg-white hover:bg-black hover:text-white text-black text-xs lg:text-sm font-semibold tracking-widest uppercase px-8 py-3.5 transition-all duration-300 shrink-0"
           >
             Sign Up Now
           </button>
         </form>
 
-        <p className="text-[11px] text-neutral-500 font-light leading-relaxed">
+        <p className="text-[12px] lg:text-[14px] text-neutral-500 font-light leading-relaxed">
           By subscribing, you confirm that you have read the{" "}
           <a href="#" className="underline hover:text-black transition-colors font-normal">
             Privacy Policy

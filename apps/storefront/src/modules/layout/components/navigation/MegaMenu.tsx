@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+// nav-underline links use leading-none so the hover line hugs the text
 import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -79,7 +80,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
       {/* 1. Backdrop Overlay */}
       <div
         onClick={onMouseLeave}
-        className={`fixed top-[56px] left-0 right-0 bottom-0 bg-black/15 z-[998] transition-opacity duration-300 ${
+        className={`fixed top-[56px] left-0 right-0 bottom-0 z-[998] transition-opacity duration-300 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       />
@@ -88,13 +89,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
       <div
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className={`fixed top-[56px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col shadow-2xl overflow-hidden ${
+        className={`fixed top-[56px] left-0 bottom-0 bg-white z-[999] transition-all duration-300 ease-out select-none flex flex-col overflow-visible ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: isOpen && level3Categories.length > 0 ? `${expandedWidth}px` : `${currentBaseWidth}px` }}
       >
         {/* Close button (always top right of the whole box) */}
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-[-46px] right-4 z-50">
           <button
             onClick={onMouseLeave}
             className="p-2 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
@@ -120,7 +121,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                     setActiveTabId(tab.id)
                     setHoveredLevel2Id(null)
                   }}
-                  className={`py-1.5 px-1 text-[12px] whitespace-nowrap uppercase font-bold tracking-wider border-b-2 transition-colors duration-200 ${
+                  className={`py-1.5 px-1 text-[8px] small:text-[12px] whitespace-nowrap uppercase font-bold tracking-wider border-b-2 transition-colors duration-200 ${
                     isActive
                       ? "border-black text-black"
                       : "border-transparent text-neutral-500 hover:text-black"
@@ -137,10 +138,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
         <div className="flex flex-row flex-1 h-full overflow-hidden">
           {/* Left Column (Level 2 or 3 depending on tabs) */}
           <div className="shrink-0 h-full flex flex-col bg-white z-20 relative" style={{ width: `${colWidth}px` }}>
-            <div className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pl-10 pr-4 ${needsTabs ? 'pt-4' : 'pt-12'} pb-8`}>
+            <div className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pl-10 pr-4 ${needsTabs ? 'pt-4' : 'pt-8'} pb-8`}>
             
             {isKids && (
-              <div className="text-[12px] text-neutral-500 mb-6">
+              <div className="text-[8px] small:text-[12px] text-neutral-500 mb-6">
                 From 4 to 14 years
               </div>
             )}
@@ -148,13 +149,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
             <div className="flex flex-col gap-y-1">
               {leftColumnCategories.map((cat) => {
                 const isSale = cat.name.toUpperCase().includes("SALE")
-                const hasChildren = categories.some((c) => c.parent_category_id === cat.id)
 
                 return (
                   <div
                     key={cat.id}
                     onMouseEnter={() => setHoveredLevel2Id(cat.id)}
-                    className="w-full flex items-center group py-3"
+                    className="w-full flex items-center group py-4"
                   >
                     <LocalizedClientLink
                       href={`/categories/${cat.handle}`}
@@ -162,11 +162,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                         setActiveCategory(null)
                         setHoveredLevel2Id(null)
                       }}
-                      className={`w-full text-left py-1 text-[12px] uppercase tracking-wide font-bold transition-all duration-200 ${
-                        hoveredLevel2Id === cat.id
-                          ? `underline underline-offset-[4px] decoration-[1.5px] ${isSale ? 'text-[#BA0000] decoration-[#BA0000]' : 'text-black decoration-black'}`
-                          : isSale
+                      className={`nav-underline w-fit text-left text-[8px] small:text-[12px] leading-none uppercase tracking-wide font-bold transition-colors duration-200 ${
+                        hoveredLevel2Id === cat.id ? "nav-underline-active" : ""
+                      } ${
+                        isSale
                           ? "text-[#BA0000]"
+                          : hoveredLevel2Id === cat.id
+                          ? "text-black"
                           : "text-neutral-500 hover:text-black"
                       }`}
                     >
@@ -192,19 +194,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                 level3Categories.length > 0 ? "opacity-100 delay-100" : "opacity-0 pointer-events-none"
               }`}
               style={{
-                paddingTop: needsTabs ? (isKids ? '56px' : '16px') : '48px'
+                paddingTop: needsTabs ? (isKids ? '56px' : '16px') : '32px'
               }}
             >
               <div className="flex flex-col gap-y-1">
               {level3Categories.map((cat) => (
-                <div key={cat.id} className="w-full flex items-center py-2">
+                <div key={cat.id} className="w-full flex items-center py-4">
                   <LocalizedClientLink
                     href={`/categories/${cat.handle}`}
                     onClick={() => {
                       setActiveCategory(null)
                       setHoveredLevel2Id(null)
                     }}
-                    className="w-full text-left py-1 text-[12px] font-bold uppercase tracking-wide text-[#111111] hover:text-neutral-500 transition-colors duration-200"
+                    className="nav-underline w-fit text-left text-[8px] small:text-[12px] leading-none font-bold uppercase tracking-wide text-[#111111] transition-colors duration-200"
                   >
                     {cat.name}
                   </LocalizedClientLink>

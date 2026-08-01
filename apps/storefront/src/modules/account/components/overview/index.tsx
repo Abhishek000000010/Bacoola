@@ -15,7 +15,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
     <div data-testid="overview-page-wrapper" className="w-full flex flex-col pt-[16px] font-sans text-[#111111]">
       <div className="hidden small:block w-full">
         {/* Header Greeting */}
-        <div className="text-[13px] flex justify-between items-center mb-8 border-b border-neutral-100 pb-4">
+        <div className="text-[12px] lg:text-[14px] flex justify-between items-center mb-8 border-b border-neutral-100 pb-4">
           <span className="font-bold uppercase tracking-wide" data-testid="welcome-message" data-value={customer?.first_name}>
             Hello {customer?.first_name}
           </span>
@@ -35,12 +35,12 @@ const Overview = ({ customer, orders }: OverviewProps) => {
         {getProfileCompletion(customer) < 100 && (
           <div className="bg-[#f2f2f2] px-6 py-5 flex justify-between items-start mb-[48px]">
             <div className="flex flex-col gap-y-3">
-              <p className="text-[13px] text-[#111111] leading-[1.6]">
+              <p className="text-[12px] lg:text-[14px] text-[#111111] leading-[1.6]">
                 Complete your profile to manage your orders easily and receive personalized content.
               </p>
               <LocalizedClientLink
                 href="/account/profile"
-                className="text-[11px] font-bold uppercase tracking-wider text-[#111111] hover:text-[#555555] transition-colors"
+                className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wider text-[#111111] hover:text-[#555555] transition-colors"
               >
                 COMPLETE
               </LocalizedClientLink>
@@ -55,15 +55,15 @@ const Overview = ({ customer, orders }: OverviewProps) => {
 
         {/* Up to date section */}
         <div className="flex flex-col items-start mb-[64px]">
-          <h2 className="text-[13px] font-bold uppercase tracking-wide mb-2">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wide mb-2">
             YOU'RE UP TO DATE
           </h2>
-          <p className="text-[13px] leading-[1.6] mb-6">
+          <p className="text-[12px] lg:text-[14px] leading-[1.6] mb-6">
             Discover new arrivals, collections, and pieces that suit you.
           </p>
           <LocalizedClientLink
             href="/store"
-            className="inline-flex items-center justify-center h-[44px] px-8 bg-[#111111] text-white text-[11px] font-bold uppercase tracking-wider hover:bg-[#333333] transition-colors"
+            className="inline-flex items-center justify-center h-[44px] px-8 border border-[#111111] bg-[#111111] text-white text-[12px] lg:text-[14px] font-bold uppercase tracking-wider hover:bg-white hover:text-[#111111] transition-colors"
           >
             SEE WHAT'S NEW
           </LocalizedClientLink>
@@ -72,7 +72,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
         {/* Recent Orders */}
         <div className="flex flex-col">
           <div className="flex items-center mb-6">
-            <h3 className="text-[13px] font-bold uppercase tracking-wide">Recent orders</h3>
+            <h3 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wide">Recent orders</h3>
           </div>
           <ul
             className="flex flex-col gap-y-4"
@@ -90,12 +90,12 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                       href={`/account/orders/details/${order.id}`}
                     >
                       <Container className="bg-[#f9f9f9] border-none shadow-none flex justify-between items-center p-6 hover:bg-[#f2f2f2] transition-colors">
-                        <div className="grid grid-cols-3 grid-rows-2 text-[12px] gap-x-4 gap-y-1 flex-1">
-                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[10px]">Date placed</span>
-                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[10px]">
+                        <div className="grid grid-cols-3 grid-rows-2 text-[12px] lg:text-[14px] gap-x-4 gap-y-1 flex-1">
+                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[12px] lg:text-[14px]">Date placed</span>
+                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[12px] lg:text-[14px]">
                             Order number
                           </span>
-                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[10px]">
+                          <span className="font-bold text-[#777777] uppercase tracking-wider text-[12px] lg:text-[14px]">
                             Total amount
                           </span>
                           <span className="text-[#111111]" data-testid="order-created-date">
@@ -129,7 +129,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                 )
               })
             ) : (
-              <span className="text-[13px] text-[#555555]" data-testid="no-orders-message">No recent orders</span>
+              <span className="text-[12px] lg:text-[14px] text-[#555555]" data-testid="no-orders-message">No recent orders</span>
             )}
           </ul>
         </div>

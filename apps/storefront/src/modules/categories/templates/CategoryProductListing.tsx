@@ -1,37 +1,81 @@
 "use client"
 
-import React, { useState } from "react"
-import { XMark } from "@medusajs/icons"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-import CategorySubmenuBar from "../components/category-submenu-bar"
+import CategoryFilterDrawer from "../components/category-filter-drawer"
+import { getCategoryFacets } from "@lib/data/category-facets"
+import { CardFacet, FacetIndex } from "@lib/util/product-filters"
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
 interface CategoryProductListingProps {
   category: HttpTypes.StoreProductCategory
   parents: HttpTypes.StoreProductCategory[]
+  /** Defaults to just this category when the caller has no wider set. */
+  categoryIds?: string[]
+  countryCode?: string
+  sortBy?: SortOptions
   children: React.ReactNode
 }
 
 export default function CategoryProductListing({
   category,
   parents,
+  categoryIds,
+  countryCode,
+  sortBy = "created_at",
   children,
 }: CategoryProductListingProps) {
-  const [cols, setCols] = useState<1 | 2 | 4>(4)
+  // Stable identity: a fresh array each render would retrigger the fetch effect.
+  const facetCategoryIds = useMemo(
+    () => (categoryIds?.length ? categoryIds : [category.id]),
+    [categoryIds, category.id]
+  )
+  const [cols, setCols] = useState<2 | 4 | 6>(4)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [facetData, setFacetData] = useState<{
+    facetIndex: FacetIndex
+    facets: CardFacet[]
+  } | null>(null)
+
+  // Facets need every product in the category, so they are fetched the first
+  // time the drawer is opened rather than on page load.
+  //
+  // "Have we started?" is a ref, not state, on purpose: as state it would be
+  // both a guard and a dependency, so setting it re-ran the effect, and that
+  // re-run's cleanup cancelled the in-flight request before its result could be
+  // stored -- leaving the panel on its skeleton forever.
+  const facetsRequested = useRef(false)
+
+  useEffect(() => {
+    if (!isFilterOpen || facetsRequested.current || !countryCode) return
+
+    facetsRequested.current = true
+    let cancelled = false
+
+    getCategoryFacets({ categoryIds: facetCategoryIds, countryCode })
+      .then((data) => {
+        if (!cancelled) setFacetData(data)
+      })
+      .catch(() => {
+        // Allow a retry on the next open rather than wedging on the skeleton.
+        facetsRequested.current = false
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [isFilterOpen, facetCategoryIds, countryCode])
 
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16 overflow-x-hidden">
-      
-      {/* Category Submenu Bar */}
-      <CategorySubmenuBar category={category} subcategories={category.category_children} parentHandle={parents?.[0]?.handle} />
 
       {/* Top Header / Control Bar */}
-      <div className="w-full border-b border-neutral-100 py-4 md:py-6 px-4 sm:px-12 flex justify-between items-center select-none bg-white">
+      <div className="w-full pt-4 md:pt-6 pb-2 px-4 sm:px-12 flex justify-between items-center select-none bg-white">
         <div className="flex gap-x-8 items-center">
           {/* Breadcrumbs and Title (Hidden on mobile) */}
-          <div className="hidden md:flex flex-wrap items-center gap-x-2 text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-[#111111]">
+          <div className="hidden md:flex flex-wrap items-center gap-x-2 text-[12px] lg:text-[14px] font-bold tracking-wider leading-none uppercase text-[#111111]">
             {parents &&
               parents.map((parent) => (
                 <span key={parent.id} className="text-neutral-400 flex items-center">
@@ -46,83 +90,67 @@ export default function CategoryProductListing({
 
           <button
             onClick={() => setIsFilterOpen(true)}
-            className="text-xs uppercase tracking-[0.15em] md:tracking-[0.2em] font-semibold md:border-b md:border-black pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors duration-200"
+            className="text-[12px] lg:text-[14px] leading-none font-bold uppercase tracking-wider text-black hover:text-neutral-500 transition-colors duration-200"
           >
             FILTER AND ORDER
           </button>
         </div>
 
-        {/* 1, 2, or 4 Column Layout controls (Visible on all screens now) */}
-        <div className="flex gap-x-4 items-center">
-          <button
-            onClick={() => setCols(1)}
-            className={`p-1.5 focus:outline-none transition-colors duration-200 ${
-              cols === 1 ? "text-black" : "text-neutral-300 hover:text-neutral-500"
-            }`}
-            aria-label="1 Column Layout"
-          >
-            {/* Mobile Icon (Mango Style - large square) */}
-            <div className="md:hidden w-[14px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
-            {/* Desktop Icon (Original) */}
-            <div className="hidden md:block w-[3px] h-5 bg-current" />
-            {cols === 1 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
-          </button>
-          
+        {/* 2, 4, or 6 Column Layout controls */}
+        <div className="flex gap-x-3 items-center">
           <button
             onClick={() => setCols(2)}
             className={`p-1.5 focus:outline-none flex flex-col items-center transition-colors duration-200 ${
-              cols === 2 ? "text-black" : "text-neutral-300 hover:text-neutral-500"
+              cols === 2 ? "text-black" : "text-neutral-400 hover:text-neutral-600"
             }`}
             aria-label="2 Columns Layout"
           >
-            {/* Mobile Icon (Mango Style - divided square) */}
-            <div className="md:hidden flex gap-[2px]">
-              <div className="w-[6px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
-              <div className="w-[6px] h-[16px] border-[1.5px] border-current rounded-[1px]" />
-            </div>
-            {/* Desktop Icon (Original) */}
-            <div className="hidden md:flex gap-0.5">
-              <div className="w-[3px] h-5 bg-current" />
-              <div className="w-[3px] h-5 bg-current" />
-            </div>
-            {cols === 2 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <rect x="1" y="1" width="16" height="16" />
+            </svg>
+            <div className={`w-[22px] h-[1.5px] mt-[6px] ${cols === 2 ? "bg-black" : "bg-transparent"}`} />
           </button>
 
           <button
             onClick={() => setCols(4)}
             className={`p-1.5 focus:outline-none flex flex-col items-center transition-colors duration-200 ${
-              cols === 4 ? "text-black" : "text-neutral-300 hover:text-neutral-500"
+              cols === 4 ? "text-black" : "text-neutral-400 hover:text-neutral-600"
             }`}
             aria-label="4 Columns Layout"
           >
-            {/* Mobile Icon (Mango Style - 4 squares) */}
-            <div className="md:hidden grid grid-cols-2 gap-[2px]">
-              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
-              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
-              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
-              <div className="w-[6px] h-[7px] border-[1.5px] border-current rounded-[1px]" />
-            </div>
-            {/* Desktop Icon (Original) */}
-            <div className="hidden md:grid grid-cols-2 gap-0.5">
-              <div className="w-[3px] h-2 bg-current" />
-              <div className="w-[3px] h-2 bg-current" />
-              <div className="w-[3px] h-2 bg-current" />
-              <div className="w-[3px] h-2 bg-current" />
-            </div>
-            {cols === 4 && <div className="md:hidden w-full h-[1.5px] bg-black mt-1" />}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <rect x="1" y="1" width="16" height="16" />
+              <line x1="9" y1="1" x2="9" y2="17" />
+            </svg>
+            <div className={`w-[22px] h-[1.5px] mt-[6px] ${cols === 4 ? "bg-black" : "bg-transparent"}`} />
+          </button>
+
+          <button
+            onClick={() => setCols(6)}
+            className={`p-1.5 focus:outline-none flex flex-col items-center transition-colors duration-200 ${
+              cols === 6 ? "text-black" : "text-neutral-400 hover:text-neutral-600"
+            }`}
+            aria-label="6 Columns Layout"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <rect x="1" y="1" width="16" height="16" />
+              <line x1="9" y1="1" x2="9" y2="17" />
+              <line x1="1" y1="9" x2="17" y2="9" />
+            </svg>
+            <div className={`w-[22px] h-[1.5px] mt-[6px] ${cols === 6 ? "bg-black" : "bg-transparent"}`} />
           </button>
         </div>
       </div>
 
       {/* Grid Container wrapping children paginated lists */}
-      <div className="px-0 sm:px-12 py-6 sm:py-10 w-full">
+      <div className="px-0 pb-6 sm:pb-10 pt-0 w-full">
         <div
           className={`transition-all duration-300 ${
-            cols === 1
-              ? "[&_ul]:!grid-cols-1 max-w-xl mx-auto"
-              : cols === 2
-              ? "[&_ul]:!grid-cols-2 sm:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8"
-              : "[&_ul]:!grid-cols-4 sm:[&_ul]:!grid-cols-2 md:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-8 [&_.pp-m-title]:!text-[10px] [&_.pp-m-title]:!leading-tight [&_.pp-m-title]:!line-clamp-1 [&_.pp-m-price]:!text-[10px] [&_.pp-m-details]:!px-1 [&_.pp-m-details]:!pt-2 [&_.pp-m-details]:!pb-3 [&_.pp-plus]:!h-6 [&_.pp-plus]:!w-6"
+            cols === 2
+              ? "[&_ul]:!grid-cols-1 sm:[&_ul]:!grid-cols-2 small:[&_ul]:!grid-cols-2 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-12 [&_.pp-m-add-btn]:!flex sm:[&_.pp-m-add-btn]:!hidden [&_.pp-plus]:!hidden sm:[&_.pp-plus]:!flex small:[&_.pp-plus]:!hidden"
+              : cols === 4
+              ? "[&_ul]:!grid-cols-2 sm:[&_ul]:!grid-cols-3 lg:[&_ul]:!grid-cols-4 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-12"
+              : "[&_ul]:!grid-cols-3 sm:[&_ul]:!grid-cols-4 lg:[&_ul]:!grid-cols-6 [&_ul]:!gap-x-[2px] [&_ul]:!gap-y-[2px] [&_.pp-d-details]:!hidden [&_.pp-m-details]:!hidden [&_.pp-plus]:!hidden"
           }`}
         >
           {children}
@@ -130,115 +158,61 @@ export default function CategoryProductListing({
       </div>
 
       {/* Slide-out Filters Panel Drawer */}
-      <div
-        onClick={() => setIsFilterOpen(false)}
-        className={`fixed inset-0 bg-black/15 backdrop-blur-[2px] z-[9998] transition-opacity duration-300 ${
-          isFilterOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      />
-      <div
-        className={`fixed top-0 right-0 bottom-0 w-full max-w-[400px] bg-white border-l border-neutral-100 z-[9999] shadow-xl flex flex-col transition-transform duration-300 ease-in-out select-none ${
-          isFilterOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex pl-8 pr-6 py-6 border-b border-neutral-100 items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-[#111111]">
-            FILTER AND ORDER
-          </h2>
-          <button
-            onClick={() => setIsFilterOpen(false)}
-            className="p-1 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
-            aria-label="Close filters"
-          >
-            <XMark className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-8 py-6 flex flex-col gap-y-8 scrollbar-none">
-          {/* Colors Filter */}
-          <div className="flex flex-col">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-400 mb-4">
-              COLORS
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: "BROWNS", hex: "#5C4033" },
-                { name: "ECRU TONES", hex: "#F3EFE0" },
-                { name: "GREENS", hex: "#7E7F6B" },
-                { name: "GREYS", hex: "#888888" },
-                { name: "WHITES", hex: "#FFFFFF" },
-              ].map((color) => (
-                <button
-                  key={color.name}
-                  className="flex items-center gap-x-3 p-3 border border-neutral-100 hover:border-neutral-300 transition-all rounded-sm text-left text-[11px] font-semibold tracking-wider text-neutral-700"
-                >
-                  <span className="w-3.5 h-3.5 rounded-full border border-neutral-200" style={{ backgroundColor: color.hex }} />
-                  {color.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sizes Filter */}
-          <div className="flex flex-col">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-400 mb-4">
-              SIZE
-            </h3>
-            <div className="grid grid-cols-4 gap-2">
-              {["38", "40", "42", "44", "46", "48", "50", "52", "S", "M", "L", "XL"].map((sz) => (
-                <button
-                  key={sz}
-                  className="p-2 border border-neutral-100 hover:border-neutral-300 text-center text-xs tracking-wider rounded-sm text-neutral-700"
-                >
-                  {sz}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Price Range Filter */}
-          <div className="flex flex-col">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-400 mb-4">
-              PRICE
-            </h3>
-            <div className="flex flex-col gap-2 text-xs text-neutral-600 tracking-wider">
-              <label className="flex items-center gap-x-2 cursor-pointer">
-                <input type="checkbox" className="accent-black" />
-                Under Rs. 4,000
-              </label>
-              <label className="flex items-center gap-x-2 cursor-pointer">
-                <input type="checkbox" className="accent-black" />
-                Rs. 4,000 - Rs. 8,000
-              </label>
-              <label className="flex items-center gap-x-2 cursor-pointer">
-                <input type="checkbox" className="accent-black" />
-                Over Rs. 8,000
-              </label>
-            </div>
-          </div>
-
-          {/* Sorting */}
-          <div className="flex flex-col">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-400 mb-4">
-              SORT BY
-            </h3>
-            <div className="flex flex-col gap-2 text-xs text-neutral-600 tracking-wider">
-              <button className="text-left py-1 text-black font-semibold hover:text-black">NEWEST ARRIVALS</button>
-              <button className="text-left py-1 hover:text-black">PRICE: LOW TO HIGH</button>
-              <button className="text-left py-1 hover:text-black">PRICE: HIGH TO LOW</button>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6 border-t border-neutral-100 bg-neutral-50/50">
-          <button
-            onClick={() => setIsFilterOpen(false)}
-            className="w-full py-4 border border-black bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-white hover:text-black transition-colors"
-          >
-            SHOW PRODUCTS
-          </button>
-        </div>
-      </div>
+      {facetData ? (
+        <CategoryFilterDrawer
+          open={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+          facetIndex={facetData.facetIndex}
+          facets={facetData.facets}
+          sortBy={sortBy}
+        />
+      ) : (
+        <FilterDrawerSkeleton
+          open={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+        />
+      )}
     </div>
   )
 }
+
+/**
+ * Shown while the category's facets are still loading, so the panel slides in
+ * immediately on click instead of waiting on the request.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function FilterDrawerSkeleton({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) {
+  return (
+    <>
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 bg-black/15 backdrop-blur-[2px] z-[9998] transition-opacity duration-300 ${
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      />
+      <div
+        className={`fixed top-0 right-0 bottom-0 w-full max-w-[400px] bg-white border-l border-neutral-100 z-[9999] shadow-xl flex flex-col transition-transform duration-300 ease-in-out ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex pl-8 pr-6 py-6 items-center justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-[#111111]">
+            FILTER AND ORDER
+          </h2>
+        </div>
+        <div className="flex-1 px-8 flex flex-col gap-y-6 pt-2">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-10 w-full animate-pulse bg-neutral-100" />
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
+

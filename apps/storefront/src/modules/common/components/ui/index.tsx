@@ -15,6 +15,12 @@ import {
 // Re-export clsx as clx for compatibility
 export { clsx as clx }
 
+// Only fall back to text-base when the caller hasn't set its own size: clsx
+// doesn't merge Tailwind classes, so otherwise text-base can win over an
+// explicit text-[12px] lg:text-[14px] depending on stylesheet order.
+const hasTextSize = (className?: string) =>
+  !!className && /(^|\s)!?text-(\[\d|xs\b|sm\b|base\b|lg\b|\d?xl\b)/.test(className)
+
 // Text Component
 type TextProps = HTMLAttributes<HTMLParagraphElement> & {
   as?: "p" | "span" | "div"
@@ -23,7 +29,11 @@ type TextProps = HTMLAttributes<HTMLParagraphElement> & {
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
   ({ className, as: Component = "p", children, ...props }, ref) => {
     return (
-      <Component ref={ref} className={clsx("text-base", className)} {...props}>
+      <Component
+        ref={ref}
+        className={clsx(!hasTextSize(className) && "text-base", className)}
+        {...props}
+      >
         {children}
       </Component>
     )
@@ -86,7 +96,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // hover they invert to a white face with black text.
           // Buttons share one type size across the whole store, so `size` only
           // changes the box (height and padding), never the text.
-          "inline-flex gap-2 items-center justify-center rounded-none uppercase text-xs font-semibold tracking-[0.1em] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex gap-2 items-center justify-center rounded-none uppercase text-xs lg:text-sm font-semibold tracking-[0.1em] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
           variant === "primary" &&
             "bg-black text-white border-black hover:bg-white hover:text-black",
           variant === "secondary" &&
@@ -138,7 +148,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       <span
         ref={ref}
         className={clsx(
-          "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
+          "inline-flex items-center rounded-full px-2 py-1 text-xs lg:text-sm font-medium",
           color === "green" && "bg-green-100 text-green-700",
           color === "red" && "bg-red-100 text-red-700",
           color === "blue" && "bg-blue-100 text-blue-700",

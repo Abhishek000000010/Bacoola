@@ -46,7 +46,29 @@ apps/storefront/  Next.js 15         ──deploys to──►  Vercel
                                                       https://bacoola-storefront.vercel.app
 
 Database:         Neon PostgreSQL (cloud, SHARED — see warning below)
+Redis:            Upstash (cloud, TLS-only — see "Redis" below)
 ```
+
+### Redis (Upstash)
+
+Redis is **not** self-hosted and there is no Docker anywhere in this project.
+`apps/backend/medusa-config.ts` registers four modules — cache, event bus,
+workflow engine, and distributed locking — but **only when `REDIS_URL` is set**.
+With it unset, Medusa falls back to in-memory implementations: the backend still
+boots, but queued jobs are lost on restart and locking is per-process, which is
+not safe for production.
+
+- Provision at <https://console.upstash.com>. Use a **separate database per
+  environment**, or set `REDIS_NAMESPACE` per environment so cache keys and the
+  BullMQ queue name don't collide.
+- Pick the region closest to the Render service to keep round-trips cheap.
+- The URL is TLS: `rediss://default:<TOKEN>@<host>.upstash.io:6379` — note the
+  double `s`. A `redis://` URL will fail to connect.
+- Set `REDIS_URL` in the Render dashboard under **Environment**. Like the
+  build/start commands, it is not in the repo.
+- The workflow engine uses BullMQ, which holds blocking connections and polls.
+  On Upstash that consumes command quota continuously even at idle — watch the
+  usage graph after enabling, and expect the free tier to be tight.
 
 Both hosts **auto-deploy on push to `main`**. There is no CI, no staging
 environment, and no `.github/workflows`. A push to `main` goes straight to

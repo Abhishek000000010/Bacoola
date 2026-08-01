@@ -38,7 +38,7 @@ export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> =
     <section className="w-full py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-[1550px] mx-auto bg-white">
       {/* Title */}
       <div className="flex flex-col items-center mb-12 md:mb-16 text-center">
-        <h2 className="text-xs font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-2">
+        <h2 className="text-xs lg:text-sm font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-2">
           {subtitle}
         </h2>
         <p className="text-xl sm:text-2xl font-light uppercase tracking-widest text-[#111111]">
@@ -98,17 +98,17 @@ export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> =
 
                 {/* Details */}
                 <div className="flex flex-col items-start gap-y-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">
+                  <span className="text-[12px] lg:text-[14px] font-semibold uppercase tracking-[0.2em] text-neutral-400">
                     {categoryName}
                   </span>
                   
-                  <h3 className="text-[13px] sm:text-[14px] font-medium text-[#111111] tracking-wide group-hover:text-[#555555] transition-colors duration-200">
+                  <h3 className="text-[12px] lg:text-[14px] sm:text-[12px] lg:text-[14px] font-medium text-[#111111] tracking-wide group-hover:text-[#555555] transition-colors duration-200">
                     {product.title}
                   </h3>
 
                   {/* Price */}
                   {cheapestPrice ? (
-                    <div className="flex items-center gap-x-2 mt-1 text-[13px] sm:text-[14px]">
+                    <div className="flex items-center gap-x-2 mt-1 text-[12px] lg:text-[14px] sm:text-[12px] lg:text-[14px]">
                       {cheapestPrice.price_type === "sale" && (
                         <span className="line-through text-neutral-400">
                           {cheapestPrice.original_price}
@@ -125,7 +125,7 @@ export const FeaturedProductsShowcase: React.FC<FeaturedProductsShowcaseProps> =
                       </span>
                     </div>
                   ) : (
-                    <span className="text-[13px] sm:text-[14px] text-neutral-500">
+                    <span className="text-[12px] lg:text-[14px] sm:text-[12px] lg:text-[14px] text-neutral-500">
                       Pricing unavailable
                     </span>
                   )}

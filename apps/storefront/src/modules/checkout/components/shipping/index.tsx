@@ -68,7 +68,12 @@ const Shipping: React.FC<ShippingProps> = ({
   const router = useRouter()
   const pathname = usePathname()
 
-  const isOpen = searchParams.get("step") === "delivery"
+  // "delivery" is the same first step as "address" (address form + delivery
+  // methods). The cart's Checkout button lands here when an address exists but
+  // no method is chosen, and the summary's "Edit" jumps back here -- so it must
+  // open the panel just like "address", otherwise the left column is blank.
+  const step = searchParams.get("step")
+  const isOpen = step === "address" || step === "delivery" || !step
 
   const _shippingMethods = availableShippingMethods?.filter(
     (sm) => (sm as unknown as { service_zone?: { fulfillment_set?: { type?: string; location?: { address: HttpTypes.StoreCartAddress } } } }).service_zone?.fulfillment_set?.type !== "pickup"
@@ -153,13 +158,62 @@ const Shipping: React.FC<ShippingProps> = ({
   }, [isOpen])
 
   if (!isOpen) {
+    if (searchParams.get("step") === "payment" && cart.shipping_address && cart.shipping_methods?.length) {
+      const selectedMethodId = cart.shipping_methods[0].shipping_option_id
+      const selectedMethod = availableShippingMethods?.find(m => m.id === selectedMethodId)
+
+      return (
+        <div className="bg-white mb-8">
+          <div className="flex flex-row items-center justify-between mb-4">
+            <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950">
+              Delivery Method
+            </h2>
+            <button
+              onClick={handleEdit}
+              className="text-[12px] lg:text-[14px] font-semibold uppercase tracking-[0.05em] text-neutral-950 transition-colors hover:text-neutral-500"
+            >
+              Edit
+            </button>
+          </div>
+          <div className="border border-black bg-white p-4">
+            <div className="flex items-center gap-x-3 text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-black">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+              <span>{selectedMethod?.name || "HOME"}</span>
+              <span className="text-neutral-500 font-normal ml-2">
+                {selectedMethod?.amount !== undefined ? convertToLocale({
+                  amount: selectedMethod.amount,
+                  currency_code: cart?.currency_code,
+                }) : "Rs. 790.00"}
+              </span>
+            </div>
+            <div className="mt-4 text-[12px] lg:text-[14px] text-neutral-950">
+              <span className="font-bold uppercase tracking-[0.05em] mr-1">Delivery:</span> Thursday, 27 Aug - Monday, 14 Sept
+            </div>
+            <div className="mt-1 mb-6 text-[12px] lg:text-[14px] text-neutral-600 leading-tight">
+              This may be slightly later than estimated, due to increased orders during sales.
+            </div>
+
+            <div className="flex flex-col gap-y-1 text-[12px] lg:text-[14px] text-neutral-950">
+              <span>{cart.shipping_address.first_name} {cart.shipping_address.last_name}</span>
+              <span>{cart.email}</span>
+              <span>{cart.shipping_address.phone}</span>
+              <span className="leading-relaxed break-words break-all lg:break-normal">
+                {cart.shipping_address.address_1}{cart.shipping_address.address_2 && `, ${cart.shipping_address.address_2}`},{cart.shipping_address.city},{cart.shipping_address.province && `${cart.shipping_address.province},`}{cart.shipping_address.postal_code},{cart.shipping_address.country_code?.toUpperCase()}
+              </span>
+            </div>
+          </div>
+        </div>
+      )
+    }
     return null
   }
 
   return (
     <div className="bg-white">
-      <div className="mb-5 flex flex-col justify-center mt-6">
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.05em] text-black">
+      <div className="flex flex-col justify-center mt-6 mb-4">
+        <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950">
           Delivery Method
         </h2>
       </div>
@@ -189,7 +243,7 @@ const Shipping: React.FC<ShippingProps> = ({
                         data-testid="delivery-option-radio"
                         disabled={isDisabled}
                         className={clx(
-                          "flex cursor-pointer items-center justify-between border p-4 mb-3 transition-colors text-[11px] font-bold text-black uppercase tracking-[0.05em]",
+                          "flex cursor-pointer items-center justify-between border p-4 mb-3 transition-colors text-[12px] lg:text-[14px] font-bold text-black uppercase tracking-[0.05em]",
                           {
                             "border-black": option.id === shippingMethodId,
                             "border-neutral-300 hover:border-black": option.id !== shippingMethodId,
@@ -230,10 +284,10 @@ const Shipping: React.FC<ShippingProps> = ({
             
             {/* Delivery Time Message */}
             <div className="mt-2 mb-6">
-              <div className="text-[13px] text-neutral-950">
+              <div className="text-[12px] lg:text-[14px] text-neutral-950">
                 <span className="font-bold uppercase tracking-[0.05em] mr-1">Delivery:</span> Friday, 21 Aug - Tuesday, 8 Sept
               </div>
-              <div className="mt-1 text-[12px] text-neutral-600 leading-tight">
+              <div className="mt-1 text-[12px] lg:text-[14px] text-neutral-600 leading-tight">
                 This may be slightly later than estimated, due to increased orders during sales.
               </div>
             </div>
@@ -307,38 +361,18 @@ const Shipping: React.FC<ShippingProps> = ({
             </div>
           )}
 
-          <div>
+          <div className="hidden">
             <ErrorMessage
               error={error}
               data-testid="delivery-option-error-message"
             />
-            <div className="pt-5 flex flex-col gap-4">
-              <Button
-                size="large"
-                className="h-[50px] w-full rounded-none px-6 bg-black text-white text-[11px] font-bold uppercase tracking-[0.05em] hover:bg-neutral-800"
-                onClick={handleSubmit}
-                isLoading={isLoading}
-                disabled={!cart.shipping_methods?.[0]}
-                data-testid="submit-delivery-option-button"
-              >
-                Continue to Payment
-              </Button>
-              <button
-                type="button"
-                onClick={() => router.push(pathname + "?step=address", { scroll: false })}
-                className="text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-600 hover:text-neutral-950 transition-colors py-2"
-                data-testid="back-to-address-button"
-              >
-                Back to Address
-              </button>
-            </div>
           </div>
         </>
       ) : (
         <div>
           {cart && (cart.shipping_methods?.length ?? 0) > 0 && cart.shipping_address && (
             <div className="flex flex-col border border-neutral-200 p-5 mt-2">
-              <div className="flex items-center gap-x-3 text-[13px] font-bold text-neutral-950 uppercase tracking-[0.05em]">
+              <div className="flex items-center gap-x-3 text-[12px] lg:text-[14px] font-bold text-neutral-950 uppercase tracking-[0.05em]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
@@ -347,24 +381,24 @@ const Shipping: React.FC<ShippingProps> = ({
                   {cart.shipping_methods!.at(-1)!.amount === 0 ? "FREE" : convertToLocale({ amount: cart.shipping_methods!.at(-1)!.amount!, currency_code: cart?.currency_code })}
                 </span>
               </div>
-              <div className="mt-5 text-[13px] text-neutral-950">
+              <div className="mt-5 text-[12px] lg:text-[14px] text-neutral-950">
                 <span className="font-semibold uppercase tracking-[0.05em]">Delivery:</span> Monday, 17 Aug - Wednesday, 2 Sept
               </div>
-              <div className="mt-1 text-[12px] text-neutral-600">
+              <div className="mt-1 text-[12px] lg:text-[14px] text-neutral-600">
                 This may be slightly later than estimated, due to increased orders during sales.
               </div>
               <div className="mt-6 flex justify-between items-start">
-                <div className="flex flex-col gap-y-1 text-[13px] text-neutral-800">
+                <div className="flex flex-col gap-y-1 text-[12px] lg:text-[14px] text-neutral-800">
                   <span>{cart.shipping_address?.first_name} {cart.shipping_address?.last_name}</span>
                   <span>{cart.email}</span>
                   <span>{cart.shipping_address?.phone}</span>
-                  <span>
+                  <span className="break-words break-all lg:break-normal">
                     {cart.shipping_address?.address_1} {cart.shipping_address?.address_2 && `, ${cart.shipping_address.address_2}`}, {cart.shipping_address?.postal_code}, {cart.shipping_address?.city}
                   </span>
                 </div>
                 <button 
                   onClick={() => setIsDrawerOpen(true)}
-                  className="text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-950 underline underline-offset-[3px] transition-colors hover:text-neutral-500"
+                  className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950 underline underline-offset-[3px] transition-colors hover:text-neutral-500"
                 >
                   Edit Address
                 </button>
@@ -388,7 +422,7 @@ const Shipping: React.FC<ShippingProps> = ({
           <div className="relative w-full max-w-[420px] bg-white h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
             {/* Header */}
             <div className="flex items-center justify-between p-8 pt-10">
-              <h2 className="text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950">
+              <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950">
                 My Addresses
               </h2>
               <button onClick={() => setIsDrawerOpen(false)} className="text-neutral-950 hover:text-neutral-500 transition-colors">
@@ -402,15 +436,15 @@ const Shipping: React.FC<ShippingProps> = ({
             <div className="flex-1 overflow-y-auto px-8 py-4">
               {cart.shipping_address && (
                 <div className="flex justify-between items-start">
-                  <div className="flex flex-col gap-y-1 text-[13px] text-neutral-950">
+                  <div className="flex flex-col gap-y-1 text-[12px] lg:text-[14px] text-neutral-950">
                     <span>{cart.shipping_address.first_name} {cart.shipping_address.last_name}</span>
                     <span>{cart.email}</span>
                     <span>{cart.shipping_address.phone}</span>
-                    <span>
+                    <span className="break-words break-all lg:break-normal">
                       {cart.shipping_address.address_1} {cart.shipping_address.address_2 && `, ${cart.shipping_address.address_2}`}, {cart.shipping_address.postal_code}, {cart.shipping_address.city}
                     </span>
                     <div className="mt-4">
-                      <span className="bg-[#f0f0f0] text-neutral-900 text-[12px] px-3 py-[6px]">
+                      <span className="bg-[#f0f0f0] text-neutral-900 text-[12px] lg:text-[14px] px-3 py-[6px]">
                         Default delivery address
                       </span>
                     </div>
@@ -420,7 +454,7 @@ const Shipping: React.FC<ShippingProps> = ({
                       setIsDrawerOpen(false)
                       router.push(pathname + "?step=address", { scroll: false })
                     }}
-                    className="text-[12px] font-bold uppercase tracking-[0.05em] text-neutral-950 hover:text-neutral-500 transition-colors"
+                    className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950 hover:text-neutral-500 transition-colors"
                   >
                     Edit
                   </button>
@@ -435,7 +469,7 @@ const Shipping: React.FC<ShippingProps> = ({
                   setIsDrawerOpen(false)
                   router.push(pathname + "?step=address", { scroll: false })
                 }}
-                className="w-full py-4 border border-black bg-white text-[12px] font-bold uppercase tracking-[0.05em] text-black hover:bg-neutral-50 transition-colors"
+                className="w-full py-4 border border-black bg-white text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-black hover:border-neutral-400 hover:text-neutral-400 transition-colors"
               >
                 Add Another Address
               </button>

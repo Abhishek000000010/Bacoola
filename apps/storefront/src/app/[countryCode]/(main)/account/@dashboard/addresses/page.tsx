@@ -49,7 +49,7 @@ export default async function Addresses(props: {
             <h1 className="text-[15px] font-bold uppercase tracking-wider mb-4 text-[#111111]">
               MY ADDRESSES
             </h1>
-            <p className="text-[13px] font-normal mb-10 max-w-[420px] leading-relaxed text-[#111111]">
+            <p className="text-[12px] lg:text-[14px] font-normal mb-10 max-w-[420px] leading-relaxed text-[#111111]">
               You have still not saved any delivery address. Add one now and save time on your future purchases.
             </p>
             <InlineAddAddress region={region} />

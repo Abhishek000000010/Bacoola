@@ -6,6 +6,12 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import PaginatedProducts from "@modules/store/templates/paginated-products"
 import { HttpTypes } from "@medusajs/types"
 import { OptionValueIds } from "@lib/util/product-option-filters"
+import {
+  EMPTY_FILTERS,
+  FilterState,
+  hasActiveFilters,
+} from "@lib/util/product-filters"
+import FilteredCategoryProducts from "./FilteredCategoryProducts"
 
 // Import unified architecture components
 import LandingRenderer from "@modules/home/components/landing-renderer"
@@ -23,15 +29,18 @@ export default async function CategoryTemplate({
   page,
   countryCode,
   optionValueIds,
+  filters,
 }: {
   category: HttpTypes.StoreProductCategory
   sortBy?: SortOptions
   page?: string
   countryCode: string
   optionValueIds?: OptionValueIds
+  filters?: FilterState
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
+  const activeFilters = filters ?? EMPTY_FILTERS
 
   if (!category || !countryCode) notFound()
 
@@ -71,21 +80,39 @@ export default async function CategoryTemplate({
     })
   }
 
+  // Filtering is per colourway, which the store API cannot express, so it needs
+  // the whole category loaded. Only take that cost when a filter is actually
+  // set -- an unfiltered page still fetches just the 12 products it shows.
   const productGrid = (
     <Suspense fallback={<SkeletonProductGrid numberOfProducts={category.products?.length ?? 8} />}>
-      <PaginatedProducts
-        sortBy={sort}
-        page={pageNumber}
-        categoryId={allCategoryIds}
-        countryCode={countryCode}
-        optionValueIds={optionValueIds}
-      />
+      {hasActiveFilters(activeFilters) ? (
+        <FilteredCategoryProducts
+          categoryIds={allCategoryIds}
+          countryCode={countryCode}
+          filters={activeFilters}
+          sortBy={sort}
+        />
+      ) : (
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          categoryId={allCategoryIds}
+          countryCode={countryCode}
+          optionValueIds={optionValueIds}
+        />
+      )}
     </Suspense>
   )
 
   // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
-    <CategoryProductListing category={category} parents={parents}>
+    <CategoryProductListing
+      category={category}
+      parents={parents}
+      categoryIds={allCategoryIds}
+      countryCode={countryCode}
+      sortBy={sort}
+    >
       {productGrid}
     </CategoryProductListing>
   )

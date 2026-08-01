@@ -26,7 +26,7 @@ const TeenSwitcher: React.FC = () => {
       </div>
 
       {/* Height Indicator Helper */}
-      <div className="text-[10px] text-neutral-400 uppercase tracking-widest mb-2 select-none">
+      <div className="text-[12px] text-neutral-400 uppercase tracking-widest mb-2 select-none">
         {teenData.heightRange}
       </div>
 

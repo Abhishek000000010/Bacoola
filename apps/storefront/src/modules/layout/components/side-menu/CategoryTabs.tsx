@@ -22,7 +22,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({ activeTab, onTabChange }) =
           <button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
-            className={`py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 relative focus:outline-none whitespace-nowrap ${
+            className={`py-2 text-xs font-semibold tracking-wider transition-all duration-300 relative focus:outline-none whitespace-nowrap ${
               isActive ? "text-black font-bold" : "text-neutral-400 hover:text-neutral-600"
             }`}
           >

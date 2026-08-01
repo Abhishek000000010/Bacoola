@@ -19,7 +19,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const {
     currency_code,
     total,
-    tax_total,
     item_subtotal,
     shipping_subtotal,
     discount_subtotal,
@@ -27,7 +26,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
 
   return (
     <div className="py-2">
-      <div className="flex flex-col gap-y-2 text-[13px] text-neutral-900 font-medium">
+      <div className="flex flex-col gap-y-2 text-[12px] lg:text-[14px] text-neutral-900 font-medium">
         <div className="flex items-center justify-between">
           <span>Subtotal</span>
           <span className="font-normal" data-testid="cart-subtotal" data-value={item_subtotal || 0}>
@@ -61,10 +60,10 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         )}
       </div>
 
-      <div className="flex items-start justify-between text-neutral-900 font-bold text-[13px] mt-6">
+      <div className="flex items-start justify-between text-neutral-900 font-bold text-[12px] lg:text-[14px] mt-6">
         <div className="flex flex-col">
           <span>TOTAL</span>
-          {!!tax_total && <span className="text-[10px] font-normal text-neutral-500 mt-1 uppercase">Includes taxes</span>}
+          <span className="text-[12px] lg:text-[14px] font-normal text-neutral-500 mt-1">Taxes included</span>
         </div>
         <span
           data-testid="cart-total"

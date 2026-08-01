@@ -54,8 +54,16 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
   }
 
   // Once the visitor is in the cart or checkout they are past browsing; a sale
-  // link here only pulls them out of the purchase flow.
-  if (cleanSegments[0] === "cart" || cleanSegments[0] === "checkout") {
+  // link here only pulls them out of the purchase flow. The order-confirmation
+  // page is the end of that flow, so keep it clean too.
+  if (
+    cleanSegments[0] === "cart" ||
+    cleanSegments[0] === "checkout" ||
+    cleanSegments[0] === "account" ||
+    cleanSegments[0] === "search" ||
+    cleanSegments[0] === "wishlist" ||
+    cleanSegments[0] === "order"
+  ) {
     return null
   }
 
@@ -131,7 +139,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ categories }) => {
 
   return (
     <LocalizedClientLink href={`/categories/${saleCategory.handle}`}>
-      <div className="w-full bg-[#BA0000] text-white py-2.5 px-4 flex justify-center items-center gap-x-6 text-xs sm:text-sm font-semibold tracking-wider hover:opacity-90 transition-opacity cursor-pointer">
+      <div className="w-full min-h-[49.6px] bg-[#BA0000] text-white py-2.5 px-4 lg:px-36 flex justify-center items-center gap-x-6 text-[12px] font-bold tracking-wider leading-none hover:opacity-90 transition-opacity cursor-pointer">
         <span>{bannerText}</span>
         <span className="underline underline-offset-4">SHOP NOW</span>
       </div>

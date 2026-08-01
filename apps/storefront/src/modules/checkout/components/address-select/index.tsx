@@ -41,7 +41,7 @@ const AddressSelect = ({
         >
           {({ open }) => (
             <>
-              <span className="block truncate text-xs uppercase tracking-widest font-bold text-gray-900">
+              <span className="block truncate text-xs lg:text-sm uppercase tracking-widest font-bold text-gray-900">
                 {selectedAddress
                   ? selectedAddress.address_1
                   : "Choose an address"}
@@ -78,15 +78,15 @@ const AddressSelect = ({
                       data-testid="shipping-address-radio"
                     />
                     <div className="flex flex-col">
-                      <span className="text-left text-xs uppercase tracking-widest font-bold text-gray-900">
+                      <span className="text-left text-xs lg:text-sm uppercase tracking-widest font-bold text-gray-900">
                         {address.first_name} {address.last_name}
                       </span>
                       {address.company && (
-                        <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
+                        <span className="text-[12px] lg:text-[14px] md:text-xs lg:text-sm uppercase tracking-wider text-gray-500">
                           {address.company}
                         </span>
                       )}
-                      <div className="flex flex-col text-left text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-2">
+                      <div className="flex flex-col text-left text-[12px] lg:text-[14px] md:text-xs lg:text-sm uppercase tracking-wider text-gray-500 mt-2">
                         <span>
                           {address.address_1}
                           {address.address_2 && (

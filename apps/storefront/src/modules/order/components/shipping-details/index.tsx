@@ -1,72 +1,74 @@
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@modules/common/components/ui"
-
-import Divider from "@modules/common/components/divider"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
 }
 
+const labelClass =
+  "text-[11px] font-bold uppercase tracking-[0.08em] text-neutral-400"
+const valueClass = "text-[12px] leading-relaxed text-neutral-600 lg:text-[13px]"
+
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+  const address = order.shipping_address
+  const method = order.shipping_methods?.[0] as
+    | { name?: string; total?: number }
+    | undefined
+
   return (
-    <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
-        Delivery
-      </Heading>
-      <div className="flex items-start gap-x-8">
-        <div
-          className="flex flex-col w-1/3"
-          data-testid="shipping-address-summary"
-        >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">
-            Shipping Address
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.first_name}{" "}
-            {order.shipping_address?.last_name}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.address_1}{" "}
-            {order.shipping_address?.address_2}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.postal_code},{" "}
-            {order.shipping_address?.city}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.country_code?.toUpperCase()}
-          </Text>
+    <section className="border border-neutral-200">
+      <header className="border-b border-neutral-200 px-5 py-4 lg:px-6">
+        <h2 className="text-[12px] font-bold uppercase tracking-[0.05em] text-neutral-950 lg:text-[14px]">
+          Delivery
+        </h2>
+      </header>
+
+      <div className="grid grid-cols-1 gap-6 px-5 py-5 lg:grid-cols-[1fr_1.3fr_0.9fr] lg:px-6">
+        <div data-testid="shipping-address-summary">
+          <p className={labelClass}>Address</p>
+          <div className={`mt-2 break-words ${valueClass}`}>
+            <p className="text-neutral-800">
+              {address?.first_name} {address?.last_name}
+            </p>
+            <p>
+              {address?.address_1}
+              {address?.address_2 ? `, ${address.address_2}` : ""}
+            </p>
+            <p>
+              {address?.postal_code} {address?.city}
+            </p>
+            {address?.province && <p>{address.province}</p>}
+            <p>{address?.country_code?.toUpperCase()}</p>
+          </div>
         </div>
 
-        <div
-          className="flex flex-col w-1/3 "
-          data-testid="shipping-contact-summary"
-        >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Contact</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.phone}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">{order.email}</Text>
+        <div data-testid="shipping-contact-summary">
+          <p className={labelClass}>Contact</p>
+          <div className={`mt-2 ${valueClass}`}>
+            {address?.phone && <p className="break-words">{address.phone}</p>}
+            <p className="[overflow-wrap:anywhere]">{order.email}</p>
+          </div>
         </div>
 
-        <div
-          className="flex flex-col w-1/3"
-          data-testid="shipping-method-summary"
-        >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {(order.shipping_methods?.[0] as { name?: string })?.name} (
-            {convertToLocale({
-              amount: order.shipping_methods?.[0].total ?? 0,
-              currency_code: order.currency_code,
-            })}
-            )
-          </Text>
+        <div data-testid="shipping-method-summary">
+          <p className={labelClass}>Method</p>
+          <p className={`mt-2 break-words ${valueClass}`}>
+            {method?.name}
+            {method?.total !== undefined && (
+              <span className="text-neutral-400">
+                {" "}
+                (
+                {convertToLocale({
+                  amount: method.total ?? 0,
+                  currency_code: order.currency_code,
+                })}
+                )
+              </span>
+            )}
+          </p>
         </div>
       </div>
-      <Divider className="mt-8" />
-    </div>
+    </section>
   )
 }
 

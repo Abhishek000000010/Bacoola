@@ -45,6 +45,18 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    // Next's defaults (8 deviceSizes + 8 imageSizes) make every `fill` image
+    // emit a 17-candidate srcset. Each candidate is a full percent-encoded
+    // Cloudinary URL, so one <img> tag costs ~3.2KB of HTML -- and a category
+    // page renders over a thousand of them (one card per colourway, several
+    // thumbnails per card), which put ~3.9MB of srcset markup into a 5.1MB page.
+    //
+    // Thumbnails declare `sizes` topping out at 800 CSS px, so 2048 and 3840 can
+    // never be picked, and the gaps between the remaining stops are too fine to
+    // matter visually. These stops still cover every declared breakpoint plus 2x
+    // DPR at the largest slot (800 -> 1600, served by 1920).
+    deviceSizes: [640, 828, 1080, 1920],
+    imageSizes: [128, 256, 384],
     remotePatterns: [
       {
         protocol: "http",
@@ -62,6 +74,18 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.mango.com",
+      },
+      {
+        protocol: "https",
+        hostname: "shop.mango.com",
+      },
+      {
+        protocol: "https",
+        hostname: "st.mngbcn.com",
       },
       {
         protocol: "https",

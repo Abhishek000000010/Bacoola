@@ -112,7 +112,7 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
             <div>
               <LocalizedClientLink
                 href={campaign.button_link || "/store"}
-                className="text-white text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
+                className="text-white text-xs lg:text-sm font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
               >
                 {campaign.button_text || "Discover More"}
               </LocalizedClientLink>

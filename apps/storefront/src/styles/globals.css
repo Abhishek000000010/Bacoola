@@ -30,6 +30,22 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
+/* One hover speed for every button on the site: Tailwind's default 150ms reads
+   as a snap rather than a fade. The element+class selectors outrank the
+   `duration-*` utilities, and only buttons that already opt into a transition
+   are matched, so nothing starts animating that wasn't animating before. */
+button.transition,
+button.transition-all,
+button.transition-colors,
+button.transition-opacity,
+[role="button"].transition,
+[role="button"].transition-all,
+[role="button"].transition-colors,
+[role="button"].transition-opacity {
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
@@ -59,12 +75,34 @@ h1, h2, h3, h4, h5, h6 {
     scrollbar-width: none !important; /* Firefox */
   }
 
-  input:focus ~ label,
-  input:not(:placeholder-shown) ~ label {
+  .hover-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+  }
+  .hover-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 4px;
+  }
+  .hover-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #d4d4d4;
+  }
+  .hover-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  .hover-scrollbar:hover {
+    scrollbar-color: #d4d4d4 transparent;
+  }
+
+  /* Float-label behaviour for the shared Input component. Labels that manage
+     their own float animation opt out with data-no-global-float, otherwise
+     these rules override their position and size on focus. */
+  input:focus ~ label:not([data-no-global-float]),
+  input:not(:placeholder-shown) ~ label:not([data-no-global-float]) {
     @apply -translate-y-2 text-xsmall-regular;
   }
 
-  input:focus ~ label {
+  input:focus ~ label:not([data-no-global-float]) {
     @apply left-0;
   }
 
@@ -92,6 +130,34 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @layer components {
+  /* Nav underline hover, ported from mango.com's category links: a 1px rule
+     sitting ~0.5rem below the text that fades in on hover, rather than a
+     wipe. Used by the category links, the mega menu, and the right-hand nav
+     items (Search, Log In, Wishlist, Bag) so they all animate the same way --
+     the React-driven category state toggles .nav-underline-active. */
+  .nav-underline {
+    position: relative;
+  }
+
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* ~0.5rem below the text, matching Mango's text-underline-offset */
+    bottom: -4px;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0;
+    /* Fades in/out with Mango's easing instead of the old scaleX wipe. */
+    transition: opacity 0.5s cubic-bezier(0.3, 0.85, 0.5, 1);
+  }
+
+  .nav-underline:hover::after,
+  .nav-underline-active::after {
+    opacity: 1;
+  }
+
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
   }

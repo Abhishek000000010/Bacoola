@@ -43,7 +43,7 @@ const Review = ({ cart }: { cart: HttpTypes.StoreCart }) => {
         <button
           type="button"
           onClick={() => router.push(pathname + "?step=payment", { scroll: false })}
-          className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-950 transition-colors flex items-center gap-x-2 py-2"
+          className="text-xs lg:text-sm font-semibold uppercase tracking-[0.18em] text-neutral-600 hover:text-neutral-950 transition-colors flex items-center gap-x-2 py-2"
           data-testid="back-to-payment-button"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">

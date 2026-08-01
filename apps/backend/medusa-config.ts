@@ -2,9 +2,81 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
+// Redis (Upstash) backs the cache, event bus, workflow engine and distributed
+// locks. Without it Medusa silently falls back to in-memory implementations —
+// a "fake redis" cache, a local event bus that drops queued jobs on restart,
+// and in-process locking that cannot protect against double-spend across
+// requests or instances (see docs/WEBSITE-ANALYSIS.md section A1).
+//
+// The modules are only registered when REDIS_URL is set, so a checkout without
+// Redis credentials still boots (with the in-memory fallbacks + Medusa's usual
+// warnings). Upstash URLs are TLS: rediss://default:<token>@<host>:6379
+const REDIS_URL = process.env.REDIS_URL
+
+const redisModules = REDIS_URL
+  ? [
+      {
+        resolve: "@medusajs/medusa/cache-redis",
+        options: {
+          redisUrl: REDIS_URL,
+          // Namespaced so multiple environments can share one Upstash DB
+          // without colliding. TTL is in seconds.
+          namespace: process.env.REDIS_NAMESPACE || "bacoola-cache",
+          ttl: 30,
+        },
+      },
+      {
+        resolve: "@medusajs/medusa/event-bus-redis",
+        options: {
+          redisUrl: REDIS_URL,
+          queueName: process.env.REDIS_NAMESPACE
+            ? `${process.env.REDIS_NAMESPACE}-events`
+            : "bacoola-events",
+        },
+      },
+      {
+        resolve: "@medusajs/medusa/workflow-engine-redis",
+        options: {
+          // NOTE: 2.17.2 logs a deprecation warning asking for `redisUrl` /
+          // `redisOptions` here, but its loader still destructures
+          // `options.redis.url` — switching to the "new" names crashes the
+          // Workflows module at boot. Keep this shape until a later Medusa
+          // version actually supports the rename. The warning is harmless.
+          redis: {
+            url: REDIS_URL,
+            // BullMQ requires blocking commands with retries disabled;
+            // ioredis' default of 20 retries makes workers throw on Upstash.
+            options: { maxRetriesPerRequest: null },
+          },
+        },
+      },
+      {
+        resolve: "@medusajs/medusa/locking",
+        options: {
+          providers: [
+            {
+              resolve: "@medusajs/medusa/locking-redis",
+              id: "locking-redis",
+              is_default: true,
+              options: { redisUrl: REDIS_URL },
+            },
+          ],
+        },
+      },
+    ]
+  : []
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    // Separate from the Redis *modules* below: this one backs the express
+    // session store. Without it Medusa logs "redisUrl not found. A fake redis
+    // instance will be used." and keeps sessions in process memory, so logins
+    // drop on every restart/redeploy and don't survive more than one instance.
+    redisUrl: REDIS_URL,
+    redisPrefix: process.env.REDIS_NAMESPACE
+      ? `${process.env.REDIS_NAMESPACE}:sess:`
+      : "bacoola:sess:",
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
@@ -16,6 +88,7 @@ module.exports = defineConfig({
     }
   },
   modules: [
+    ...redisModules,
     {
       // File storage: Cloudinary instead of local disk.
       // Credentials are read from env vars (see .env.template) — never hardcoded.

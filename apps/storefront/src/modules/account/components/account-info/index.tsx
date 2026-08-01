@@ -60,12 +60,12 @@ const AccountInfo = ({
     <div className="w-full mb-[36px]" data-testid={dataTestid}>
       <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-start gap-x-4">
         <div className="flex flex-col items-start">
-          <span className="text-[14px] font-semibold leading-[1.3] text-[#111111]">
+          <span className="text-[12px] lg:text-[14px] font-semibold leading-[1.3] text-[#111111]">
             {label}
           </span>
           {typeof currentInfo === "string" ? (
             <span
-              className="text-[14px] font-normal leading-[1.6] mt-[2px] text-[#111111]"
+              className="text-[12px] lg:text-[14px] font-normal leading-[1.6] mt-[2px] text-[#111111]"
               data-testid="current-info"
             >
               {currentInfo}
@@ -78,7 +78,7 @@ const AccountInfo = ({
           <button
             onClick={handleToggle}
             type={state ? "reset" : "button"}
-            className="text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
+            className="text-[12px] lg:text-[14px] font-semibold uppercase underline underline-offset-2 text-[#111111] hover:text-[#555555] transition-colors focus:outline-none"
             data-testid="edit-button"
             data-active={state}
           >
@@ -162,7 +162,7 @@ const AccountInfo = ({
                   SAVE
                 </Button>
                 
-                <p className="mt-4 text-[12px] text-neutral-500">
+                <p className="mt-4 text-[12px] lg:text-[14px] text-neutral-500">
                   By saving your details you confirm you have read the <span className="font-bold text-neutral-950">Privacy Policy</span>.
                 </p>
               </div>

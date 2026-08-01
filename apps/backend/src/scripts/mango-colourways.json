@@ -1,0 +1,6108 @@
+{
+  "37001439": {
+    "title": "100% cotton open-knit polo shirt",
+    "type": "polos",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37001439-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4490
+      },
+      "45": {
+        "name": "Aqua Green",
+        "swatch": "https://media.mango.com/is/image/punto/37001439-45-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4490
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37001439-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4490
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37001439-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4490
+      }
+    }
+  },
+  "37001441": {
+    "title": "100% cotton braided texture polo shirt",
+    "type": "polos",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37001441-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4699
+      }
+    }
+  },
+  "37011435": {
+    "title": "Linen blend slim fit T-shirt",
+    "type": "t-shirts",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37011435-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": false,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      },
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37011435-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37011435-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": false,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37011435-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      },
+      "04": {
+        "name": "Ivory White",
+        "swatch": "https://media.mango.com/is/image/punto/37011435-04-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": false,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": false,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      }
+    }
+  },
+  "37012901": {
+    "title": "Open-knit cotton blend sweater",
+    "type": "polos",
+    "colours": {
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37012901-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      }
+    }
+  },
+  "37021360": {
+    "title": "Milan slim-fit suit trousers",
+    "type": "trousers",
+    "colours": {
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37021360-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6199
+      }
+    }
+  },
+  "37021369": {
+    "title": "Slim fit linen lyocell blend trousers",
+    "type": "trousers",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37021369-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6499
+      }
+    }
+  },
+  "37021372": {
+    "title": "Lyocell linen blend suit trousers",
+    "type": "trousers",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37021372-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": false,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 7499
+      }
+    }
+  },
+  "37021438": {
+    "title": "100% cotton knitted polo structure",
+    "type": "polos",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37021438-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4690
+      }
+    }
+  },
+  "37022889": {
+    "title": "Cotton-linen blend denim Bermuda shorts, regular fit",
+    "type": "shorts",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37022889-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 4999
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37022889-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 4999
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37022889-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37022890": {
+    "title": "Micro check blazer 100% cotton",
+    "type": "jackets",
+    "colours": {
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37022890-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 8999
+      }
+    }
+  },
+  "37022893": {
+    "title": "Slim fit cotton lyocell suit trousers",
+    "type": "trousers",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37022893-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6499
+      }
+    }
+  },
+  "37022900": {
+    "title": "100% cotton knitted polo structure",
+    "type": "polos",
+    "colours": {
+      "11": {
+        "name": "Pastel Yellow",
+        "swatch": "https://media.mango.com/is/image/punto/37022900-11-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "89": {
+        "name": "Medium Pink",
+        "swatch": "https://media.mango.com/is/image/punto/37022900-89-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37022900-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37022900-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37022900-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      }
+    }
+  },
+  "37031333": {
+    "title": "Modal zip jacket",
+    "type": "jackets",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37031333-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 8990
+      }
+    }
+  },
+  "37031334": {
+    "title": "Regular fit modal jacket with pockets",
+    "type": "jackets",
+    "colours": {
+      "04": {
+        "name": "Ivory White",
+        "swatch": "https://media.mango.com/is/image/punto/37031334-04-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 8999
+      }
+    }
+  },
+  "37031336": {
+    "title": "Slim fit cotton blend Bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37031336-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37031337": {
+    "title": "Linen blend Bermuda shorts with belt",
+    "type": "shorts",
+    "colours": {
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37031337-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37031338": {
+    "title": "Regular fit trousers in a lyocell-linen blend",
+    "type": "trousers",
+    "colours": {
+      "04": {
+        "name": "Ivory White",
+        "swatch": "https://media.mango.com/is/image/punto/37031338-04-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 7299
+      }
+    }
+  },
+  "37031357": {
+    "title": "Bowling bag with leather details",
+    "type": "backpacks-and-bags",
+    "colours": {
+      "37": {
+        "name": "Khaki",
+        "swatch": "https://media.mango.com/is/image/punto/37031357-37-020?wid=16",
+        "sizes": [
+          {
+            "size": "One size",
+            "available": true,
+            "code": "99"
+          }
+        ],
+        "price": 9999
+      }
+    }
+  },
+  "37031360": {
+    "title": "Milan slim-fit suit jacket",
+    "type": "blazers",
+    "colours": {
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37031360-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 11999
+      }
+    }
+  },
+  "37031400": {
+    "title": "Regular-fit 100% linen shirt",
+    "type": "shirts",
+    "colours": {
+      "51": {
+        "name": "China Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37031400-51-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37031400-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37031400-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      },
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37031400-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      }
+    }
+  },
+  "37031419": {
+    "title": "Linen blend striped T-shirt",
+    "type": "t-shirts",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37031419-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3699
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37031419-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3699
+      }
+    }
+  },
+  "37031435": {
+    "title": "100% cotton printed shirt",
+    "type": "shirts",
+    "colours": {
+      "55": {
+        "name": "Ink Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37031435-55-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      }
+    }
+  },
+  "37031436": {
+    "title": "Lyocell blend striped shirt",
+    "type": "shirts",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37031436-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37032891": {
+    "title": "Relaxed fit cotton-linen blend Bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37032891-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37032891-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37041330": {
+    "title": "Modal pocket jacket",
+    "type": "jackets",
+    "colours": {
+      "98": {
+        "name": "Mink Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37041330-98-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 10990
+      }
+    }
+  },
+  "37041336": {
+    "title": "Relaxed fit linen blend trousers",
+    "type": "trousers",
+    "colours": {
+      "98": {
+        "name": "Mink Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37041336-98-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6499
+      }
+    }
+  },
+  "37041347": {
+    "title": "Regular-fit 100% linen overshirt",
+    "type": "overshirts",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37041347-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": false,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6799
+      },
+      "98": {
+        "name": "Mink Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37041347-98-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6799
+      }
+    }
+  },
+  "37041356": {
+    "title": "Braided crossbody bag with long handle",
+    "type": "backpacks-and-bags",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37041356-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "One size",
+            "available": true,
+            "code": "99"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37041368": {
+    "title": "Slim-fit suit jacket made from a linen-lyocell blend",
+    "type": "blazers",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37041368-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 10999
+      }
+    }
+  },
+  "37041370": {
+    "title": "Slim fit lyocell linen suit jacket",
+    "type": "blazers",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37041370-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 15999
+      }
+    }
+  },
+  "37041433": {
+    "title": "100% cotton striped shirt",
+    "type": "shirts",
+    "colours": {
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37041433-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      }
+    }
+  },
+  "37041437": {
+    "title": "Ribbed cotton-linen blend polo",
+    "type": "polos",
+    "colours": {
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37041437-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37041437-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37041437-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      }
+    }
+  },
+  "37041459": {
+    "title": "Printed cotton shirt with a bowling collar",
+    "type": "shirts",
+    "colours": {
+      "40": {
+        "name": "Pastel Green",
+        "swatch": "https://media.mango.com/is/image/punto/37041459-40-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      }
+    }
+  },
+  "37042889": {
+    "title": "Relaxed fit cotton-linen blend trousers",
+    "type": "trousers",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37042889-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5299
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37042889-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5299
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37042889-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5299
+      }
+    }
+  },
+  "37042890": {
+    "title": "Lyocell cotton blend pleated bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37042890-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37042890-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37042898": {
+    "title": "Textured cotton blend polo",
+    "type": "polos",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37042898-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3999
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37042898-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3999
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37042898-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3999
+      }
+    }
+  },
+  "37051330": {
+    "title": "Slim-fit 100% linen bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": false,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37051330-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37051335": {
+    "title": "Lyocell blend striped bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "98": {
+        "name": "Mink Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37051335-98-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37051353": {
+    "title": "Seersucker striped texture shirt",
+    "type": "shirts",
+    "colours": {
+      "40": {
+        "name": "Pastel Green",
+        "swatch": "https://media.mango.com/is/image/punto/37051353-40-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      },
+      "52": {
+        "name": "Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37051353-52-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      },
+      "83": {
+        "name": "Pale Pink",
+        "swatch": "https://media.mango.com/is/image/punto/37051353-83-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      }
+    }
+  },
+  "37051356": {
+    "title": "100% cotton grid handkerchief",
+    "type": "scarves--caps-and-gloves",
+    "colours": {
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37051356-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "One size",
+            "available": true,
+            "code": "99"
+          }
+        ],
+        "price": 2499
+      }
+    }
+  },
+  "37051358": {
+    "title": "Double-breasted blazer in lyocell-linen mix",
+    "type": "blazers",
+    "colours": {
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37051358-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 15999
+      }
+    }
+  },
+  "37051406": {
+    "title": "Boston regular-fit double-breasted suit jacket",
+    "type": "blazers",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37051406-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 14999
+      }
+    }
+  },
+  "37051415": {
+    "title": "100% linen trousers with adjustable straps",
+    "type": "trousers",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37051415-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 7499
+      }
+    }
+  },
+  "37051437": {
+    "title": "Ribbed cotton-linen blend T-shirt",
+    "type": "t-shirts",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37051437-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      },
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37051437-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3899
+      }
+    }
+  },
+  "37052889": {
+    "title": "Slim fit micro-check 100% cotton Bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37052889-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37061331": {
+    "title": "Slim fit cropped linen-cotton trousers",
+    "type": "trousers",
+    "colours": {
+      "32": {
+        "name": "Chocolate",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-32-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": false,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": false,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "48": {
+        "name": "Forest Green",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-48-020?wid=16",
+        "sizes": [
+          {
+            "size": "36",
+            "available": false,
+            "code": "36"
+          },
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "36",
+            "available": false,
+            "code": "36"
+          },
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "36",
+            "available": false,
+            "code": "36"
+          },
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "36",
+            "available": false,
+            "code": "36"
+          },
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      },
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37061331-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "36",
+            "available": true,
+            "code": "36"
+          },
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 5290
+      }
+    }
+  },
+  "37061358": {
+    "title": "Lyocell-linen blend slim fit suit trousers",
+    "type": "trousers",
+    "colours": {
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37061358-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 7499
+      }
+    }
+  },
+  "37061392": {
+    "title": "Rectangular-frame sunglasses",
+    "type": "sunglasses",
+    "colours": {
+      "32": {
+        "name": "Chocolate",
+        "swatch": "https://media.mango.com/is/image/punto/37061392-32-020?wid=16",
+        "sizes": [
+          {
+            "size": "One size",
+            "available": true,
+            "code": "99"
+          }
+        ],
+        "price": 4999
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37061392-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "One size",
+            "available": true,
+            "code": "99"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37061432": {
+    "title": "Cotton-linen blend camp collar shirt",
+    "type": "shirts",
+    "colours": {
+      "32": {
+        "name": "Chocolate",
+        "swatch": "https://media.mango.com/is/image/punto/37061432-32-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4290
+      }
+    }
+  },
+  "37061436": {
+    "title": "Fine knit cotton blend T-shirt",
+    "type": "t-shirts",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37061436-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2890
+      },
+      "48": {
+        "name": "Forest Green",
+        "swatch": "https://media.mango.com/is/image/punto/37061436-48-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2890
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37061436-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 2890
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37061436-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2890
+      },
+      "04": {
+        "name": "Ivory White",
+        "swatch": "https://media.mango.com/is/image/punto/37061436-04-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 2890
+      }
+    }
+  },
+  "37062898": {
+    "title": "Relaxed fit cotton-linen blend T-shirt",
+    "type": "t-shirts",
+    "colours": {
+      "11": {
+        "name": "Pastel Yellow",
+        "swatch": "https://media.mango.com/is/image/punto/37062898-11-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2499
+      },
+      "32": {
+        "name": "Chocolate",
+        "swatch": "https://media.mango.com/is/image/punto/37062898-32-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2499
+      },
+      "89": {
+        "name": "Medium Pink",
+        "swatch": "https://media.mango.com/is/image/punto/37062898-89-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2499
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37062898-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 2499
+      }
+    }
+  },
+  "37062907": {
+    "title": "Printed relaxed fit shirt",
+    "type": "shirts",
+    "colours": {
+      "10": {
+        "name": "Vanilla",
+        "swatch": "https://media.mango.com/is/image/punto/37062907-10-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      }
+    }
+  },
+  "37063894": {
+    "title": "Regular-fit jeans in a cotton-linen blend",
+    "type": "jeans",
+    "colours": {
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37063894-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6199
+      }
+    }
+  },
+  "37071330": {
+    "title": "Slim-fit 100% linen trousers",
+    "type": "trousers",
+    "colours": {
+      "44": {
+        "name": "Emerald Green",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-44-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "91": {
+        "name": "Light Heather Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-91-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": false,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": false,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      },
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37071330-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6490
+      }
+    }
+  },
+  "37071333": {
+    "title": "Modal cotton cargo bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37071333-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6199
+      },
+      "98": {
+        "name": "Mink Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37071333-98-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 6199
+      }
+    }
+  },
+  "37071334": {
+    "title": "Regular fit 100% linen Bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37071334-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37071334-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": false,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37071334-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37071405": {
+    "title": "Boston regular-fit double-breasted suit jacket",
+    "type": "blazers",
+    "colours": {
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37071405-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 14999
+      }
+    }
+  },
+  "37071421": {
+    "title": "Regular-fit 100% linen shirt",
+    "type": "shirts",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37071421-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "45": {
+        "name": "Aqua Green",
+        "swatch": "https://media.mango.com/is/image/punto/37071421-45-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37071421-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37071421-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4499
+      }
+    }
+  },
+  "37071424": {
+    "title": "100% linen slim-fit shirt",
+    "type": "shirts",
+    "colours": {
+      "40": {
+        "name": "Pastel Green",
+        "swatch": "https://media.mango.com/is/image/punto/37071424-40-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6199
+      },
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37071424-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6199
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37071424-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6199
+      }
+    }
+  },
+  "37072897": {
+    "title": "100% cotton checked bowling collar shirt",
+    "type": "shirts",
+    "colours": {
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37072897-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4990
+      }
+    }
+  },
+  "37072899": {
+    "title": "Ribbed cotton-linen blend sweater",
+    "type": "sweaters-and-cardigans",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37072899-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37081334": {
+    "title": "Slim-fit lyocell linen trousers",
+    "type": "trousers",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37081334-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 7499
+      }
+    }
+  },
+  "37081352": {
+    "title": "Regular fit lyocell-linen blend shirt",
+    "type": "shirts",
+    "colours": {
+      "56": {
+        "name": "Dark Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37081352-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      },
+      "81": {
+        "name": "Pastel Pink",
+        "swatch": "https://media.mango.com/is/image/punto/37081352-81-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": false,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      },
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37081352-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37081389": {
+    "title": "Amalfi 100% linen slim-fit suit jacket",
+    "type": "blazers",
+    "colours": {
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37081389-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": true,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 15999
+      }
+    }
+  },
+  "37081422": {
+    "title": "100% linen slim-fit shirt",
+    "type": "shirts",
+    "colours": {
+      "35": {
+        "name": "Medium Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-35-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "45": {
+        "name": "Aqua Green",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-45-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "50": {
+        "name": "Sky Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-50-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "56": {
+        "name": "Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "95": {
+        "name": "Charcoal",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-95-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37081422-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 6190
+      }
+    }
+  },
+  "37081424": {
+    "title": "Regular fit cotton-linen blend shirt",
+    "type": "shirts",
+    "colours": {
+      "10": {
+        "name": "Vanilla",
+        "swatch": "https://media.mango.com/is/image/punto/37081424-10-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37081436": {
+    "title": "100% cotton structured knit shirt",
+    "type": "polos",
+    "colours": {
+      "07": {
+        "name": "Sand",
+        "swatch": "https://media.mango.com/is/image/punto/37081436-07-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4490
+      }
+    }
+  },
+  "37081448": {
+    "title": "Slim fit cotton lyocell bermuda shorts",
+    "type": "shorts",
+    "colours": {
+      "45": {
+        "name": "Aqua Green",
+        "swatch": "https://media.mango.com/is/image/punto/37081448-45-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": false,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      },
+      "03": {
+        "name": "Ice Grey",
+        "swatch": "https://media.mango.com/is/image/punto/37081448-03-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": true,
+            "code": "48"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37082888": {
+    "title": "Relaxed fit jeans in a cotton-linen blend",
+    "type": "trousers",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37082888-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 6499
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37082888-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 6499
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37082888-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": true,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": true,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": true,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": true,
+            "code": "46"
+          }
+        ],
+        "price": 6499
+      }
+    }
+  },
+  "37082889": {
+    "title": "Linen-cotton blend stripe shirt",
+    "type": "shirts",
+    "colours": {
+      "11": {
+        "name": "Pastel Yellow",
+        "swatch": "https://media.mango.com/is/image/punto/37082889-11-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5299
+      },
+      "20": {
+        "name": "Orange",
+        "swatch": "https://media.mango.com/is/image/punto/37082889-20-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5299
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37082889-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5299
+      }
+    }
+  },
+  "37082891": {
+    "title": "Slim fit cotton lyocell blend blazer",
+    "type": "blazers",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37082891-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          },
+          {
+            "size": "50",
+            "available": false,
+            "code": "50"
+          },
+          {
+            "size": "52",
+            "available": true,
+            "code": "52"
+          },
+          {
+            "size": "54",
+            "available": true,
+            "code": "54"
+          },
+          {
+            "size": "56",
+            "available": true,
+            "code": "56"
+          }
+        ],
+        "price": 11999
+      }
+    }
+  },
+  "37091346": {
+    "title": "100% cotton shirt with embroidery details",
+    "type": "shirts",
+    "colours": {
+      "56": {
+        "name": "Dark Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37091346-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3990
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37091346-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3990
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37091346-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3990
+      }
+    }
+  },
+  "37091389": {
+    "title": "Amalfi 100% linen slim-fit suit trousers",
+    "type": "trousers",
+    "colours": {
+      "05": {
+        "name": "Ecru",
+        "swatch": "https://media.mango.com/is/image/punto/37091389-05-020?wid=16",
+        "sizes": [
+          {
+            "size": "38",
+            "available": true,
+            "code": "38"
+          },
+          {
+            "size": "40",
+            "available": false,
+            "code": "40"
+          },
+          {
+            "size": "42",
+            "available": false,
+            "code": "42"
+          },
+          {
+            "size": "44",
+            "available": false,
+            "code": "44"
+          },
+          {
+            "size": "46",
+            "available": false,
+            "code": "46"
+          },
+          {
+            "size": "48",
+            "available": false,
+            "code": "48"
+          }
+        ],
+        "price": 7490
+      }
+    }
+  },
+  "37091425": {
+    "title": "Regular-fit linen cotton shirt",
+    "type": "shirts",
+    "colours": {
+      "40": {
+        "name": "Pastel Green",
+        "swatch": "https://media.mango.com/is/image/punto/37091425-40-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      },
+      "56": {
+        "name": "Dark Navy",
+        "swatch": "https://media.mango.com/is/image/punto/37091425-56-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      },
+      "08": {
+        "name": "Beige",
+        "swatch": "https://media.mango.com/is/image/punto/37091425-08-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": true,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      },
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37091425-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "XS",
+            "available": false,
+            "code": "19"
+          },
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": false,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4999
+      }
+    }
+  },
+  "37091435": {
+    "title": "100% cotton fine knit polo",
+    "type": "polos",
+    "colours": {
+      "45": {
+        "name": "Aqua Green",
+        "swatch": "https://media.mango.com/is/image/punto/37091435-45-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4299
+      },
+      "57": {
+        "name": "Night Blue",
+        "swatch": "https://media.mango.com/is/image/punto/37091435-57-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4299
+      },
+      "82": {
+        "name": "Light Pink",
+        "swatch": "https://media.mango.com/is/image/punto/37091435-82-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 4299
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37091435-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": false,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": false,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": false,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4299
+      },
+      "02": {
+        "name": "Off White",
+        "swatch": "https://media.mango.com/is/image/punto/37091435-02-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 4299
+      }
+    }
+  },
+  "37092889": {
+    "title": "Regular fit cotton-linen blend overshirt",
+    "type": "overshirts",
+    "colours": {
+      "01": {
+        "name": "White",
+        "swatch": "https://media.mango.com/is/image/punto/37092889-01-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 5999
+      }
+    }
+  },
+  "37092897": {
+    "title": "Regular fit cotton blend textured shirt",
+    "type": "shirts",
+    "colours": {
+      "30": {
+        "name": "Brown",
+        "swatch": "https://media.mango.com/is/image/punto/37092897-30-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": false,
+            "code": "24"
+          }
+        ],
+        "price": 3699
+      },
+      "99": {
+        "name": "Black",
+        "swatch": "https://media.mango.com/is/image/punto/37092897-99-020?wid=16",
+        "sizes": [
+          {
+            "size": "S",
+            "available": true,
+            "code": "20"
+          },
+          {
+            "size": "M",
+            "available": true,
+            "code": "21"
+          },
+          {
+            "size": "L",
+            "available": true,
+            "code": "22"
+          },
+          {
+            "size": "XL",
+            "available": true,
+            "code": "23"
+          },
+          {
+            "size": "XXL",
+            "available": true,
+            "code": "24"
+          }
+        ],
+        "price": 3699
+      }
+    }
+  }
+}

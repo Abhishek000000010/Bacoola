@@ -27,13 +27,13 @@ export default async function CheckoutForm({
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 gap-y-8">
-      <Addresses cart={cart} customer={customer} />
+        <Shipping cart={cart} availableShippingMethods={shippingMethods} />
 
-      <Shipping cart={cart} availableShippingMethods={shippingMethods} />
+        <Addresses cart={cart} customer={customer} />
 
-      <Payment cart={cart} availablePaymentMethods={paymentMethods} />
+        <Payment cart={cart} availablePaymentMethods={paymentMethods} />
 
-      <Review cart={cart} />
+        <Review cart={cart} />
       </div>
     </div>
   )

@@ -36,7 +36,7 @@ export const Newsletter: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-xs sm:text-sm font-light text-neutral-500 tracking-wide mb-8 max-w-md leading-relaxed"
+          className="text-xs lg:text-sm sm:text-sm font-light text-neutral-500 tracking-wide mb-8 max-w-md leading-relaxed"
         >
           Be the first to discover new collections, exclusive launches, and seasonal edits.
         </motion.p>
@@ -50,7 +50,7 @@ export const Newsletter: React.FC = () => {
           className="w-full"
         >
           {subscribed ? (
-            <div className="text-xs font-semibold uppercase tracking-widest text-emerald-600 transition-all duration-300">
+            <div className="text-xs lg:text-sm font-semibold uppercase tracking-widest text-emerald-600 transition-all duration-300">
               Thank you for subscribing.
             </div>
           ) : (
@@ -61,11 +61,11 @@ export const Newsletter: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border-b border-neutral-300 py-3 text-xs tracking-widest text-[#111111] placeholder-neutral-400 focus:outline-none focus:border-black transition-colors bg-transparent rounded-none"
+                className="w-full border-b border-neutral-300 py-3 text-xs lg:text-sm tracking-widest text-[#111111] placeholder-neutral-400 focus:outline-none focus:border-black transition-colors bg-transparent rounded-none"
               />
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-3 border border-black bg-black text-white text-xs font-semibold uppercase tracking-[0.25em] hover:bg-white hover:text-black transition-colors rounded-none whitespace-nowrap"
+                className="w-full sm:w-auto px-8 py-3 border border-black bg-black text-white text-xs lg:text-sm font-semibold uppercase tracking-[0.25em] hover:bg-white hover:text-black transition-colors rounded-none whitespace-nowrap"
               >
                 Subscribe
               </button>

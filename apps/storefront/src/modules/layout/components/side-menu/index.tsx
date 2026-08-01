@@ -118,7 +118,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                           <LocalizedClientLink
                             href={`/landingpage/${activeTab}`}
                             onClick={closeDrawer}
-                            className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200 mb-2"
+                            className="block w-full text-left py-3.5 text-xs uppercase tracking-wide font-semibold text-black transition-colors duration-200 mb-2"
                           >
                             VIEW ALL
                           </LocalizedClientLink>
@@ -133,10 +133,10 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                                   <button
                                     key={cat.id}
                                     onClick={() => setActiveSubcategory(cat)}
-                                    className={`block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                                    className={`block w-full text-left py-3.5 text-xs uppercase tracking-wide font-semibold transition-colors duration-200 ${
                                       cat.name.toUpperCase().includes("SALE")
                                         ? "text-[#D01313] hover:text-[#B01010]"
-                                        : "text-[#111111] hover:text-neutral-500"
+                                        : "text-black"
                                     }`}
                                   >
                                     {cat.name}
@@ -149,10 +149,10 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                                   key={cat.id}
                                   href={`/categories/${cat.handle}`}
                                   onClick={closeDrawer}
-                                  className={`block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold transition-colors duration-200 ${
+                                  className={`block w-full text-left py-3.5 text-xs uppercase tracking-wide font-semibold transition-colors duration-200 ${
                                     cat.name.toUpperCase().includes("SALE")
                                       ? "text-[#D01313] hover:text-[#B01010]"
-                                      : "text-[#111111] hover:text-neutral-500"
+                                      : "text-black"
                                   }`}
                                 >
                                   {cat.name}
@@ -161,51 +161,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                             })}
                         </div>
 
-                        {/* Bottom Footer Section (Country / Language selection) */}
-                        <div className="border-t border-neutral-100 px-8 py-6 flex flex-col gap-y-4 bg-neutral-50/50">
-                          {!!locales?.length && (
-                            <div
-                              className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
-                              onMouseEnter={languageToggleState.open}
-                              onMouseLeave={languageToggleState.close}
-                            >
-                              <LanguageSelect
-                                toggleState={languageToggleState}
-                                locales={locales}
-                                currentLocale={currentLocale}
-                              />
-                              <ArrowRightMini
-                                className={clx(
-                                  "transition-transform duration-150 w-4 h-4",
-                                  languageToggleState.state ? "-rotate-90" : ""
-                                )}
-                              />
-                            </div>
-                          )}
 
-                          <div
-                            className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
-                            onMouseEnter={countryToggleState.open}
-                            onMouseLeave={countryToggleState.close}
-                          >
-                            {regions && (
-                              <CountrySelect
-                                toggleState={countryToggleState}
-                                regions={regions}
-                              />
-                            )}
-                            <ArrowRightMini
-                              className={clx(
-                                "transition-transform duration-150 w-4 h-4",
-                                countryToggleState.state ? "-rotate-90" : ""
-                              )}
-                            />
-                          </div>
-
-                          <div className="text-[10px] text-neutral-400 uppercase tracking-widest mt-2 select-none">
-                            © {new Date().getFullYear()} Bacoola. All rights reserved.
-                          </div>
-                        </div>
                       </div>
 
                       {/* SUBMENU PANEL */}
@@ -217,14 +173,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                               <div className="flex items-center gap-x-2">
                                 <button
                                   onClick={() => setActiveSubcategory(null)}
-                                  className="p-2 text-[#111111] hover:text-neutral-500 transition-colors focus:outline-none"
+                                  className="p-2 text-black transition-colors focus:outline-none"
                                   aria-label="Back"
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                                   </svg>
                                 </button>
-                                <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#111111]">
+                                <div className="text-xs font-semibold uppercase tracking-wide text-[#111111]">
                                   {activeSubcategory.name} <span className="text-neutral-400 ml-1">{activeTab}</span>
                                 </div>
                               </div>
@@ -241,7 +197,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                               <LocalizedClientLink
                                 href={`/categories/${activeSubcategory.handle}`}
                                 onClick={closeDrawer}
-                                className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200 mb-2"
+                                className="block w-full text-left py-3.5 text-xs uppercase tracking-wide font-semibold text-black transition-colors duration-200 mb-2"
                               >
                                 SEE ALL
                               </LocalizedClientLink>
@@ -254,7 +210,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale, ca
                                     key={subcat.id}
                                     href={`/categories/${subcat.handle}`}
                                     onClick={closeDrawer}
-                                    className="block w-full text-left py-2.5 text-[12px] uppercase tracking-[0.12em] font-semibold text-[#111111] hover:text-neutral-500 transition-colors duration-200"
+                                    className="block w-full text-left py-3.5 text-xs uppercase tracking-wide font-semibold text-black transition-colors duration-200"
                                   >
                                     {subcat.name}
                                   </LocalizedClientLink>

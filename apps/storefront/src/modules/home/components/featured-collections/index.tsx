@@ -17,7 +17,7 @@ export const FeaturedCollections: React.FC = () => {
     <section className="w-full py-12 md:py-24 px-4 sm:px-6 lg:px-8 max-w-[1550px] mx-auto bg-white">
       {/* Editorial Title */}
       <div className="flex flex-col items-center mb-12 md:mb-16 text-center">
-        <h2 className="text-xs font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-2">Shop by category</h2>
+        <h2 className="text-xs lg:text-sm font-semibold tracking-[0.4em] uppercase text-neutral-400 mb-2">Shop by category</h2>
         <p className="text-xl sm:text-2xl font-light uppercase tracking-widest text-[#111111]">Featured Collections</p>
       </div>
 
@@ -52,7 +52,7 @@ export const FeaturedCollections: React.FC = () => {
                 </h3>
                 
                 {/* CTA that fades and slides up on hover */}
-                <span className="text-[10px] font-semibold uppercase tracking-[0.25em] border-b border-white pb-1 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                <span className="text-[12px] lg:text-[14px] font-semibold uppercase tracking-[0.25em] border-b border-white pb-1 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
                   Shop Now
                 </span>
               </div>

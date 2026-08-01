@@ -8,8 +8,8 @@ export default function CheckoutLayout({
 }) {
   return (
     <div className="relative w-full bg-white small:min-h-screen">
-      <div className="h-16 border-b border-neutral-200 bg-white">
-        <nav className="content-container flex h-full items-center justify-center">
+      <div className="h-16 bg-white pt-8 pb-4">
+        <nav className="max-w-[1024px] w-full mx-auto px-4 flex h-full items-center justify-center">
           <LocalizedClientLink
             href="/"
             className="flex items-center hover:opacity-80 transition-opacity duration-200"
@@ -26,9 +26,9 @@ export default function CheckoutLayout({
       <div className="relative" data-testid="checkout-container">
         {children}
       </div>
-      <div className="w-full border-t border-neutral-200 py-6 mt-16">
-        <div className="content-container mx-auto flex max-w-[1024px] flex-col items-center justify-between gap-y-4 small:flex-row small:gap-y-0">
-          <div className="flex items-center gap-x-6 text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-950">
+      <div className="w-full border-t-0 small:border-t border-neutral-200 py-6 mt-6 small:mt-16">
+        <div className="max-w-[1024px] w-full px-4 mx-auto flex flex-col items-start justify-between gap-y-6 small:flex-row small:items-center small:gap-y-0">
+          <div className="flex flex-col items-start gap-y-5 small:flex-row small:items-center small:gap-x-6 text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-950">
             <LocalizedClientLink href="#" className="transition-colors hover:text-neutral-500">
               Privacy Policy and Cookies
             </LocalizedClientLink>
@@ -39,7 +39,7 @@ export default function CheckoutLayout({
               Ethics Channel
             </LocalizedClientLink>
           </div>
-          <div className="text-[11px] font-normal text-neutral-600">
+          <div className="text-[12px] lg:text-[14px] font-normal text-neutral-600">
             © 2026 BACOOLA All rights reserved
           </div>
         </div>

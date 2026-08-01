@@ -387,7 +387,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         city: formData.get("shipping_address.city"),
         country_code: formData.get("shipping_address.country_code"),
         province: formData.get("shipping_address.province"),
-        phone: formData.get("shipping_address.phone"),
+        phone: normalizePhone(formData.get("shipping_address.phone")),
       },
       email: formData.get("email"),
     } as any
@@ -406,16 +406,37 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         city: formData.get("billing_address.city"),
         country_code: formData.get("billing_address.country_code"),
         province: formData.get("billing_address.province"),
-        phone: formData.get("billing_address.phone"),
+        phone: normalizePhone(formData.get("billing_address.phone")),
       }
     await updateCart(data)
+
+    // A delivery method must be chosen before payment. It is set by a separate
+    // request when the shopper picks a radio, so guard here rather than trust
+    // the client -- otherwise submitting the address alone slips through to
+    // payment with no shipping method (and Shiprocket has nothing to fulfil).
+    const cart = await retrieveCart()
+    if (!cart?.shipping_methods?.length) {
+      return "Please select a delivery method before continuing to payment."
+    }
   } catch (e: any) {
     return e.message
   }
 
   redirect(
-    `/${formData.get("shipping_address.country_code")}/checkout?step=delivery`
+    `/${formData.get("shipping_address.country_code")}/checkout?step=payment`
   )
+}
+
+/**
+ * Shiprocket expects a bare 10-digit Indian mobile number. Browser autofill on
+ * the "tel" field often supplies the full "+91XXXXXXXXXX" (the visible +91 in
+ * the UI is only decorative), which would otherwise reach the order as 12+
+ * digits with a "+". Strip everything but digits and keep the last 10 so the
+ * stored phone is always what Shiprocket accepts.
+ */
+function normalizePhone(value: FormDataEntryValue | null): string {
+  const digits = (value?.toString() ?? "").replace(/\D/g, "")
+  return digits.length > 10 ? digits.slice(-10) : digits
 }
 
 /**

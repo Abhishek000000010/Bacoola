@@ -1,11 +1,14 @@
 import { HttpTypes } from "@medusajs/types"
+import { clx } from "@medusajs/ui"
 import Input from "@modules/common/components/input"
 import React, { useState } from "react"
 import CountrySelect from "../country-select"
-import { State, City } from "country-state-city"
+import { useAddressLocations } from "@modules/checkout/hooks/use-address-locations"
 import Select from "react-select"
 
 const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
+  const [stateFocused, setStateFocused] = useState(false)
+  const [cityFocused, setCityFocused] = useState(false)
   const [formData, setFormData] = useState<Record<string, string>>({
     "billing_address.first_name": cart?.billing_address?.first_name || "",
     "billing_address.last_name": cart?.billing_address?.last_name || "",
@@ -17,6 +20,12 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
     "billing_address.province": cart?.billing_address?.province || "",
     "billing_address.phone": cart?.billing_address?.phone || "",
   })
+
+  // Fetched from /api/locations rather than bundled -- see the hook.
+  const { stateOptions, cityOptions } = useAddressLocations(
+    formData["billing_address.country_code"],
+    formData["billing_address.province"]
+  )
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -76,53 +85,67 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-postal-input"
         />
-        <CountrySelect
-          name="billing_address.country_code"
-          autoComplete="country"
-          region={cart?.region}
-          value={formData["billing_address.country_code"]}
-          onChange={handleChange}
-          required
-          data-testid="billing-country-select"
-        />
-        <div className="flex flex-col gap-2">
-          <label className="text-ui-fg-base text-xs">State / Province</label>
+        <div className="relative w-full">
+          <label className="pointer-events-none absolute left-4 top-[7px] z-10 text-[12px] lg:text-[14px] leading-none text-black">
+            Country
+            <span className="ml-1 text-rose-500">*</span>
+          </label>
+          <CountrySelect
+            name="billing_address.country_code"
+            autoComplete="country"
+            region={cart?.region}
+            value={formData["billing_address.country_code"]}
+            onChange={handleChange}
+            required
+            data-testid="billing-country-select"
+            placeholder=""
+          />
+        </div>
+        <div className="relative flex flex-col gap-1">
           <Select
-            options={State.getStatesOfCountry(formData["billing_address.country_code"]?.toUpperCase()).map(s => ({ value: s.name, label: s.name, isoCode: s.isoCode }))}
-            value={{ value: formData["billing_address.province"], label: formData["billing_address.province"] || "Select State" }}
+            options={stateOptions}
+            value={formData["billing_address.province"] ? { value: formData["billing_address.province"], label: formData["billing_address.province"] } : null}
             onChange={(selectedOption: any) => {
               setFormData({
                 ...formData,
-                "billing_address.province": selectedOption.value,
+                "billing_address.province": selectedOption?.value || "",
                 "billing_address.city": "" // Reset city when state changes
               })
             }}
+            onFocus={() => setStateFocused(true)}
+            onBlur={() => setStateFocused(false)}
             isDisabled={!formData["billing_address.country_code"]}
-            placeholder="Search State"
+            placeholder=""
             className="text-sm"
-            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '48px', borderRadius: '0px', borderColor: '#d4d4d4', paddingLeft: '8px' }), valueContainer: (base: any) => ({ ...base, paddingTop: '16px' }), menu: (base: any) => ({ ...base, zIndex: 50 }) }}
           />
+          <label className={clx(
+            "pointer-events-none absolute left-4 z-10 transition-all duration-300 ease-in-out text-black",
+            (stateFocused || formData["billing_address.province"]) 
+              ? "top-[7px] text-[12px] lg:text-[14px]" 
+              : "top-1/2 -translate-y-1/2 text-[12px] lg:text-[14px]"
+          )}>State / Province</label>
         </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-ui-fg-base text-xs">City</label>
+        <div className="relative flex flex-col gap-1">
           <Select
-            options={
-              formData["billing_address.province"] 
-                ? City.getCitiesOfState(
-                    formData["billing_address.country_code"]?.toUpperCase(), 
-                    State.getStatesOfCountry(formData["billing_address.country_code"]?.toUpperCase()).find(s => s.name === formData["billing_address.province"])?.isoCode || ""
-                  ).map(c => ({ value: c.name, label: c.name }))
-                : []
-            }
-            value={{ value: formData["billing_address.city"], label: formData["billing_address.city"] || "Select City" }}
+            options={formData["billing_address.province"] ? cityOptions : []}
+            value={formData["billing_address.city"] ? { value: formData["billing_address.city"], label: formData["billing_address.city"] } : null}
             onChange={(selectedOption: any) => {
-              handleChange({ target: { name: "billing_address.city", value: selectedOption.value } } as any)
+              handleChange({ target: { name: "billing_address.city", value: selectedOption?.value || "" } } as any)
             }}
+            onFocus={() => setCityFocused(true)}
+            onBlur={() => setCityFocused(false)}
             isDisabled={!formData["billing_address.province"]}
-            placeholder="Search City"
+            placeholder=""
             className="text-sm"
-            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '48px', borderRadius: '0px', borderColor: '#d4d4d4', paddingLeft: '8px' }), valueContainer: (base: any) => ({ ...base, paddingTop: '16px' }), menu: (base: any) => ({ ...base, zIndex: 50 }) }}
           />
+          <label className={clx(
+            "pointer-events-none absolute left-4 z-10 transition-all duration-300 ease-in-out text-black",
+            (cityFocused || formData["billing_address.city"]) 
+              ? "top-[7px] text-[12px] lg:text-[14px]" 
+              : "top-1/2 -translate-y-1/2 text-[12px] lg:text-[14px]"
+          )}>Town / City</label>
         </div>
         {/* Hidden inputs so the react-select State/City values reach FormData
             (same fix as the shipping address form). */}

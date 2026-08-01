@@ -1,9 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Table, Text } from "@modules/common/components/ui"
 
-import LineItemOptions from "@modules/common/components/line-item-options"
-import LineItemPrice from "@modules/common/components/line-item-price"
-import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
+import { convertToLocale } from "@lib/util/money"
 import Thumbnail from "@modules/products/components/thumbnail"
 
 type ItemProps = {
@@ -12,45 +9,45 @@ type ItemProps = {
 }
 
 const Item = ({ item, currencyCode }: ItemProps) => {
+  const money = (amount?: number | null) =>
+    convertToLocale({ amount: amount || 0, currency_code: currencyCode })
+
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
-        <div className="flex w-16">
-          <Thumbnail thumbnail={item.thumbnail} size="square" />
+    <div className="flex gap-x-4 py-4" data-testid="product-row">
+      <div className="w-16 shrink-0">
+        <Thumbnail
+          thumbnail={item.thumbnail}
+          images={item.variant?.product?.images}
+          size="square"
+        />
+      </div>
+
+      <div className="flex min-w-0 flex-1 justify-between gap-x-3">
+        <div className="min-w-0">
+          <p
+            className="line-clamp-2 text-[13px] text-neutral-950"
+            data-testid="product-name"
+          >
+            {item.product_title}
+          </p>
+          {item.variant?.title && (
+            <p className="mt-1 text-[12px] capitalize text-neutral-500" data-testid="product-variant">
+              {item.variant.title}
+            </p>
+          )}
+          <p className="mt-1 text-[12px] text-neutral-500">
+            Qty <span data-testid="product-quantity">{item.quantity}</span>
+          </p>
         </div>
-      </Table.Cell>
 
-      <Table.Cell className="text-left">
-        <Text
-          className="txt-medium-plus text-ui-fg-base"
-          data-testid="product-name"
-        >
-          {item.product_title}
-        </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
-      </Table.Cell>
-
-      <Table.Cell className="!pr-0">
-        <span className="!pr-0 flex flex-col items-end h-full justify-center">
-          <span className="flex gap-x-1 ">
-            <Text className="text-ui-fg-muted">
-              <span data-testid="product-quantity">{item.quantity}</span>x{" "}
-            </Text>
-            <LineItemUnitPrice
-              item={item}
-              style="tight"
-              currencyCode={currencyCode}
-            />
-          </span>
-
-          <LineItemPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </span>
-      </Table.Cell>
-    </Table.Row>
+        <div className="shrink-0 text-right">
+          <p className="text-[13px] text-neutral-950">{money(item.total)}</p>
+          <p className="mt-1 text-[12px] text-neutral-400">
+            {item.quantity} × {money(item.unit_price)}
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

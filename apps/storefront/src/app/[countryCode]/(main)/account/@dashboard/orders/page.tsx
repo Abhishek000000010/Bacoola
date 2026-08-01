@@ -21,7 +21,7 @@ export default async function Orders() {
   return (
     <div className="w-full h-full flex flex-col" data-testid="orders-page-wrapper">
       <div className="mb-12">
-        <h1 className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.05em] text-neutral-950">
+        <h1 className="text-[12px] lg:text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.05em] text-neutral-950">
           My Purchases
         </h1>
       </div>

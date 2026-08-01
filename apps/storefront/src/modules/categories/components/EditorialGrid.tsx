@@ -28,9 +28,9 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
   rightImagePosition = "center center",
 }) => {
   return (
-    <section className="w-full h-screen grid grid-cols-1 md:grid-cols-5 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-screen grid grid-cols-1 md:grid-cols-5 bg-white overflow-hidden relative">
       {/* Left Card */}
-      <div className={`relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 ${leftSpan}`}>
+      <div className={`relative h-full w-full group overflow-hidden ${leftSpan}`}>
         <Image
           src={leftImage}
           alt={leftTitle}
@@ -52,7 +52,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           <div>
             <LocalizedClientLink
               href={leftHref}
-              className="text-white text-xs uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
+              className="text-white text-xs lg:text-sm uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
             >
               SEE ALL →
             </LocalizedClientLink>
@@ -83,7 +83,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           <div>
             <LocalizedClientLink
               href={rightHref}
-              className="text-white text-xs uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
+              className="text-white text-xs lg:text-sm uppercase tracking-[0.25em] border-b border-white pb-1 hover:text-neutral-300 hover:border-neutral-300 transition-all duration-300"
             >
               SEE ALL →
             </LocalizedClientLink>

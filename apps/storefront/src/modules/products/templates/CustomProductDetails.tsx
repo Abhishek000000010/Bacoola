@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useCallback } from "react"
 import Image from "next/image"
 import { Heart } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -9,7 +9,13 @@ import { isEqual } from "lodash"
 import ProductPrice from "../components/product-price"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import WishlistButton from "@modules/common/components/wishlist-button"
-
+import MeasurementsPanel from "../components/measurements-panel"
+import { parseMeasurements } from "@lib/util/measurements"
+import DetailsPanel from "../components/details-panel"
+import { parseProductDetails } from "@lib/util/product-details"
+import StoreAvailabilityPanel from "../components/store-availability-panel"
+import { STORES } from "@lib/util/stores"
+import { FadeIn } from "@modules/common/components/fade-in"
 interface CustomProductDetailsProps {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
@@ -120,24 +126,45 @@ const Lightbox = ({
   // The clicked/committed image; hover only previews without changing it.
   const [selectedIndex, setSelectedIndex] = useState(initialIndex)
   const [hoverIndex, setHoverIndex] = useState<number | null>(null)
+  const [isClosing, setIsClosing] = useState(false)
+  const [mobileSlide, setMobileSlide] = useState(initialIndex)
   const scrollRef = React.useRef<HTMLDivElement>(null)
+  const mobileScrollRef = React.useRef<HTMLDivElement>(null)
 
   const displayedIndex = hoverIndex ?? selectedIndex
   const displayed = images[displayedIndex]
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true)
+    setTimeout(() => onClose(), 250) // Unmount right before animation finishes to be seamless
+  }, [onClose])
+
+  // Scroll to initial index on mobile
+  useEffect(() => {
+    if (mobileScrollRef.current) {
+      // Need a small timeout to ensure the DOM is painted and width is calculated
+      setTimeout(() => {
+        if (mobileScrollRef.current) {
+           const width = mobileScrollRef.current.offsetWidth
+           mobileScrollRef.current.scrollTo({ left: width * initialIndex, behavior: "instant" as any })
+        }
+      }, 10)
+    }
+  }, [initialIndex])
 
   // Lock body scroll while open and close on Escape.
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") handleClose()
     }
     window.addEventListener("keydown", onKey)
     return () => {
       document.body.style.overflow = previousOverflow
       window.removeEventListener("keydown", onKey)
     }
-  }, [onClose])
+  }, [handleClose])
 
   const select = (i: number) => {
     setSelectedIndex(i)
@@ -147,19 +174,22 @@ const Lightbox = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white">
+    <div className={`fixed inset-0 z-[100] bg-white ${isClosing ? "animate-[lightboxZoomOut_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]" : "animate-[lightboxZoom_0.3s_cubic-bezier(0.16,1,0.3,1)]"}`}>
       {/* Hide the scrollbar on the image column (all engines) without losing scroll. */}
-      <style>{`.lb-scroll{scrollbar-width:none;-ms-overflow-style:none}.lb-scroll::-webkit-scrollbar{display:none}`}</style>
+      <style>{`.lb-scroll{scrollbar-width:none;-ms-overflow-style:none}.lb-scroll::-webkit-scrollbar{display:none} 
+      @keyframes lightboxZoom { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+      @keyframes lightboxZoomOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+      `}</style>
 
       {/* Close */}
       <button
         type="button"
-        onClick={onClose}
+        onClick={handleClose}
         aria-label="Close"
-        className="fixed top-5 right-5 z-[120] flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-neutral-900 backdrop-blur transition-colors hover:bg-neutral-100"
+        className="fixed top-6 right-6 z-[120] flex h-7 w-7 items-center justify-center bg-white text-black transition-colors hover:bg-neutral-100"
       >
-        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 6l12 12M18 6L6 18" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
 
@@ -186,8 +216,8 @@ const Lightbox = ({
         ))}
       </div>
 
-      {/* Single full-width image; scrolling stays within this image only. */}
-      <div ref={scrollRef} className="h-full overflow-y-auto lb-scroll">
+      {/* Single full-width image (desktop); scrolling stays within this image only. */}
+      <div ref={scrollRef} className="hidden md:block h-full overflow-y-auto lb-scroll">
         {displayed?.url ? (
           <img
             src={displayed.url}
@@ -196,6 +226,47 @@ const Lightbox = ({
           />
         ) : null}
       </div>
+
+      {/* Mobile swipeable carousel */}
+      <div 
+        ref={mobileScrollRef}
+        className="flex md:hidden h-full w-full overflow-x-auto snap-x snap-mandatory lb-scroll"
+        onScroll={(e) => {
+          const container = e.currentTarget
+          const scrollLeft = container.scrollLeft
+          const width = container.offsetWidth
+          if (width > 0) {
+            const newIndex = Math.round(scrollLeft / width)
+            if (newIndex !== mobileSlide) setMobileSlide(newIndex)
+          }
+        }}
+      >
+        {images.map((img, i) => (
+          <div key={img.url || i} className="w-full h-full flex-shrink-0 snap-center relative">
+            {img.url && (
+              <img
+                src={img.url}
+                alt={`${title ?? "Product image"} ${i + 1}`}
+                className="w-full h-full object-cover object-center"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Dots Indicator for Mobile */}
+      {images.length > 1 && (
+        <div className="absolute bottom-6 left-0 right-0 flex md:hidden justify-center gap-1.5 pointer-events-none z-[120]">
+          {images.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 transition-all duration-300 ${
+                i === mobileSlide ? "bg-black w-4" : "bg-neutral-400 w-1.5"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -210,11 +281,53 @@ export default function CustomProductDetails({
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  // With no colour chosen the gallery falls back to the WHOLE product gallery,
+  // which on a multi-colourway product means every colour's photos at once.
+  // Default to the colourway the thumbnail belongs to -- the one whose card the
+  // shopper clicked -- so a bare product URL opens on a coherent set. Only the
+  // colour is set; size stays unchosen, so no variant is implicitly selected.
+  const defaultColourOptions = useCallback((): Record<string, string> => {
+    const colourOption = (product.options ?? []).find((o) =>
+      /^colou?rs?$/i.test((o.title ?? "").trim())
+    )
+    if (!colourOption || !product.variants?.length) return {}
+
+    const owner =
+      product.variants.find(
+        (v) => (v.metadata as any)?.thumbnail === product.thumbnail
+      ) ?? product.variants[0]
+
+    const value = (owner.options ?? []).find(
+      (o: any) => o.option_id === colourOption.id
+    )?.value
+    return value ? { [colourOption.id]: value } : {}
+  }, [product.options, product.variants, product.thumbnail])
+
+  // Resolve the pre-selected variant synchronously on first render (from the
+  // v_id param, or a single-variant product). Doing this here instead of in a
+  // post-mount effect avoids a flash where the gallery shows every image for one
+  // render before the curated per-colour set is applied.
+  const [options, setOptions] = useState<Record<string, string | undefined>>(() => {
+    const vId = searchParams.get("v_id")
+    if (vId && product.variants) {
+      const variant = product.variants.find((v) => v.id === vId)
+      if (variant) return optionsAsKeymap(variant.options) ?? {}
+    }
+    if (product.variants?.length === 1) {
+      return optionsAsKeymap(product.variants[0].options) ?? {}
+    }
+    return defaultColourOptions()
+  })
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [activeSlide, setActiveSlide] = useState(0)
+  const [measurementsOpen, setMeasurementsOpen] = useState(false)
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  const [storesOpen, setStoresOpen] = useState(false)
+  // Mobile-only: the size picker is deferred to a bottom sheet that opens on ADD,
+  // so the product page itself stays clean (desktop keeps the inline size list).
+  const [sizeSheetOpen, setSizeSheetOpen] = useState(false)
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     description: true,
     composition: false,
@@ -233,8 +346,15 @@ export default function CustomProductDetails({
     } else if (product.variants?.length === 1) {
       const variantOptions = optionsAsKeymap(product.variants[0].options)
       setOptions(variantOptions ?? {})
+    } else {
+      // Landed without a v_id (a shared link, or the URL cleared after an
+      // invalid combination): keep a colour selected so the gallery stays on
+      // one colourway instead of reverting to every image on the product.
+      setOptions((prev) =>
+        Object.keys(prev).length ? prev : defaultColourOptions()
+      )
     }
-  }, [product.variants, searchParams])
+  }, [product.variants, searchParams, defaultColourOptions])
 
   // Compute selected variant based on option choices
   const selectedVariant = useMemo(() => {
@@ -321,32 +441,72 @@ export default function CustomProductDetails({
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  // Prioritize selected variant's images, fallback to product images if empty
+  // Exact swatch colours, when the catalogue carries them.
+  //
+  // colorHexMap below only knows a handful of names, and a name like "stone" or
+  // "camel" is a whole family of shades. Imported products record the colour
+  // sampled from the supplier's own swatch on each variant, so prefer that and
+  // keep the name map as the fallback for hand-entered products.
+  const colorHexByValue = useMemo(() => {
+    const map: Record<string, string> = {}
+    const colourOption = (product.options ?? []).find((o) =>
+      /^colou?rs?$/i.test((o.title ?? "").trim())
+    )
+    if (!colourOption) return map
+
+    for (const v of product.variants ?? []) {
+      const value = (v.options ?? []).find(
+        (o: any) => o.option_id === colourOption.id
+      )?.value
+      const hex = (v.metadata as any)?.color_hex
+      if (value && typeof hex === "string" && /^#[0-9a-fA-F]{6}$/.test(hex)) {
+        map[value.toLowerCase()] = hex
+      }
+    }
+    return map
+  }, [product])
+
+  // Prioritize selected variant's curated images, fallback to product images.
   const productImages = useMemo(() => {
     let finalImages: HttpTypes.StoreProductImage[] = []
 
-    if (selectedVariant && selectedVariant.images && selectedVariant.images.length > 0) {
-      const imageIdsMap = new Map(selectedVariant.images.map((i: any) => [i.id, true]))
-      const variantImages = product.images?.filter((i) => imageIdsMap.has(i.id)) ?? []
-      if (variantImages.length > 0) {
-        // Honour the admin-defined per-variant order (metadata.image_order) when
-        // present. Images not in the list (added after the order was saved) keep
-        // their natural position at the end. Falls back to product image order.
-        const savedOrder = (selectedVariant.metadata as any)?.image_order
-        if (Array.isArray(savedOrder) && savedOrder.length > 0) {
-          const rank = new Map<string, number>(
-            savedOrder.map((id: string, i: number) => [id, i])
-          )
-          const ordered = [...variantImages].sort((a, b) => {
-            const ra = rank.has(a.id) ? rank.get(a.id)! : Number.MAX_SAFE_INTEGER
-            const rb = rank.has(b.id) ? rank.get(b.id)! : Number.MAX_SAFE_INTEGER
-            return ra - rb
-          })
-          finalImages = ordered
-        } else {
-          finalImages = variantImages
-        }
+    // The admin curates a variant's gallery per colourway as `metadata.image_order`
+    // -- an ordered list of product image ids. Medusa has no real variant->image
+    // relation (a variant's `images` resolves to the whole product gallery), so
+    // this list is the single source of truth for BOTH which images show and
+    // their order. Only listed images appear, in listed order; ids that no longer
+    // exist on the product are skipped. An empty/absent list means "not curated",
+    // and we fall back to the full product gallery below.
+    const byId = new Map<string, HttpTypes.StoreProductImage>(
+      (product.images ?? []).map((i) => [i.id, i])
+    )
+
+    // Resolve the curated list. Prefer the fully-selected variant, but curation
+    // is per-COLOURWAY (all same-colour variants share one list), so fall back to
+    // any variant of the currently-selected colour. That makes the gallery swap
+    // as soon as a colour is picked, before a size is chosen.
+    let savedOrder = (selectedVariant?.metadata as any)?.image_order
+    if (!(Array.isArray(savedOrder) && savedOrder.length > 0)) {
+      const colourOption = (product.options ?? []).find((o) =>
+        /^colou?rs?$/i.test((o.title ?? "").trim())
+      )
+      const selectedColour = colourOption ? options[colourOption.id] : undefined
+      if (colourOption && selectedColour) {
+        const match = product.variants?.find((v) => {
+          const value = (v.options ?? []).find(
+            (o: any) => o.option_id === colourOption.id
+          )?.value
+          const list = (v.metadata as any)?.image_order
+          return value === selectedColour && Array.isArray(list) && list.length > 0
+        })
+        savedOrder = (match?.metadata as any)?.image_order
       }
+    }
+
+    if (Array.isArray(savedOrder) && savedOrder.length > 0) {
+      finalImages = savedOrder
+        .map((id: string) => byId.get(id))
+        .filter((img): img is HttpTypes.StoreProductImage => Boolean(img))
     }
 
     if (finalImages.length === 0 && images && images.length > 0) {
@@ -371,14 +531,14 @@ export default function CustomProductDetails({
     }
 
     return product.thumbnail ? [{ url: product.thumbnail }] : []
-  }, [selectedVariant, images, product.images, product.thumbnail])
+  }, [selectedVariant, options, product.options, product.variants, images, product.images, product.thumbnail])
 
   const memoizedImageGallery = useMemo(() => {
     const layout = getRowLayout(productImages.length)
     let imgIndex = 0
 
     return (
-      <div className="lg:col-span-7 flex flex-col w-full relative">
+      <FadeIn delay={100} className="lg:col-span-7 flex flex-col w-full relative">
         {/* Mobile Carousel (hidden on desktop) */}
         <div className="flex lg:hidden flex-col w-full relative">
           <div 
@@ -410,7 +570,7 @@ export default function CustomProductDetails({
                     className="object-cover object-center"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs">
+                  <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs lg:text-sm">
                     NO IMAGE
                   </div>
                 )}
@@ -433,18 +593,18 @@ export default function CustomProductDetails({
         </div>
 
         {/* Desktop Grid (hidden on mobile) */}
-        <div className="hidden lg:flex flex-col gap-1 h-fit w-full">
+        <div className="hidden lg:flex flex-col gap-[2px] h-fit w-full">
           {layout.map((rowSize, rowIndex) => {
             const rowImages = productImages.slice(imgIndex, imgIndex + rowSize)
             const currentRowIndex = imgIndex
             imgIndex += rowSize
 
             return (
-              <div key={rowIndex} className={`grid ${getGridColsClass(rowSize)} gap-1 w-full`}>
+              <div key={rowIndex} className={`grid ${getGridColsClass(rowSize)} gap-[2px] w-full`}>
                 {rowImages.map((img, index) => (
                   <div
                     key={img.url || index}
-                    className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-50 cursor-zoom-in"
+                    className={`relative w-full overflow-hidden bg-neutral-50 cursor-zoom-in ${rowIndex === 0 ? "aspect-[3/4] lg:aspect-auto lg:h-[751px]" : "aspect-[3/4]"}`}
                     onClick={() => img.url && setLightboxIndex(currentRowIndex + index)}
                   >
                     {img.url ? (
@@ -458,7 +618,7 @@ export default function CustomProductDetails({
                         className="object-cover object-center"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs">
+                      <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs lg:text-sm">
                         NO IMAGE
                       </div>
                     )}
@@ -468,64 +628,158 @@ export default function CustomProductDetails({
             )
           })}
         </div>
-      </div>
+      </FadeIn>
     )
   }, [productImages, product.title, activeSlide])
 
+  // Measurements are entered per product in admin and stored on metadata; the
+  // panel opens on whichever size the shopper has already picked, if any.
+  const measurements = useMemo(
+    () => parseMeasurements(product.metadata as Record<string, unknown> | null),
+    [product.metadata]
+  )
+  const details = useMemo(
+    () => parseProductDetails(product.metadata as Record<string, unknown> | null),
+    [product.metadata]
+  )
+  const sizeOption = useMemo(
+    () =>
+      (product.options ?? []).find((o) =>
+        /^sizes?$/i.test((o.title ?? "").trim())
+      ),
+    [product.options]
+  )
+  const sizeValues = useMemo(
+    () =>
+      sizeOption
+        ? (Array.from(
+            new Set(sizeOption.values?.map((v) => v.value).filter(Boolean))
+          ) as string[])
+        : [],
+    [sizeOption]
+  )
+  const selectedSize = sizeOption ? options[sizeOption.id] : undefined
+
+  // The variant a given size maps to, holding the currently selected colour
+  // (and any other options) fixed.
+  const variantForSize = useCallback(
+    (sizeValue: string) => {
+      if (!sizeOption) return undefined
+      const target = { ...options, [sizeOption.id]: sizeValue }
+      return product.variants?.find((v) =>
+        isEqual(optionsAsKeymap(v.options), target)
+      )
+    },
+    [sizeOption, options, product.variants]
+  )
+
+  const isVariantInStock = useCallback(
+    (v?: HttpTypes.StoreProductVariant) => {
+      if (!v) return false
+      if (!v.manage_inventory) return true
+      if (v.allow_backorder) return true
+      return (v.inventory_quantity || 0) > 0
+    },
+    []
+  )
+
+  // Mobile ADD: pick a size in the sheet, then add that variant straight to the
+  // bag. State updates are async, so we resolve the variant from the chosen size
+  // directly instead of waiting on the selectedVariant memo.
+  const handleSelectSizeAndAdd = async (sizeValue: string) => {
+    if (!sizeOption) return
+    const variant = variantForSize(sizeValue)
+    setOptions((prev) => ({ ...prev, [sizeOption.id]: sizeValue }))
+    setSizeSheetOpen(false)
+    if (!variant?.id || !isVariantInStock(variant)) return
+
+    setIsAdding(true)
+    try {
+      await addToCart({ variantId: variant.id, quantity: 1, countryCode })
+    } catch (error) {
+      console.error("Error adding to cart:", error)
+    } finally {
+      setIsAdding(false)
+    }
+  }
+
+  // What the mobile ADD button does: always open the size sheet first (the item
+  // is only added once a size is tapped in the sheet). Products with no size
+  // option fall back to adding the resolved variant directly.
+  const handleMobileAdd = () => {
+    if (sizeOption && sizeValues.length > 0) {
+      setSizeSheetOpen(true)
+      return
+    }
+    handleAddToCart()
+  }
+
   return (
-    <div className="relative w-full min-h-screen bg-white text-black font-sans pb-24">
-      <div className="max-w-[1550px] mx-auto lg:px-12 pt-0 pb-10 lg:py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="relative w-full min-h-screen bg-white text-black font-sans pb-10 lg:pb-24">
+      <div className="w-full px-0 lg:pr-12 pt-0 pb-6 lg:pt-0 lg:pb-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         
         {/* Left Section: Vertically Stacked Product Images */}
         {memoizedImageGallery}
 
         {/* Right Section: Sticky Info and Purchase Actions */}
-        <div className="lg:col-span-5 px-5 lg:px-0">
-          <div className="lg:sticky lg:top-[110px] flex flex-col items-start select-none">
+        <FadeIn delay={200} className="lg:col-span-5 px-5 lg:px-0">
+          <div 
+            className="lg:sticky lg:top-[110px] lg:pt-0 lg:pb-[56px] flex flex-col items-start select-none w-full mx-auto"
+            style={{ maxWidth: '480px' }}
+          >
             
-            {/* Collection Badge */}
-            <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-900 mb-1">
-              {product.collection?.title || "NEW NOW"}
-            </span>
 
             {/* Product Title */}
-            <h1 className="text-lg font-bold uppercase tracking-wide text-neutral-900 mb-1">
+            <h1 className="text-[16px] font-bold uppercase text-neutral-900 mb-2">
               {product.title}
             </h1>
 
             {/* Product Price */}
-            <div className="text-sm font-normal text-neutral-600 mb-8">
+            <div className="mb-6 lg:mb-10 text-neutral-800 [&_span]:!text-[12px] lg:text-[14px] [&_span]:!font-normal [&_span]:!leading-none">
               <ProductPrice product={product} variant={selectedVariant} />
             </div>
 
             {/* Dynamic Option Selectors */}
-            {product.options?.map((option) => {
+            {[...(product.options || [])].sort((a, b) => {
+              const aTitle = a.title?.toLowerCase() || ""
+              const bTitle = b.title?.toLowerCase() || ""
+              if (aTitle.includes("color")) return -1
+              if (bTitle.includes("color")) return 1
+              return 0
+            }).map((option) => {
               const optionTitle = option.title?.toLowerCase() || ""
               const values = Array.from(new Set(option.values?.map((v) => v.value).filter(Boolean))) as string[]
               const currentValue = options[option.id]
 
               if (optionTitle === "color") {
                 return (
-                  <div key={option.id} className="flex flex-col mb-8 w-full">
-                    <div className="flex justify-between items-center">
-                      <div className="flex gap-x-2">
+                  <div key={option.id} className="order-first lg:order-none flex flex-col w-full pb-3 mb-4 lg:mb-0">
+                    <div className="flex justify-between items-end">
+                      <div className="flex gap-x-3">
                         {values.map((val) => {
-                          const hex = colorHexMap[val.toLowerCase()] || val.toLowerCase()
+                          const hex =
+                            colorHexByValue[val.toLowerCase()] ||
+                            colorHexMap[val.toLowerCase()] ||
+                            val.toLowerCase()
                           const isSelected = currentValue === val
                           return (
                             <button
                               key={val}
                               onClick={() => setOptionValue(option.id, val)}
-                              className={`w-3 h-4 rounded-none border focus:outline-none transition-all duration-200 ${
-                                isSelected ? "border-black scale-110" : "border-neutral-200"
+                              className={`relative w-4 h-4 focus:outline-none transition-all duration-200 ${
+                                isSelected ? "" : "opacity-80"
                               }`}
                               style={{ backgroundColor: hex }}
                               title={val}
-                            />
+                            >
+                              {isSelected && (
+                                <span className="absolute -bottom-[4px] left-0 w-full h-[1.5px] bg-black" />
+                              )}
+                            </button>
                           )
                         })}
                       </div>
-                      <span className="text-xs font-medium text-neutral-900 capitalize">
+                      <span className="text-[12px] lg:text-[14px] font-normal text-neutral-800 capitalize">
                         {currentValue || ""}
                       </span>
                     </div>
@@ -535,24 +789,21 @@ export default function CustomProductDetails({
 
               if (optionTitle === "size") {
                 return (
-                  <div key={option.id} className="flex flex-col mb-8 w-full">
-                    <div className="flex flex-row flex-wrap gap-x-8 gap-y-4 w-full text-xs font-semibold text-neutral-900 mt-2">
+                  <div key={option.id} className="hidden lg:flex flex-col w-full mb-6">
+                    <div className="flex flex-col w-full text-[12px] lg:text-[14px] font-bold text-neutral-900 border-y border-neutral-200 max-h-[251px] overflow-y-auto hover-scrollbar">
                       {values.map((val) => {
                         const isSelected = currentValue === val
                         return (
                           <button
                             key={val}
                             onClick={() => setOptionValue(option.id, val)}
-                            className={`flex justify-center items-center py-2 focus:outline-none transition-colors relative ${
+                            className={`flex items-center py-2.5 px-2 w-full focus:outline-none transition-colors ${
                               isSelected
-                                ? "text-black font-bold"
-                                : "text-neutral-500 hover:text-black"
+                                ? "bg-neutral-100 text-black"
+                                : "text-neutral-900 hover:bg-neutral-100"
                             }`}
                           >
-                            <span className="uppercase tracking-widest">{val}</span>
-                            {isSelected && (
-                              <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-black" />
-                            )}
+                            <span className="uppercase">{val}</span>
                           </button>
                         )
                       })}
@@ -563,8 +814,8 @@ export default function CustomProductDetails({
 
               // Fallback default selector for other option types
               return (
-                <div key={option.id} className="flex flex-col mb-6 w-full">
-                  <span className="text-[11px] font-semibold tracking-wider text-neutral-400 mb-3 uppercase">
+                <div key={option.id} className="flex flex-col mb-6 w-full border-b border-neutral-200 pb-4">
+                  <span className="text-[12px] lg:text-[14px] font-bold text-neutral-900 mb-3 uppercase">
                     {option.title}: {currentValue || `SELECT ${option.title}`}
                   </span>
                   <div className="flex gap-2 flex-wrap">
@@ -574,7 +825,7 @@ export default function CustomProductDetails({
                         <button
                           key={val}
                           onClick={() => setOptionValue(option.id, val)}
-                          className={`px-4 py-2 border text-xs font-semibold rounded-none transition-all focus:outline-none ${
+                          className={`px-4 py-2 border text-[12px] lg:text-[14px] font-bold rounded-none transition-all focus:outline-none ${
                             isSelected
                               ? "border-black bg-black text-white"
                               : "border-neutral-200 hover:border-neutral-400 text-neutral-800"
@@ -589,37 +840,221 @@ export default function CustomProductDetails({
               )
             })}
 
-            {/* Add to Bag and Wishlist Action Buttons */}
-            <div className="flex gap-x-4 w-full mb-8">
+            {/* Measurements -- only when the admin has entered them */}
+            {measurements && (
+              <button
+                type="button"
+                onClick={() => setMeasurementsOpen(true)}
+                className="mb-6 w-full pb-4 text-left text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-900 transition-colors hover:text-neutral-500 focus:outline-none"
+              >
+                Measurements
+              </button>
+            )}
+
+            {/* Add to Bag and Wishlist Action Buttons (desktop: needs a resolved
+                variant up front, since the size list is shown inline). */}
+            <div className="hidden lg:flex gap-x-[2px] w-full mb-[2px]">
               <button
                 onClick={handleAddToCart}
                 disabled={
                   (product.variants?.length ?? 0) > 0 &&
                   (!isValidVariant || !selectedVariant || !inStock || isAdding)
                 }
-                className="flex-1 py-4 border border-black bg-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-white hover:text-black transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:border-neutral-200 disabled:cursor-not-allowed"
+                className="flex-1 py-3 bg-[#181818] text-white text-[12px] lg:text-[14px] font-bold hover:bg-black transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
               >
                 {isAdding
-                  ? "ADDING TO BAG..."
+                  ? "ADDING..."
                   : !selectedVariant && (product.variants?.length ?? 0) > 1
                   ? "SELECT OPTIONS"
                   : !inStock
                   ? "OUT OF STOCK"
-                  : "ADD TO BAG"}
+                  : "ADD"}
               </button>
               <WishlistButton
                 product={product}
-                iconClassName="w-5 h-5"
-                className="p-4 border border-neutral-200 hover:border-neutral-400 rounded-none shrink-0"
+                iconClassName="w-[18px] h-[18px] text-white"
+                className="px-[18px] bg-[#181818] hover:bg-black transition-colors shrink-0 flex items-center justify-center"
+              />
+            </div>
+
+            {/* Mobile: ADD opens the size sheet first (no inline size list), then
+                the chosen variant is added straight from the sheet. */}
+            <div className="flex lg:hidden gap-x-[2px] w-full mb-[2px]">
+              <button
+                onClick={handleMobileAdd}
+                disabled={isAdding}
+                className="flex-1 py-3 bg-[#181818] text-white text-[12px] lg:text-[14px] font-bold hover:bg-black transition-colors focus:outline-none disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed"
+              >
+                {isAdding ? "ADDING..." : "ADD"}
+              </button>
+              <WishlistButton
+                product={product}
+                iconClassName="w-[18px] h-[18px] text-white"
+                className="px-[18px] bg-[#181818] hover:bg-black transition-colors shrink-0 flex items-center justify-center"
               />
             </div>
 
 
+            {/* Tags and Description */}
+            <div className="flex gap-x-5 mt-6 mb-4 text-[12px] lg:text-[14px] font-bold text-neutral-800 uppercase tracking-[0.05em] flex-wrap">
+              <span>REGULAR FIT</span>
+              <span>SHIRT COLLAR</span>
+              <span>STANDARD LENGTH</span>
+            </div>
+            <p className="text-[12px] lg:text-[14px] text-neutral-800 leading-relaxed w-full">
+              {product.description || "Regular fit. Cotton and linen blend fabric. Shirt collar. Short sleeves."}
+            </p>
+
+            {/* Details, composition and care -- only when the admin has entered them */}
+            {details && (
+              <button
+                type="button"
+                onClick={() => setDetailsOpen(true)}
+                className="mt-10 w-full text-left text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-900 transition-colors hover:text-neutral-500 focus:outline-none"
+              >
+                Details, composition and care
+              </button>
+            )}
+
+            {/* Store availability -- hidden entirely when there are no stores */}
+            {STORES.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setStoresOpen(true)}
+                className="mt-6 w-full text-left text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-neutral-900 transition-colors hover:text-neutral-500 focus:outline-none"
+              >
+                Store availability
+              </button>
+            )}
 
           </div>
-        </div>
+        </FadeIn>
 
       </div>
+
+      {/* Mobile-only size picker. Slides up from the bottom on ADD; choosing a
+          size adds that variant to the bag and dismisses the sheet. */}
+      {sizeSheetOpen &&
+        (() => {
+          // Resolve each size to its variant + stock state once, so the grid and
+          // the "last few items" legend agree.
+          const LOW_STOCK = 5
+          const cells = sizeValues.map((val) => {
+            const variant = variantForSize(val)
+            const inStk = isVariantInStock(variant)
+            const qty = variant?.inventory_quantity ?? 0
+            const lowStock =
+              inStk &&
+              Boolean(variant?.manage_inventory) &&
+              !variant?.allow_backorder &&
+              qty > 0 &&
+              qty <= LOW_STOCK
+            return { val, outOfStock: !inStk, lowStock }
+          })
+          const anyLowStock = cells.some((c) => c.lowStock)
+
+          return (
+            <div className="fixed inset-0 z-[100] lg:hidden">
+              <div
+                className="absolute inset-0 bg-black/25"
+                onClick={() => setSizeSheetOpen(false)}
+                aria-hidden="true"
+              />
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Choose your size"
+                className="absolute inset-x-0 bottom-0 flex max-h-[85vh] flex-col bg-white shadow-[0_-8px_32px_rgba(0,0,0,0.12)] animate-[sizeSheetUp_0.32s_cubic-bezier(0.32,0.72,0,1)]"
+              >
+                <style>{`@keyframes sizeSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+
+                {/* Header: title + measurements link (only when measurements
+                    exist) + close. */}
+                <header className="flex shrink-0 items-center gap-x-4 px-5 pt-6 pb-4">
+                  <h2 className="text-[13px] font-bold uppercase tracking-[0.02em] text-neutral-900">
+                    Choose your size
+                  </h2>
+                  <div className="ml-auto flex items-center gap-x-4">
+                    {measurements && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSizeSheetOpen(false)
+                          setMeasurementsOpen(true)
+                        }}
+                        className="text-[13px] font-bold uppercase tracking-[0.02em] text-neutral-900 transition-colors hover:text-neutral-500 focus:outline-none"
+                      >
+                        Measurements
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setSizeSheetOpen(false)}
+                      aria-label="Close"
+                      className="flex h-6 w-6 items-center justify-center text-neutral-900 transition-colors hover:text-neutral-500"
+                    >
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path strokeLinecap="round" strokeWidth="1.5" d="M6 6l12 12M18 6L6 18" />
+                      </svg>
+                    </button>
+                  </div>
+                </header>
+
+                <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-8">
+                  {/* Size grid -- only real sizes get a cell (top/left rule on the
+                      container, right/bottom per cell) so there are no empty
+                      trailing boxes on the last row. */}
+                  <div className="grid grid-cols-4 border-t border-l border-neutral-200">
+                    {cells.map(({ val, outOfStock, lowStock }) => (
+                      <button
+                        key={val}
+                        type="button"
+                        disabled={outOfStock}
+                        onClick={() => handleSelectSizeAndAdd(val)}
+                        className={`relative flex h-[68px] flex-col items-start justify-start border-r border-b border-neutral-200 bg-white px-3 py-3 text-[13px] font-bold uppercase transition-colors focus:outline-none ${
+                          outOfStock
+                            ? "text-neutral-300 cursor-not-allowed line-through decoration-neutral-300"
+                            : "text-neutral-900 active:bg-neutral-100"
+                        }`}
+                      >
+                        <span>{val}</span>
+                        {lowStock && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute bottom-3 left-3 h-1.5 w-1.5 bg-[#C2410C]"
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {anyLowStock && (
+                    <div className="mt-4 flex items-center gap-x-2">
+                      <span aria-hidden="true" className="h-1.5 w-1.5 bg-[#C2410C]" />
+                      <span className="text-[11px] font-bold uppercase tracking-[0.02em] text-[#C2410C]">
+                        Last few items!
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )
+        })()}
+
+      {storesOpen && <StoreAvailabilityPanel onClose={() => setStoresOpen(false)} />}
+
+      {detailsOpen && details && (
+        <DetailsPanel details={details} onClose={() => setDetailsOpen(false)} />
+      )}
+
+      {measurementsOpen && measurements && (
+        <MeasurementsPanel
+          measurements={measurements}
+          initialSize={selectedSize}
+          onClose={() => setMeasurementsOpen(false)}
+        />
+      )}
 
       {lightboxIndex !== null && productImages.length > 0 && (
         <Lightbox

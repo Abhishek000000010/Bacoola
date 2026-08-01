@@ -27,7 +27,7 @@ export default function WishlistNavButton() {
   return (
     <LocalizedClientLink
       href="/wishlist"
-      className="hover:text-[#555555] transition-colors duration-200 uppercase font-semibold text-[14px]"
+      className="nav-underline transition-colors duration-200 uppercase font-semibold text-[12px] leading-none"
     >
       Wishlist {count > 0 ? `(${count})` : "(0)"}
     </LocalizedClientLink>

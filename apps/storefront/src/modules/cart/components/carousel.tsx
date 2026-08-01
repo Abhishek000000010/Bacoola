@@ -14,47 +14,48 @@ interface CarouselProps {
 
 import WishlistButton from "@modules/common/components/wishlist-button"
 
-interface CarouselProps {
-  products: HttpTypes.StoreProduct[]
-  region: HttpTypes.StoreRegion
-}
-
 export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   
   if (!products || products.length === 0) return null
 
   const handleScroll = (direction: "left" | "right") => {
-    if (containerRef.current) {
-      const scrollAmount = containerRef.current.clientWidth * 0.75
-      containerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      })
-    }
+    const el = containerRef.current
+    if (!el) return
+    // Advance by a single card width so one arrow tap moves one product.
+    const firstCard = el.querySelector<HTMLElement>("[data-carousel-card]")
+    const scrollAmount = firstCard?.offsetWidth ?? el.clientWidth * 0.25
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    })
   }
 
   return (
-    <div className="w-full mt-24 mb-16 px-4 max-w-[1440px] mx-auto">
+    <div className="w-full mt-24 mb-16 px-0">
       {/* Header with scroll controls */}
-      <div className="flex justify-between items-center mb-8 border-b border-neutral-100 pb-4">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-neutral-900">
-          May Interest You
+      <div className="flex justify-between items-center mb-6 pl-4 lg:pl-6 pr-4 lg:pr-6">
+        <h3 className="text-[12px] lg:text-[14px] font-semibold uppercase tracking-wide text-neutral-900">
+          MAY INTEREST YOU
         </h3>
-        <div className="flex gap-x-3">
+        <div className="flex gap-x-4">
           <button
             onClick={() => handleScroll("left")}
-            className="p-2 border border-neutral-200 hover:border-black hover:bg-neutral-50 transition-colors focus:outline-none"
+            className="text-black hover:text-neutral-600 transition-colors focus:outline-none"
             aria-label="Scroll left"
           >
-            <ChevronLeft size={16} />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
           </button>
           <button
             onClick={() => handleScroll("right")}
-            className="p-2 border border-neutral-200 hover:border-black hover:bg-neutral-50 transition-colors focus:outline-none"
+            className="text-black hover:text-neutral-600 transition-colors focus:outline-none"
             aria-label="Scroll right"
           >
-            <ChevronRight size={16} />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
           </button>
         </div>
       </div>
@@ -62,13 +63,13 @@ export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
       {/* Horizontal Scroll container */}
       <div
         ref={containerRef}
-        className="flex gap-x-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth"
+        className="flex overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {products.map((product) => {
           const { cheapestPrice } = getProductPrice({ product })
           const thumbnail = product.thumbnail || "/images/campaign-1.jpg"
-          
+
           // Try to extract sizes
           const sizes = product.options?.find(
             (o: any) => o.title?.toLowerCase() === "size" || o.title?.toLowerCase() === "sizes"
@@ -77,14 +78,15 @@ export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
           return (
             <div
               key={product.id}
+              data-carousel-card
               className="min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] snap-start group flex flex-col relative"
             >
-              <LocalizedClientLink href={`/products/${product.handle}`} className="block">
-                {/* Image Wrap */}
-                <div 
-                  className="relative w-full overflow-hidden bg-neutral-50 mb-3 border border-neutral-100 transition-all duration-300 block"
-                  style={{ aspectRatio: "3 / 4" }}
-                >
+              {/* Image Wrap */}
+              <div
+                className="relative w-full overflow-hidden bg-neutral-100"
+                style={{ aspectRatio: "3 / 4" }}
+              >
+                <LocalizedClientLink href={`/products/${product.handle}`} className="block w-full h-full">
                   <Image
                     src={thumbnail}
                     alt={product.title || "Product"}
@@ -92,50 +94,57 @@ export const Carousel: React.FC<CarouselProps> = ({ products, region }) => {
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     sizes="(max-width: 640px) 240px, 280px"
                   />
+                </LocalizedClientLink>
 
-                  {/* Wishlist Button absolute overlay */}
-                  <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <WishlistButton product={product} className="p-1.5 bg-white/90 hover:bg-white rounded-full shadow-sm" iconClassName="w-3.5 h-3.5" />
+                {/* Sizes slide up on hover */}
+                {sizes.length > 0 && (
+                  <div className="absolute inset-x-0 bottom-0 bg-white/95 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out py-3 px-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                    {sizes.map((size: string) => (
+                      <LocalizedClientLink
+                        key={size}
+                        href={`/products/${product.handle}`}
+                        className="text-[12px] lg:text-[14px] text-neutral-700 hover:text-black transition-colors"
+                      >
+                        {size}
+                      </LocalizedClientLink>
+                    ))}
                   </div>
+                )}
+              </div>
 
-                  {/* Sizes overlay bottom hover */}
-                  {sizes.length > 0 && (
-                    <div className="absolute bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-2.5 flex flex-wrap justify-center gap-1.5 border-t border-neutral-100">
-                      {sizes.slice(0, 6).map((sz: string) => (
-                        <span
-                          key={sz}
-                          className="text-[10px] font-medium text-neutral-700 border border-neutral-200 px-1.5 py-0.5 rounded-sm hover:border-black hover:text-black transition-colors"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+              {/* Details */}
+              <div className="mt-2 w-full px-2">
+                <div className="flex items-center justify-between gap-x-2">
+                  <LocalizedClientLink href={`/products/${product.handle}`} className="flex-1">
+                    <h4 className="text-[12px] lg:text-[14px] font-normal text-neutral-900 leading-snug line-clamp-1 group-hover:text-black">
+                      {product.title}
+                    </h4>
+                  </LocalizedClientLink>
+                  <div className="shrink-0">
+                    <WishlistButton
+                      product={product}
+                      className="text-neutral-400 hover:text-black transition-colors"
+                      iconClassName="w-5 h-5"
+                    />
+                  </div>
                 </div>
 
-                {/* Details */}
-                <div className="flex flex-col items-start gap-y-1 mt-1">
-                  <h4 className="text-xs font-normal text-neutral-800 tracking-wide line-clamp-1 group-hover:text-black">
-                    {product.title}
-                  </h4>
-                  
-                  {/* Price */}
-                  {cheapestPrice ? (
-                    <div className="flex items-center gap-x-2 mt-0.5 text-xs text-neutral-900 font-medium">
-                      {cheapestPrice.price_type === "sale" && (
-                        <span className="line-through text-neutral-400 font-normal">
-                          {cheapestPrice.original_price}
-                        </span>
-                      )}
-                      <span className={cheapestPrice.price_type === "sale" ? "text-rose-600 font-semibold" : ""}>
-                        {cheapestPrice.calculated_price}
+                {/* Price */}
+                {cheapestPrice ? (
+                  <div className="mt-0.5 text-[12px] lg:text-[14px] font-normal text-neutral-900">
+                    {cheapestPrice.price_type === "sale" && (
+                      <span className="line-through text-neutral-400 mr-2">
+                        {cheapestPrice.original_price}
                       </span>
-                    </div>
-                  ) : (
-                    <span className="text-xs text-neutral-400">Pricing unavailable</span>
-                  )}
-                </div>
-              </LocalizedClientLink>
+                    )}
+                    <span className={cheapestPrice.price_type === "sale" ? "text-rose-600 font-semibold" : ""}>
+                      {cheapestPrice.calculated_price}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="mt-0.5 text-[12px] lg:text-[14px] text-neutral-400">Pricing unavailable</span>
+                )}
+              </div>
             </div>
           )
         })}

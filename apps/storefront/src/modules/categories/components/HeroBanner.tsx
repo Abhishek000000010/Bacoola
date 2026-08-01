@@ -40,7 +40,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
         <div>
           <LocalizedClientLink
             href={ctaHref}
-            className="text-white text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
+            className="text-white text-[12px] lg:text-[14px] sm:text-xs lg:text-sm font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
           >
             {ctaText}
           </LocalizedClientLink>

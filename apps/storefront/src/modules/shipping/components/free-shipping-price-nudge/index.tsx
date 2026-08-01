@@ -144,7 +144,7 @@ function FreeShippingInline({
   return (
     <div className="bg-neutral-100 p-2 rounded-lg border">
       <div className="space-y-1.5">
-        <div className="flex justify-between text-xs text-neutral-600">
+        <div className="flex justify-between text-xs lg:text-sm text-neutral-600">
           <div>
             {price.target_reached ? (
               <div className="flex items-center gap-1.5">

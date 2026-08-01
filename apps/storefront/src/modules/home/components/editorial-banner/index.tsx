@@ -38,7 +38,7 @@ export const EditorialBanner: React.FC<EditorialBannerProps> = ({ items }) => {
         <div>
           <LocalizedClientLink
             href={link}
-            className="text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
+            className="text-white text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
             style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}
           >
             {ctaText}

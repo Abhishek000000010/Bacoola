@@ -4,7 +4,6 @@ import { Heading, Table } from "@modules/common/components/ui"
 
 import Item from "@modules/cart/components/item"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type ItemsTemplateProps = {
   cart?: HttpTypes.StoreCart
@@ -12,14 +11,16 @@ type ItemsTemplateProps = {
 
 const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
   const items = cart?.items
+  const totalQuantity =
+    items?.reduce((sum, item) => sum + (item.quantity ?? 0), 0) || 0
   return (
     <div className="w-full">
-      <div className="pb-6 mb-6 flex items-center">
-        <h1 className="text-[13px] font-semibold uppercase tracking-widest text-neutral-900">
-          SHOPPING BAG ({items?.length || 0})
+      <div className="mb-4 flex items-center pl-4 lg:pl-6">
+        <h1 className="text-[13px] lg:text-[18px] font-semibold uppercase tracking-widest text-neutral-900">
+          SHOPPING BAG ({totalQuantity})
         </h1>
       </div>
-      <div className="flex flex-col w-full gap-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-1 gap-y-[2px] lg:gap-y-10 w-full">
         {items
           ? items
               .sort((a, b) => {
@@ -32,14 +33,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
                   currencyCode={cart?.currency_code}
                 />
               ))
-          : repeat(5).map((i) => <SkeletonLineItem key={i} />)}
-      </div>
-
-      <div className="mt-8 pt-8 border-t border-gray-100 flex flex-col gap-y-2">
-        <span className="text-[13px] text-neutral-900 font-medium">Enjoy a faster shopping experience</span>
-        <LocalizedClientLink href="/account" className="text-[11px] font-bold uppercase tracking-widest hover:underline text-black">
-          SIGN IN
-        </LocalizedClientLink>
+          : repeat(3).map((i) => <SkeletonLineItem key={i} />)}
       </div>
     </div>
   )

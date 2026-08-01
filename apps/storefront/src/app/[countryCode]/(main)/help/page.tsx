@@ -54,17 +54,17 @@ export default function HelpPage() {
         
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-[13px] font-bold uppercase tracking-[0.05em] mb-4">
+          <h1 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-4">
             Help
           </h1>
-          <p className="text-[13px] font-normal tracking-wide">
+          <p className="text-[12px] lg:text-[14px] font-normal tracking-wide">
             Hello, how can we help you?
           </p>
         </div>
 
         {/* FAQs */}
         <div className="w-full max-w-[900px] mb-20">
-          <h2 className="text-[12px] font-bold uppercase tracking-[0.05em] mb-8">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-8">
             Frequently Asked Questions
           </h2>
           <ul className="flex flex-col gap-y-6">
@@ -72,7 +72,7 @@ export default function HelpPage() {
               <li key={index}>
                 <LocalizedClientLink
                   href="#"
-                  className="text-[13px] font-normal tracking-wide hover:text-[#555555] transition-colors"
+                  className="text-[12px] lg:text-[14px] font-normal tracking-wide hover:text-[#555555] transition-colors"
                 >
                   {question}
                 </LocalizedClientLink>
@@ -83,7 +83,7 @@ export default function HelpPage() {
 
         {/* Categories */}
         <div className="w-full max-w-[900px]">
-          <h2 className="text-[12px] font-bold uppercase tracking-[0.05em] mb-6">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-6">
             Categories
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-l border-t border-gray-200">
@@ -96,7 +96,7 @@ export default function HelpPage() {
                   className="flex flex-col items-center justify-center text-center p-8 border-r border-b border-gray-200 hover:bg-gray-50 transition-colors aspect-[4/3]"
                 >
                   <Icon className="w-5 h-5 stroke-[1.2px] mb-4 text-[#111111]" />
-                  <span className="text-[12px] font-normal tracking-wide">
+                  <span className="text-[12px] lg:text-[14px] font-normal tracking-wide">
                     {category.title}
                   </span>
                 </LocalizedClientLink>

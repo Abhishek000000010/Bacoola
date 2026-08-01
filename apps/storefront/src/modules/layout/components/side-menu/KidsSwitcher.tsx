@@ -17,7 +17,7 @@ const KidsSwitcher: React.FC = () => {
             <button
               key={sub}
               onClick={() => setActiveSub(sub)}
-              className={`flex-none px-3 py-1.5 text-[10px] sm:text-xs tracking-wider uppercase rounded-none transition-all duration-300 whitespace-nowrap focus:outline-none ${
+              className={`flex-none px-3 py-1.5 text-[12px] sm:text-xs tracking-wider uppercase rounded-none transition-all duration-300 whitespace-nowrap focus:outline-none ${
                 isActive ? "bg-white text-black shadow-sm font-semibold" : "text-neutral-500 hover:text-neutral-700"
               }`}
             >
@@ -28,7 +28,7 @@ const KidsSwitcher: React.FC = () => {
       </div>
 
       {/* Height/Age Indicator Helper */}
-      <div className="text-[10px] text-neutral-400 uppercase tracking-widest mb-2 select-none">
+      <div className="text-[12px] text-neutral-400 uppercase tracking-widest mb-2 select-none">
         {kidsData.heightRange}
       </div>
 

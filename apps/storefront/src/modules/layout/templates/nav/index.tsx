@@ -3,13 +3,14 @@ import { Suspense } from "react"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
 import { listRegions } from "@lib/data/regions"
-import { listCategories } from "@lib/data/categories"
+import { CATEGORY_LINK_FIELDS, listCategories } from "@lib/data/categories"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
 import AccountDropdown from "@modules/layout/components/account-dropdown"
+import LoginDropdown from "@modules/layout/components/login-dropdown"
 import PromoBanner from "@modules/layout/components/promo-banner"
 import { retrieveCustomer } from "@lib/data/customer"
 
@@ -20,14 +21,18 @@ export default async function Nav() {
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
-    listCategories({ limit: 1000 }),
+    // Scalars only: this list is handed to three client components, so the
+    // default nested-ancestor shape gets re-serialised into the RSC payload
+    // several times over. See CATEGORY_LINK_FIELDS.
+    listCategories({ limit: 1000, fields: CATEGORY_LINK_FIELDS }),
     retrieveCustomer(),
   ])
 
   return (
+    <>
     <div className="sticky top-0 inset-x-0 z-50">
-      <header className="relative h-[56px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
-        <nav className="w-full h-full px-4 sm:px-8 small:px-12 max-w-[1550px] mx-auto flex items-center justify-between text-small-regular relative">
+      <header className="relative h-[56px] mx-auto bg-white transition-colors duration-200">
+        <nav className="w-full h-full px-4 sm:px-[40px] max-w-[1550px] mx-auto flex items-center justify-between text-small-regular relative">
           
           {/* DESKTOP LAYOUT (1024px and wider) */}
           <div className="hidden small:grid grid-cols-3 items-center w-full h-full">
@@ -47,16 +52,16 @@ export default async function Nav() {
                 <img
                   src="/images/bacoola-logo.png"
                   alt="Bacoola"
-                  className="h-[18px] w-auto select-none"
+                  className="h-[16px] w-auto select-none"
                 />
               </LocalizedClientLink>
             </div>
 
             {/* Right Section: Actions */}
-            <div className="flex justify-end items-center gap-x-[32px] text-[14px] font-semibold text-[#111111] tracking-wider uppercase h-full">
+            <div className="flex justify-end items-center gap-x-[20px] text-[12px] leading-none font-semibold text-[#111111] tracking-wider uppercase h-full">
               <LocalizedClientLink
                 href="/search"
-                className="hover:text-[#555555] transition-colors duration-200"
+                className="nav-underline transition-colors duration-200"
               >
                 Search
               </LocalizedClientLink>
@@ -64,13 +69,7 @@ export default async function Nav() {
               {customer ? (
                 <AccountDropdown customer={customer} />
               ) : (
-                <LocalizedClientLink
-                  href="/account"
-                  className="hover:text-[#555555] transition-colors duration-200"
-                  data-testid="nav-account-link"
-                >
-                  Log In
-                </LocalizedClientLink>
+                <LoginDropdown />
               )}
               
               <WishlistNavButton />
@@ -79,7 +78,7 @@ export default async function Nav() {
                 <Suspense
                   fallback={
                     <LocalizedClientLink
-                      className="hover:text-[#555555] transition-colors duration-200 uppercase font-semibold text-[14px]"
+                      className="nav-underline transition-colors duration-200 uppercase font-semibold text-[12px] leading-none"
                       href="/cart"
                     >
                       Bag (0)
@@ -108,7 +107,7 @@ export default async function Nav() {
                 <img
                   src="/images/bacoola-logo.png"
                   alt="Bacoola"
-                  className="h-[14px] w-auto select-none"
+                  className="h-[12px] w-auto select-none"
                 />
               </LocalizedClientLink>
             </div>
@@ -123,7 +122,7 @@ export default async function Nav() {
                 <img
                   src="/images/bacoola-logo.png"
                   alt="Bacoola"
-                  className="h-[14px] w-auto select-none"
+                  className="h-[12px] w-auto select-none"
                 />
               </LocalizedClientLink>
             </div>
@@ -166,9 +165,10 @@ export default async function Nav() {
 
         </nav>
       </header>
-
-      {/* Promotional Red Banner - dynamically shows sale % based on current category */}
-      <PromoBanner categories={categories} />
     </div>
+
+    {/* Promotional Red Banner - non-sticky, scrolls away while the header stays pinned */}
+    <PromoBanner categories={categories} />
+    </>
   )
 }

@@ -24,7 +24,7 @@ export default function CategoryError({
       </p>
       <button
         onClick={() => reset()}
-        className="px-8 py-3 bg-neutral-950 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+        className="px-8 py-3 border border-neutral-950 bg-neutral-950 text-white text-xs lg:text-sm font-semibold uppercase tracking-[0.2em] hover:bg-white hover:text-neutral-950 transition-colors"
       >
         Try again
       </button>

@@ -34,7 +34,7 @@ export default async function MenProductsPage(props: Props) {
   const sort = sortBy || "created_at"
 
   return (
-    <CategoryProductListing category={category} parents={[]}>
+    <CategoryProductListing category={category} parents={[]} countryCode={params.countryCode} sortBy={sort}>
       <Suspense
         fallback={
           <SkeletonProductGrid

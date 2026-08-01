@@ -35,7 +35,7 @@ const ProfileGender: React.FC<MyInformationProps> = ({ customer }) => {
         data-testid="account-gender-editor"
       >
         <div className="flex flex-col gap-y-4">
-          <p className="text-[13px] text-[#111111] mb-2">Select one of the following:</p>
+          <p className="text-[12px] lg:text-[14px] text-[#111111] mb-2">Select one of the following:</p>
           
           <div className="flex flex-col gap-y-4">
             {["Female", "Male", "Non-binary", "I'd rather not say"].map((option) => (
@@ -49,7 +49,7 @@ const ProfileGender: React.FC<MyInformationProps> = ({ customer }) => {
                     className="peer appearance-none w-5 h-5 border border-black rounded-full checked:border-[5px] checked:border-black transition-all" 
                   />
                 </div>
-                <span className="text-[14px] text-[#111111]">{option}</span>
+                <span className="text-[12px] lg:text-[14px] text-[#111111]">{option}</span>
               </label>
             ))}
           </div>

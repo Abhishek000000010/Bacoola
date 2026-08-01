@@ -1,42 +1,143 @@
 "use client"
 
+import { HttpTypes } from "@medusajs/types"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useRouter } from "next/navigation"
-import { useState, Suspense } from "react"
-export default function SearchTemplate({ countryCode, query, children }: { countryCode: string, query?: string, children?: React.ReactNode }) {
+import { useEffect, useState } from "react"
+
+const RECENT_SEARCHES_KEY = "bacoola:recent-searches"
+
+export default function SearchTemplate({
+  countryCode,
+  query,
+  children,
+  suggestedProducts = [],
+}: {
+  countryCode: string
+  query?: string
+  children?: React.ReactNode
+  suggestedProducts?: HttpTypes.StoreProduct[]
+}) {
   const router = useRouter()
   const [q, setQ] = useState(query || "")
+  const [recent, setRecent] = useState<string[]>([])
+
+  // Load stored recent searches on mount.
+  useEffect(() => {
+    try {
+      setRecent(JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || "[]"))
+    } catch {
+      setRecent([])
+    }
+  }, [])
+
+  // Whenever a query is active, record it at the top of the recent list.
+  useEffect(() => {
+    if (!query) {
+      return
+    }
+    try {
+      const prev: string[] = JSON.parse(
+        localStorage.getItem(RECENT_SEARCHES_KEY) || "[]"
+      )
+      const next = [
+        query,
+        ...prev.filter((x) => x.toLowerCase() !== query.toLowerCase()),
+      ].slice(0, 8)
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(next))
+      setRecent(next)
+    } catch {
+      /* ignore storage errors */
+    }
+  }, [query])
+
+  const runSearch = (term: string) => {
+    const trimmed = term.trim()
+    router.push(
+      trimmed
+        ? `/${countryCode}/search?q=${encodeURIComponent(trimmed)}`
+        : `/${countryCode}/search`
+    )
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (q.trim()) {
-      router.push(`/${countryCode}/search?q=${encodeURIComponent(q.trim())}`)
-    } else {
-      router.push(`/${countryCode}/search`)
-    }
+    runSearch(q)
   }
 
   return (
-    <div className="w-full py-12 px-4 md:px-8 max-w-7xl mx-auto min-h-[60vh]">
-      <h1 className="text-2xl md:text-3xl font-bold mb-8 uppercase text-center tracking-widest text-[#111111]">Search Store</h1>
-      
-      <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-16 flex items-center border-b-2 border-black pb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500 mr-3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
-        <input 
-          type="text" 
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search for shirts, suits, etc..." 
-          className="w-full py-2 outline-none bg-transparent text-lg md:text-xl placeholder:text-gray-400"
-          autoFocus
-        />
-        <button type="submit" className="px-4 font-bold uppercase tracking-wider hover:text-gray-500 text-sm md:text-base">
-          Search
-        </button>
-      </form>
+    <div className="w-full pb-16">
+      {/* Search field + panels sit within the padded content area */}
+      <div className="px-4 pt-4 sm:px-8 xl:px-12">
+        <form onSubmit={handleSearch} className="w-full max-w-[400px]">
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="SEARCH"
+            aria-label="Search"
+            autoFocus
+            className="w-full border-b border-gray-300 bg-transparent pb-3 text-[12px] lg:text-[14px] leading-none font-semibold uppercase tracking-wider text-neutral-950 outline-none placeholder:text-neutral-500"
+          />
+        </form>
 
-      {children}
+        {!query && (
+          <>
+            {recent.length > 0 && (
+              <section className="mt-12">
+                <h2 className="mb-4 text-[12px] lg:text-[14px] font-bold uppercase tracking-wider text-neutral-950">
+                  Recent searches
+                </h2>
+                <div className="flex flex-wrap gap-x-6 gap-y-3">
+                  {recent.map((term) => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => runSearch(term)}
+                      className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wider text-neutral-950 transition-colors hover:text-neutral-500"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {suggestedProducts.length > 0 && (
+              <section className="mt-12">
+                <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-wider text-neutral-950 mb-6">
+                  You also viewed
+                </h2>
+              </section>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Search results: category bar + filters + grid, rendered full width */}
+      {query && children}
+
+      {/* Full-bleed product strip */}
+      {!query && suggestedProducts.length > 0 && (
+        <div className="w-full grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-0">
+          {suggestedProducts.map((product) => (
+            <LocalizedClientLink
+              key={product.id}
+              href={`/products/${product.handle}`}
+              className="group block aspect-[3/4] overflow-hidden bg-[#F3F3F3]"
+            >
+              {product.thumbnail && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={product.thumbnail}
+                  alt={product.title ?? ""}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+            </LocalizedClientLink>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

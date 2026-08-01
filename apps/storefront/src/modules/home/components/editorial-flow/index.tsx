@@ -20,9 +20,9 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
   link = "/store",
 }) => {
   return (
-    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-white overflow-hidden relative">
       {/* Left Column */}
-      <div className="relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 flex [&>picture]:w-full [&>picture]:h-full">
+      <div className="relative h-full w-full group overflow-hidden flex [&>picture]:w-full [&>picture]:h-full">
         <CloudinaryImage
           src={leftImage}
           alt={leftTitle}
@@ -30,14 +30,14 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
         />
 
         <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 z-20 select-none">
-          <h2 className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase text-[#FDFDFD] leading-none">
             {leftTitle}
           </h2>
         </div>
         <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-20 select-none">
           <LocalizedClientLink
             href={link}
-            className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
+            className="text-[12px] lg:text-[14px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
           >
             {ctaText}
           </LocalizedClientLink>
@@ -53,14 +53,14 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
         />
 
         <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 z-20 select-none">
-          <h2 className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase text-[#FDFDFD] leading-none">
             {rightTitle}
           </h2>
         </div>
         <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-20 select-none">
           <LocalizedClientLink
             href={link}
-            className="text-[13px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
+            className="text-[12px] lg:text-[14px] font-bold uppercase text-[#FDFDFD] leading-none hover:text-neutral-300 transition-colors duration-300"
           >
             {ctaText}
           </LocalizedClientLink>
@@ -99,7 +99,7 @@ const FullWidthCampaign: React.FC<FullWidthCampaignProps> = ({
         </h2>
         <LocalizedClientLink
           href={link}
-          className="text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.2em] text-white hover:text-neutral-300 transition-colors duration-300"
+          className="text-[12px] lg:text-[14px] md:text-[12px] lg:text-[14px] font-semibold uppercase tracking-[0.2em] text-white hover:text-neutral-300 transition-colors duration-300"
         >
           {ctaText}
         </LocalizedClientLink>

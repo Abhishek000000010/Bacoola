@@ -52,7 +52,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
           className={clx(
-            "relative flex h-16 items-center border border-neutral-300 bg-white text-neutral-950 transition-colors hover:border-neutral-400 focus-within:border-black",
+            "relative flex h-12 items-center border border-neutral-300 bg-transparent text-neutral-950 transition-colors hover:border-neutral-400 focus-within:border-black",
             className,
             {
               "text-neutral-400": isPlaceholder,
@@ -64,7 +64,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             defaultValue={defaultValue}
             {...props}
             className={clx(
-              "h-full w-full appearance-none bg-transparent border-none px-4 pb-3 pt-6 text-[17px] font-normal outline-none",
+              "h-full w-full appearance-none bg-transparent border-none px-4 pt-[22px] pb-[6px] text-[12px] lg:text-[14px] font-normal outline-none",
               selectClassName
             )}
           >

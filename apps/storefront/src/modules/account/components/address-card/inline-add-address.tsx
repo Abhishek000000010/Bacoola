@@ -4,6 +4,41 @@ import { useActionState, useEffect, useState } from "react"
 import { addCustomerAddress } from "@lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
 
+// The read-only e-mail/country rows in this form show a small caption above
+// their value; these fields animate their label into that same position instead
+// of using a placeholder that disappears as soon as you type.
+const FloatingField = ({
+  id,
+  name,
+  label,
+  required,
+  type,
+}: {
+  id: string
+  name: string
+  label: string
+  required?: boolean
+  type?: string
+}) => (
+  <div className="relative w-full">
+    <input
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      placeholder=" "
+      className="peer w-full h-[48px] px-4 pt-[22px] pb-[6px] text-[12px] lg:text-[14px] leading-none text-[#111111] bg-white border border-[#d0d0d0] focus:border-[#111111] outline-none focus:ring-0 rounded-none transition-colors"
+    />
+    <label
+      htmlFor={id}
+      data-no-global-float
+      className="pointer-events-none absolute left-4 top-[7px] z-10 uppercase tracking-widest leading-none text-[9px] text-[#999999] transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-[12px] lg:text-[14px] peer-placeholder-shown:tracking-normal peer-placeholder-shown:text-[#555555] peer-focus:top-[7px] peer-focus:translate-y-0 peer-focus:text-[9px] peer-focus:tracking-widest"
+    >
+      {label}
+    </label>
+  </div>
+)
+
 export default function InlineAddAddress({
   region,
 }: {
@@ -28,25 +63,9 @@ export default function InlineAddAddress({
     <div className="w-full max-w-[520px] mx-auto font-sans text-[#111111] text-left">
       <form action={formAction} className="flex flex-col w-full gap-y-4">
         
-        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
-          <input
-            id="firstName"
-            name="first_name"
-            required
-            placeholder="Name"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
-          />
-        </div>
+        <FloatingField id="firstName" name="first_name" label="Name" required />
 
-        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
-          <input
-            id="lastName"
-            name="last_name"
-            required
-            placeholder="Surname"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
-          />
-        </div>
+        <FloatingField id="lastName" name="last_name" label="Surname" required />
 
         <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex flex-col justify-center bg-white">
           <label className="text-[9px] uppercase tracking-widest text-[#999999] leading-none" htmlFor="email">E-mail</label>
@@ -55,22 +74,29 @@ export default function InlineAddAddress({
             type="email"
             readOnly
             value="jiveshwork16@gmail.com"
-            className="w-full text-[13px] text-[#999999] bg-transparent outline-none p-0 m-0 border-none cursor-not-allowed"
+            className="w-full text-[12px] lg:text-[14px] text-[#999999] bg-transparent outline-none p-0 m-0 border-none cursor-not-allowed"
           />
         </div>
 
         <div className="w-full border border-[#d0d0d0] h-[48px] flex items-center focus-within:border-[#111111] bg-white transition-colors">
-          <div className="flex items-center px-4 border-r border-[#d0d0d0] h-[24px] text-[13px] shrink-0">
+          <div className="flex items-center px-4 border-r border-[#d0d0d0] h-[24px] text-[12px] lg:text-[14px] shrink-0">
             <span>+91</span>
             <svg className="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
-          <div className="flex-1 h-full px-4 flex items-center">
+          <div className="relative flex-1 h-full">
             <input
               id="phone"
               name="phone"
-              placeholder="Mobile"
-              className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
+              placeholder=" "
+              className="peer w-full h-full px-4 pt-[22px] pb-[6px] text-[12px] lg:text-[14px] leading-none text-[#111111] bg-transparent outline-none border-none focus:ring-0"
             />
+            <label
+              htmlFor="phone"
+              data-no-global-float
+              className="pointer-events-none absolute left-4 top-[7px] z-10 uppercase tracking-widest leading-none text-[9px] text-[#999999] transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-[12px] lg:text-[14px] peer-placeholder-shown:tracking-normal peer-placeholder-shown:text-[#555555] peer-focus:top-[7px] peer-focus:translate-y-0 peer-focus:text-[9px] peer-focus:tracking-widest"
+            >
+              Mobile
+            </label>
           </div>
         </div>
 
@@ -81,7 +107,7 @@ export default function InlineAddAddress({
             id="countryCode"
             disabled
             defaultValue={region.countries?.[0]?.iso_2 || ""}
-            className="w-full text-[13px] text-[#999999] bg-transparent outline-none appearance-none cursor-not-allowed p-0 m-0 border-none focus:ring-0"
+            className="w-full text-[12px] lg:text-[14px] text-[#999999] bg-transparent outline-none appearance-none cursor-not-allowed p-0 m-0 border-none focus:ring-0"
           >
             {region.countries?.map((c) => (
               <option key={c.iso_2} value={c.iso_2}>
@@ -91,54 +117,35 @@ export default function InlineAddAddress({
           </select>
         </div>
 
-        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
-          <input
-            id="address"
-            name="address_1"
-            required
-            placeholder="Address"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
-          />
-        </div>
+        <FloatingField id="address" name="address_1" label="Address" required />
 
-        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
-          <input
-            id="postalCode"
-            name="postal_code"
-            required
-            placeholder="Postcode"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
-          />
-        </div>
+        <FloatingField
+          id="postalCode"
+          name="postal_code"
+          label="Postcode"
+          required
+        />
 
-        <div className="w-full border border-[#d0d0d0] h-[48px] px-4 flex items-center bg-white focus-within:border-[#111111] transition-colors">
-          <input
-            id="city"
-            name="city"
-            required
-            placeholder="Town / City"
-            className="w-full text-[13px] text-[#111111] bg-transparent outline-none p-0 m-0 border-none focus:ring-0 placeholder:text-[#555555]"
-          />
-        </div>
+        <FloatingField id="city" name="city" label="Town / City" required />
 
         {formState.error && (
-          <div className="text-red-500 text-[13px] py-2">
+          <div className="text-red-500 text-[12px] lg:text-[14px] py-2">
             {formState.error}
           </div>
         )}
 
-        <p className="text-[13px] mt-6 mb-6 text-[#111111] text-left">
+        <p className="text-[12px] lg:text-[14px] mt-6 mb-6 text-[#111111] text-left">
           This will be saved as your default delivery address.
         </p>
 
         <button
           type="submit"
-          className="w-full border border-black bg-black text-white hover:bg-white hover:text-black transition-colors h-[48px] text-xs font-semibold uppercase tracking-widest"
+          className="w-full border border-black bg-black text-white hover:bg-white hover:text-black transition-colors h-[48px] text-xs lg:text-sm font-semibold uppercase tracking-widest"
         >
           SAVE ADDRESS
         </button>
 
-        <p className="text-[12px] mt-4 text-[#111111] text-left">
+        <p className="text-[12px] lg:text-[14px] mt-4 text-[#111111] text-left">
           By continuing, you confirm you have read the <a href="#" className="font-bold underline underline-offset-2 decoration-[1px] hover:text-[#555555]">Privacy Policy</a>
         </p>
       </form>

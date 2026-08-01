@@ -41,6 +41,11 @@ Overall it is a capable, real store. The main risks are around **production reli
   - **Can't run more than one server.** If you ever run 2 copies for scale, they don't share events or locks, so the sale-price duplicate bug (which we just fixed) and other races come back.
 - **Fix:** Add Redis and configure the Redis Event Bus, Redis Cache, Redis Workflow Engine, and Redis Locking modules. This is the single biggest step toward being production-ready.
 - **Severity:** 🔴 High.
+- **Status (2026-07-29):** Code side done. All four modules are wired in
+  `apps/backend/medusa-config.ts`, gated on `REDIS_URL`. They stay dormant —
+  and everything described above still applies — until `REDIS_URL` is set to an
+  Upstash endpoint in `.env` locally and in the Render dashboard for
+  production. See "Redis (Upstash)" in `docs/DEPLOYMENT.md`.
 
 **A2. Product/category pages are pre-built and can go stale in production. (seen in code)**
 - **What it is:** In production, `products/[handle]` and category pages use `generateStaticParams`, so Next.js builds them ahead of time. There is **no revalidation hook** that refreshes a product page when its price changes in admin.

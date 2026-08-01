@@ -1,60 +1,34 @@
-import { Table } from "@modules/common/components/ui"
-
 import repeat from "@lib/util/repeat"
-import SkeletonCartItem from "@modules/skeletons/components/skeleton-cart-item"
-import SkeletonCodeForm from "@modules/skeletons/components/skeleton-code-form"
+import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 import SkeletonOrderSummary from "@modules/skeletons/components/skeleton-order-summary"
 
 const SkeletonCartPage = () => {
   return (
-    <div className="py-12">
-      <div className="content-container">
-        <div className="grid grid-cols-1 small:grid-cols-[1fr_360px] gap-x-40">
-          <div className="flex flex-col bg-white p-6 gap-y-6">
-            <div className="bg-white flex items-start justify-between">
-              <div className="flex flex-col gap-y-2">
-                <div className="w-60 h-8 bg-gray-200 animate-pulse" />
-                <div className="w-48 h-6 bg-gray-200 animate-pulse" />
+    <div className="pt-4 pb-12">
+      <div className="w-full pl-0 pr-4 lg:pr-12">
+        <div className="grid grid-cols-1 small:grid-cols-[1fr_360px] gap-x-12 lg:gap-x-24">
+          <div className="flex flex-col bg-white py-6 gap-y-6 lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[660px]">
+            <div className="w-full">
+              <div className="mb-4 flex items-center pl-4 lg:pl-6">
+                <div className="w-48 h-6 bg-gray-200 animate-pulse"></div>
               </div>
-              <div>
-                <div className="w-14 h-8 bg-gray-200 animate-pulse" />
+              <div className="grid grid-cols-2 gap-x-1 gap-y-10 w-full">
+                {repeat(4).map((index) => (
+                  <SkeletonLineItem key={index} />
+                ))}
               </div>
-            </div>
-            <div>
-              <div className="pb-3 flex items-center">
-                <div className="w-20 h-12 bg-gray-200 animate-pulse" />
-              </div>
-              <Table>
-                <Table.Header className="border-t-0">
-                  <Table.Row>
-                    <Table.HeaderCell className="!pl-0">
-                      <div className="w-10 h-6 bg-gray-200 animate-pulse" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell></Table.HeaderCell>
-                    <Table.HeaderCell>
-                      <div className="w-16 h-6 bg-gray-200 animate-pulse" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                      <div className="w-12 h-6 bg-gray-200 animate-pulse" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className="!pr-0">
-                      <div className="flex justify-end">
-                        <div className="w-12 h-6 bg-gray-200 animate-pulse" />
-                      </div>
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {repeat(4).map((index) => (
-                    <SkeletonCartItem key={index} />
-                  ))}
-                </Table.Body>
-              </Table>
             </div>
           </div>
-          <div className="flex flex-col gap-y-8">
-            <SkeletonOrderSummary />
-            <SkeletonCodeForm />
+          <div className="relative">
+            <div className="flex flex-col gap-y-8 sticky top-12 mt-[44px]">
+              <div className="bg-white py-6">
+                <div className="mb-8 flex flex-col gap-y-2">
+                  <div className="w-48 h-4 bg-gray-200 animate-pulse"></div>
+                  <div className="w-16 h-3 bg-gray-200 animate-pulse mt-2"></div>
+                </div>
+                <SkeletonOrderSummary />
+              </div>
+            </div>
           </div>
         </div>
       </div>

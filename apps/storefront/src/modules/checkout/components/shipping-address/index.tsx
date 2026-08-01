@@ -2,11 +2,12 @@ import { HttpTypes } from "@medusajs/types"
 import { Container } from "@modules/common/components/ui"
 import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
+import { clx } from "@medusajs/ui"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
-import { State, City } from "country-state-city"
+import { useAddressLocations } from "@modules/checkout/hooks/use-address-locations"
 import Select from "react-select"
 
 const ShippingAddress = ({
@@ -20,6 +21,8 @@ const ShippingAddress = ({
   checked: boolean
   onChange: () => void
 }) => {
+  const [stateFocused, setStateFocused] = useState(false)
+  const [cityFocused, setCityFocused] = useState(false)
   const [formData, setFormData] = useState<Record<string, string>>({
     "shipping_address.first_name": cart?.shipping_address?.first_name || "",
     "shipping_address.last_name": cart?.shipping_address?.last_name || "",
@@ -36,6 +39,12 @@ const ShippingAddress = ({
   const countriesInRegion = useMemo(
     () => cart?.region?.countries?.map((c) => c.iso_2),
     [cart?.region]
+  )
+
+  // Fetched from /api/locations rather than bundled -- see the hook.
+  const { stateOptions, cityOptions } = useAddressLocations(
+    formData["shipping_address.country_code"],
+    formData["shipping_address.province"]
   )
 
   // check if customer has saved addresses that are in the current region
@@ -114,9 +123,9 @@ const ShippingAddress = ({
           />
         </Container>
       )}
-      <div className="grid grid-cols-1 gap-y-6">
+      <div className="grid grid-cols-1 gap-y-4">
         <Input
-          label="First name"
+          label="Name"
           name="shipping_address.first_name"
           autoComplete="given-name"
           value={formData["shipping_address.first_name"]}
@@ -125,7 +134,7 @@ const ShippingAddress = ({
           data-testid="shipping-first-name-input"
         />
         <Input
-          label="Last name"
+          label="Surname"
           name="shipping_address.last_name"
           autoComplete="family-name"
           value={formData["shipping_address.last_name"]}
@@ -134,33 +143,64 @@ const ShippingAddress = ({
           data-testid="shipping-last-name-input"
         />
         <Input
-          label="Address"
-          name="shipping_address.address_1"
-          autoComplete="address-line1"
-          value={formData["shipping_address.address_1"]}
+          label="E-mail"
+          name="email"
+          type="email"
+          title="Enter a valid email address."
+          autoComplete="email"
+          value={formData.email}
           onChange={handleChange}
           required
-          data-testid="shipping-address-input"
+          data-testid="shipping-email-input"
         />
-        <Input
-          label="Company"
-          name="shipping_address.company"
-          value={formData["shipping_address.company"]}
-          onChange={handleChange}
-          autoComplete="organization"
-          data-testid="shipping-company-input"
-        />
-        <Input
-          label="Postal code"
-          name="shipping_address.postal_code"
-          autoComplete="postal-code"
-          value={formData["shipping_address.postal_code"]}
-          onChange={handleChange}
-          required
-          data-testid="shipping-postal-code-input"
-        />
+        {/* Mobile with a +91 country-code prefix, matching the MANGO checkout */}
+        <div className="relative flex h-12 w-full border border-neutral-300 transition-colors focus-within:border-neutral-950">
+          <div className="flex items-center gap-x-1 border-r border-neutral-300 pl-4 pr-3 text-[12px] lg:text-[14px] text-neutral-900">
+            <span>+91</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-3.5 w-3.5 text-neutral-500"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </div>
+          <div className="relative z-0 flex-1">
+            <input
+              id="shipping_address.phone"
+              name="shipping_address.phone"
+              autoComplete="tel"
+              inputMode="numeric"
+              placeholder=" "
+              value={formData["shipping_address.phone"]}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  // The +91 shown to the left is decorative; keep only the
+                  // 10-digit number. Autofill often injects "+91…"/spaces, which
+                  // would otherwise submit as an invalid 12-digit phone.
+                  "shipping_address.phone": e.target.value
+                    .replace(/\D/g, "")
+                    .slice(-10),
+                })
+              }
+              data-testid="shipping-phone-input"
+              className="peer block h-full w-full appearance-none rounded-none bg-transparent px-4 pt-[22px] pb-[6px] text-[12px] lg:text-[14px] leading-none focus:outline-none focus:ring-0"
+            />
+            <label
+              htmlFor="shipping_address.phone"
+              data-no-global-float
+              className="pointer-events-none absolute left-4 top-[7px] z-10 text-[12px] lg:text-[14px] leading-none text-black transition-all duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-[12px] lg:text-[14px] peer-focus:top-[7px] peer-focus:translate-y-0 peer-focus:text-[12px] lg:text-[14px]"
+            >
+              Mobile
+            </label>
+          </div>
+        </div>
         <div className="relative w-full">
-          <label className="pointer-events-none absolute left-4 top-3 z-10 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+          <label className="pointer-events-none absolute left-4 top-[7px] z-10 text-[12px] lg:text-[14px] leading-none text-black">
             Country
             <span className="ml-1 text-rose-500">*</span>
           </label>
@@ -172,46 +212,74 @@ const ShippingAddress = ({
             onChange={handleChange}
             required
             data-testid="shipping-country-select"
+            placeholder=""
           />
         </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">State / Province</label>
+        <Input
+          label="Address"
+          name="shipping_address.address_1"
+          autoComplete="address-line1"
+          value={formData["shipping_address.address_1"]}
+          onChange={handleChange}
+          required
+          data-testid="shipping-address-input"
+        />
+        <Input
+          label="Postcode"
+          name="shipping_address.postal_code"
+          autoComplete="postal-code"
+          value={formData["shipping_address.postal_code"]}
+          onChange={handleChange}
+          required
+          data-testid="shipping-postal-code-input"
+        />
+        {/* State/Province is not shown in MANGO's design but is kept here so
+            Shiprocket receives a non-null province/city on the order. */}
+        <div className="relative flex flex-col gap-1">
           <Select
-            options={State.getStatesOfCountry(formData["shipping_address.country_code"]?.toUpperCase()).map(s => ({ value: s.name, label: s.name, isoCode: s.isoCode }))}
-            value={{ value: formData["shipping_address.province"], label: formData["shipping_address.province"] || "Select State" }}
+            options={stateOptions}
+            value={formData["shipping_address.province"] ? { value: formData["shipping_address.province"], label: formData["shipping_address.province"] } : null}
             onChange={(selectedOption: any) => {
               setFormData({
                 ...formData,
-                "shipping_address.province": selectedOption.value,
-                "shipping_address.city": "" // Reset city when state changes
+                "shipping_address.province": selectedOption?.value || "",
+                "shipping_address.city": ""
               })
             }}
+            onFocus={() => setStateFocused(true)}
+            onBlur={() => setStateFocused(false)}
             isDisabled={!formData["shipping_address.country_code"]}
-            placeholder="Search State"
+            placeholder=""
             className="text-sm"
-            styles={{ control: (base: any) => ({ ...base, minHeight: '44px', borderRadius: '0px', borderColor: '#d4d4d4' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '48px', borderRadius: '0px', borderColor: '#d4d4d4', paddingLeft: '8px' }), valueContainer: (base: any) => ({ ...base, paddingTop: '16px' }), menu: (base: any) => ({ ...base, zIndex: 50 }) }}
           />
+          <label className={clx(
+            "pointer-events-none absolute left-4 z-10 transition-all duration-300 ease-in-out text-black",
+            (stateFocused || formData["shipping_address.province"]) 
+              ? "top-[7px] text-[12px] lg:text-[14px]" 
+              : "top-1/2 -translate-y-1/2 text-[12px] lg:text-[14px]"
+          )}>State / Province</label>
         </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">City</label>
+        <div className="relative flex flex-col gap-1">
           <Select
-            options={
-              formData["shipping_address.province"] 
-                ? City.getCitiesOfState(
-                    formData["shipping_address.country_code"]?.toUpperCase(), 
-                    State.getStatesOfCountry(formData["shipping_address.country_code"]?.toUpperCase()).find(s => s.name === formData["shipping_address.province"])?.isoCode || ""
-                  ).map(c => ({ value: c.name, label: c.name }))
-                : []
-            }
-            value={{ value: formData["shipping_address.city"], label: formData["shipping_address.city"] || "Select City" }}
+            options={formData["shipping_address.province"] ? cityOptions : []}
+            value={formData["shipping_address.city"] ? { value: formData["shipping_address.city"], label: formData["shipping_address.city"] } : null}
             onChange={(selectedOption: any) => {
-              handleChange({ target: { name: "shipping_address.city", value: selectedOption.value } } as any)
+              handleChange({ target: { name: "shipping_address.city", value: selectedOption?.value || "" } } as any)
             }}
+            onFocus={() => setCityFocused(true)}
+            onBlur={() => setCityFocused(false)}
             isDisabled={!formData["shipping_address.province"]}
-            placeholder="Search City"
+            placeholder=""
             className="text-sm"
-            styles={{ control: (base: any) => ({ ...base, minHeight: '44px', borderRadius: '0px', borderColor: '#d4d4d4' }) }}
+            styles={{ control: (base: any) => ({ ...base, minHeight: '48px', borderRadius: '0px', borderColor: '#d4d4d4', paddingLeft: '8px' }), valueContainer: (base: any) => ({ ...base, paddingTop: '16px' }), menu: (base: any) => ({ ...base, zIndex: 50 }) }}
           />
+          <label className={clx(
+            "pointer-events-none absolute left-4 z-10 transition-all duration-300 ease-in-out text-black",
+            (cityFocused || formData["shipping_address.city"]) 
+              ? "top-[7px] text-[12px] lg:text-[14px]" 
+              : "top-1/2 -translate-y-1/2 text-[12px] lg:text-[14px]"
+          )}>Town / City</label>
         </div>
       </div>
       {/* react-select renders no native <input>, so the checkout's FormData
@@ -228,34 +296,13 @@ const ShippingAddress = ({
         name="shipping_address.city"
         value={formData["shipping_address.city"] || ""}
       />
-      <div className="my-6 border-t border-neutral-200 pt-5">
+      <div className="my-6 border-t border-neutral-200 pt-5 hidden">
         <Checkbox
           label="Billing address same as shipping address"
           name="same_as_billing"
           checked={checked}
           onChange={onChange}
           data-testid="billing-address-checkbox"
-        />
-      </div>
-      <div className="mb-4 grid grid-cols-1 gap-y-6">
-        <Input
-          label="Email"
-          name="email"
-          type="email"
-          title="Enter a valid email address."
-          autoComplete="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          data-testid="shipping-email-input"
-        />
-        <Input
-          label="Phone"
-          name="shipping_address.phone"
-          autoComplete="tel"
-          value={formData["shipping_address.phone"]}
-          onChange={handleChange}
-          data-testid="shipping-phone-input"
         />
       </div>
     </>

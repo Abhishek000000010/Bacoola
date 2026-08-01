@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import CustomProductDetails from "@modules/products/templates/CustomProductDetails"
+import RecommendedProducts from "@modules/products/components/recommended-products"
 import { HttpTypes } from "@medusajs/types"
 
 type Props = {
@@ -102,6 +103,14 @@ export default async function ProductPage(props: Props) {
         countryCode={params.countryCode}
         images={images ?? []}
       />
+      <Suspense fallback={null}>
+        <RecommendedProducts
+          product={pricedProduct}
+          region={region}
+          countryCode={params.countryCode}
+          selectedVariantId={selectedVariantId}
+        />
+      </Suspense>
     </Suspense>
   )
 }

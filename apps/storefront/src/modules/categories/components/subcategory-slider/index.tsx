@@ -37,7 +37,7 @@ export default function SubcategorySlider({
   return (
     <div className="w-full bg-white py-4 border-t border-b border-neutral-200 relative group">
       <div className="max-w-[1550px] mx-auto px-8 sm:px-12 flex items-center w-full">
-        <div className="font-bold text-xs mr-8 shrink-0 uppercase tracking-widest text-neutral-900">
+        <div className="font-bold text-xs lg:text-sm mr-8 shrink-0 uppercase tracking-widest text-neutral-900">
           {category.name}
         </div>
         
@@ -58,7 +58,7 @@ export default function SubcategorySlider({
             <li>
               <LocalizedClientLink
                 href={`/categories/${category.handle}`}
-                className="text-[12px] font-bold text-neutral-900 hover:text-neutral-500 uppercase tracking-wider"
+                className="text-[12px] lg:text-[14px] font-bold text-neutral-900 hover:text-neutral-500 uppercase tracking-wider"
               >
                 SEE ALL
               </LocalizedClientLink>
@@ -68,7 +68,7 @@ export default function SubcategorySlider({
               <li key={child.id}>
                 <LocalizedClientLink
                   href={`/categories/${child.handle}`}
-                  className="text-[12px] font-bold text-neutral-900 hover:text-neutral-500 uppercase tracking-wider"
+                  className="text-[12px] lg:text-[14px] font-bold text-neutral-900 hover:text-neutral-500 uppercase tracking-wider"
                 >
                   {child.name}
                 </LocalizedClientLink>

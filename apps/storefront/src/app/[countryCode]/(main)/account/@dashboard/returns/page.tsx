@@ -14,33 +14,33 @@ export default function Returns() {
           EXCHANGES AND RETURNS
         </h1>
 
-        <p className="text-[13px] font-normal leading-[1.7] mb-[56px] text-center w-full">
+        <p className="text-[12px] lg:text-[14px] font-normal leading-[1.7] mb-[56px] text-center w-full">
           You have <span className="font-semibold">30 days</span> from the dispatch date to exchange or return your order.
         </p>
 
         <div className="w-full flex flex-col items-start text-left mb-[48px]">
-          <h2 className="text-[12px] font-bold uppercase mb-[4px] tracking-normal">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase mb-[4px] tracking-normal">
             HOME COLLECTION
           </h2>
-          <p className="text-[12px] font-normal uppercase mb-[24px]">
+          <p className="text-[12px] lg:text-[14px] font-normal uppercase mb-[24px]">
             FREE
           </p>
 
-          <p className="text-[13px] font-normal leading-[1.7] mb-[24px] max-w-[480px]">
+          <p className="text-[12px] lg:text-[14px] font-normal leading-[1.7] mb-[24px] max-w-[480px]">
             Request the collection of your parcel online and we will send a carrier within 24 to 48 hours to the address of your choice.
           </p>
 
-          <p className="text-[13px] font-semibold leading-[1.7] max-w-[480px]">
+          <p className="text-[12px] lg:text-[14px] font-semibold leading-[1.7] max-w-[480px]">
             This service is only available for one return per purchase.
           </p>
 
-          <button className="w-full h-[44px] bg-[#111111] text-white hover:bg-[#333333] transition-colors mt-[24px] text-[11px] font-bold tracking-wider uppercase">
+          <button className="w-full h-[44px] border border-[#111111] bg-[#111111] text-white hover:bg-white hover:text-[#111111] transition-colors mt-[24px] text-[12px] lg:text-[14px] font-bold tracking-wider uppercase">
             REQUEST COLLECTION
           </button>
         </div>
 
         <div className="w-full text-center mt-[32px] pb-8">
-          <p className="text-[13px] leading-[1.7]">
+          <p className="text-[12px] lg:text-[14px] leading-[1.7]">
             Find more information about returns on the{" "}
             <LocalizedClientLink href="/help" className="font-bold hover:text-[#555555] transition-colors">
               Help

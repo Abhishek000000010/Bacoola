@@ -17,7 +17,7 @@ const MegaMenuColumn: React.FC<MegaMenuColumnProps> = ({ menuItems }) => {
             className="w-full py-2.5 flex items-center"
           >
             <button
-              className={`text-left text-[13px] uppercase tracking-[0.12em] transition-colors duration-200 focus:outline-none font-semibold ${
+              className={`nav-underline text-left text-[12px] uppercase tracking-[0.12em] transition-colors duration-200 focus:outline-none font-semibold ${
                 isSale
                   ? "text-[#D01313] hover:text-[#B01010]"
                   : "text-[#111111] hover:text-neutral-500"

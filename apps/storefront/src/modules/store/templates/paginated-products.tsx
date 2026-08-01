@@ -1,12 +1,8 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { OptionValueIds } from "@lib/util/product-option-filters"
-import { getVariantCards } from "@lib/util/variant-cards"
-import ProductPreview from "@modules/products/components/product-preview"
-import { Pagination } from "@modules/store/components/pagination"
+import InfiniteProducts from "@modules/store/components/infinite-products"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-
-const PRODUCT_LIMIT = 12
 
 type PaginatedProductsParams = {
   limit: number
@@ -18,7 +14,6 @@ type PaginatedProductsParams = {
 
 export default async function PaginatedProducts({
   sortBy,
-  page,
   collectionId,
   categoryId,
   productsIds,
@@ -28,7 +23,11 @@ export default async function PaginatedProducts({
   q,
 }: {
   sortBy?: SortOptions
-  page: number
+  /**
+   * Kept for backwards compatibility with callers that still pass a URL page.
+   * The grid now scrolls continuously and always starts from the first page.
+   */
+  page?: number
   collectionId?: string
   categoryId?: string | string[]
   productsIds?: string[]
@@ -37,6 +36,8 @@ export default async function PaginatedProducts({
   grid?: string
   q?: string
 }) {
+  const sort = sortBy || "created_at"
+
   const queryParams: PaginatedProductsParams & { q?: string } = {
     limit: 12,
   }
@@ -57,7 +58,7 @@ export default async function PaginatedProducts({
     queryParams["id"] = productsIds
   }
 
-  if (sortBy === "created_at") {
+  if (sort === "created_at") {
     queryParams["order"] = "created_at"
   }
 
@@ -67,24 +68,28 @@ export default async function PaginatedProducts({
     return null
   }
 
+  // Page one is fetched on the server so the listing is present in the initial
+  // HTML (SEO + no layout shift); InfiniteProducts takes over from there.
   const {
-    response: { products, count },
+    response: { products },
+    nextPage,
   } = await listProductsWithSort({
-    page,
+    page: 1,
     queryParams,
-    sortBy,
+    sortBy: sort,
     countryCode,
     optionValueIds,
     tier: "medium",
   })
 
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
-
+  // Mirrors the client toggle in CategoryProductListing / search: 2 / 4 / 6, with
+  // the 6-up view stripped down to thumbnails only and a tight 2px row gap.
   let gridClasses = "grid-cols-2 small:grid-cols-3 medium:grid-cols-4";
   if (grid === "2") {
-    gridClasses = "grid-cols-1 small:grid-cols-2";
+    gridClasses = "grid-cols-2";
   } else if (grid === "6") {
-    gridClasses = "grid-cols-3 small:grid-cols-4 medium:grid-cols-6";
+    gridClasses =
+      "grid-cols-3 small:grid-cols-4 medium:grid-cols-6 !gap-y-[2px] [&_.pp-d-details]:!hidden [&_.pp-m-details]:!hidden [&_.pp-plus]:!hidden";
   }
 
   if (products.length === 0) {
@@ -104,31 +109,23 @@ export default async function PaginatedProducts({
   }
 
   return (
-    <>
-      <ul
-        className={`grid ${gridClasses} w-full gap-x-[2px] gap-y-8 bg-white`}
-        data-testid="products-list"
-      >
-        {/*
-          One tile per colourway rather than per product. Note this makes the
-          number of tiles per page vary, since paging is still counted in
-          products -- a 12-product page of two-colour shirts renders 24 tiles.
-        */}
-        {products.flatMap((p) =>
-          getVariantCards(p).map((card) => (
-            <li key={card.key}>
-              <ProductPreview product={p} region={region} card={card} />
-            </li>
-          ))
-        )}
-      </ul>
-      {totalPages > 1 && (
-        <Pagination
-          data-testid="product-pagination"
-          page={page}
-          totalPages={totalPages}
-        />
-      )}
-    </>
+    <InfiniteProducts
+      // Re-fetching for a new sort/filter changes this key, so the client grid
+      // remounts with the fresh first page instead of appending onto the old one.
+      key={JSON.stringify({ sort, collectionId, categoryId, productsIds, optionValueIds, q })}
+      initialProducts={products}
+      initialNextPage={nextPage}
+      region={region}
+      gridClasses={gridClasses}
+      loadParams={{
+        sortBy: sort,
+        collectionId,
+        categoryId,
+        productsIds,
+        countryCode,
+        optionValueIds,
+        q,
+      }}
+    />
   )
 }

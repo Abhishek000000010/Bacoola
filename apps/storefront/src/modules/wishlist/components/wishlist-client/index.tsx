@@ -47,18 +47,18 @@ export default function WishlistClient({
   return (
     <div className="w-full flex flex-col font-sans text-[#111111] pb-24">
       {/* Top Header Section */}
-      <div className="w-full px-8 sm:px-12 pt-8 pb-4 flex flex-col items-start select-none">
-        <h1 className="text-base sm:text-lg font-bold uppercase tracking-wider text-neutral-900">
+      <div className="w-full px-4 sm:px-8 pt-8 pb-4 flex flex-col items-start select-none">
+        <h1 className="text-base sm:text-lg font-bold uppercase tracking-wider text-black">
           MY WISHLIST
         </h1>
-        <p className="text-xs text-neutral-500 mt-1 font-normal tracking-wide">
+        <p className="text-[12px] lg:text-[14px] text-black mt-1 font-normal tracking-wide">
           These are the items you liked the most
         </p>
       </div>
 
       {wishlistItems.length > 0 ? (
         /* Saved Wishlist Items Grid */
-        <div className="w-full px-4 sm:px-8 py-4 max-w-[1550px]">
+        <div className="w-full px-0 sm:px-8 py-4 max-w-[1550px]">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2">
             {wishlistItems.map((product) => (
               <ProductPreview
@@ -88,42 +88,23 @@ export default function WishlistClient({
               />
             </svg>
           </div>
-          <h2 className="text-[14px] font-bold uppercase tracking-[0.05em] mb-4">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-4">
             Your Wishlist is Empty
           </h2>
-          <p className="text-[13px] text-neutral-500 tracking-wide mb-6 text-center max-w-sm">
+          <p className="text-[12px] lg:text-[14px] text-neutral-500 tracking-wide mb-6 text-center max-w-sm">
             Save your favorite items by tapping the heart icon on any product.
           </p>
 
           <LocalizedClientLink
             href="/store"
-            className="px-8 py-3 bg-black text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+            className="px-8 py-3 border border-black bg-black text-white text-xs lg:text-sm font-semibold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-colors"
           >
             BROWSE PRODUCTS
           </LocalizedClientLink>
         </div>
       )}
 
-      {/* Popular Right Now Section */}
-      {popularProducts && popularProducts.length > 0 && (
-        <div className="w-full mt-12 border-t border-neutral-100 pt-12">
-          <div className="w-full flex items-center justify-between px-6 sm:px-8 xl:px-10 mb-6">
-            <h2 className="text-[13px] font-bold uppercase tracking-[0.05em]">
-              Popular Right Now
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 px-6 sm:px-8 xl:px-10">
-            {popularProducts.map((product) => (
-              <ProductPreview
-                key={product.id}
-                product={product}
-                region={region}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

@@ -2,7 +2,6 @@ import React from "react"
 import Hero from "@modules/home/components/hero"
 import SplitBanner from "@modules/home/components/split-banner"
 import EditorialBanner from "@modules/home/components/editorial-banner"
-import Newsletter from "@modules/home/components/newsletter"
 
 interface LandingRendererProps {
   sections: any[]
@@ -51,8 +50,6 @@ export const LandingRenderer: React.FC<LandingRendererProps> = ({ sections, page
       {/* 6.5. Pre-Footer Slot (e.g. Subcategory Slider) */}
       {preFooter && preFooter}
 
-      {/* 7. Newsletter */}
-      <Newsletter />
     </div>
   )
 }

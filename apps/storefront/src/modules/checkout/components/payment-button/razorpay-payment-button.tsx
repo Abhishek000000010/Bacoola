@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay"
 import { HttpTypes } from "@medusajs/types"
 import { placeOrder, checkCartInventory } from "@lib/data/cart"
+import { isRedirectError } from "@lib/util/is-redirect-error"
 import ErrorMessage from "../error-message"
 
 export const RazorpayPaymentButton = ({
@@ -25,13 +26,17 @@ export const RazorpayPaymentButton = ({
   const orderData = session.data as { id: string }
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message || "An error occurred, please try again.")
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+    } catch (err: any) {
+      // On success placeOrder() redirects, which throws NEXT_REDIRECT -- let it
+      // propagate so the navigation happens instead of showing it as an error.
+      if (isRedirectError(err)) {
+        throw err
+      }
+      setErrorMessage(err.message || "An error occurred, please try again.")
+      setSubmitting(false)
+    }
   }
 
   const handlePayment = useCallback(async () => {
@@ -106,9 +111,10 @@ export const RazorpayPaymentButton = ({
         onClick={handlePayment}
         size="large"
         isLoading={submitting}
+        className="h-[50px] w-full tracking-[0.05em]"
         data-testid={dataTestId}
       >
-        Place order
+        Pay now
       </Button>
       <ErrorMessage
         error={errorMessage}

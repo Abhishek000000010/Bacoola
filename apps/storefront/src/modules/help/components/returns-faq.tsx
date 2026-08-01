@@ -177,7 +177,7 @@ export default function ReturnsFAQ() {
         
         {/* Left Sidebar */}
         <div className="w-full md:w-[280px] flex-shrink-0">
-          <h2 className="mb-[30px] pl-[12px] text-[12px] font-bold uppercase tracking-[0.05em] text-[#111111]">
+          <h2 className="mb-[30px] pl-[12px] text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] text-[#111111]">
             Categories
           </h2>
 
@@ -195,7 +195,7 @@ export default function ReturnsFAQ() {
                       {category.icon}
                     </span>
                     <span
-                      className={`text-[14px] leading-[1.4] transition-colors ${
+                      className={`text-[12px] lg:text-[14px] leading-[1.4] transition-colors ${
                         isActive
                           ? "font-semibold text-black"
                           : "font-normal text-[#111111] hover:text-black"

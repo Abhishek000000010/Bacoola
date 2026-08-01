@@ -45,15 +45,16 @@ const CheckoutSteps = () => {
             onClick={() => handleStepClick(step.id, index)}
           >
             <div
-              className={clx("h-[2px] w-full bg-neutral-200 transition-colors", {
-                "bg-neutral-950": isActive,
+              className={clx("w-full transition-colors", {
+                "h-[2px] bg-neutral-950": isActive,
+                "h-[1px] bg-neutral-300": !isActive,
               })}
             />
             <span
               className={clx(
-                "pt-3 text-[12px] font-normal tracking-[0.01em] text-neutral-400 transition-colors",
+                "pt-2 text-[12px] lg:text-[14px] font-normal tracking-[0.01em] text-neutral-500 transition-colors",
                 {
-                  "text-neutral-950 font-medium": isActive,
+                  "text-neutral-950": isActive,
                 }
               )}
             >

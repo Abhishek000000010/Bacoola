@@ -33,17 +33,17 @@ const OrderCard = ({ order }: OrderCardProps) => {
       <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 text-sm">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex flex-col gap-0.5">
-            <span className="text-gray-500 uppercase tracking-wider text-[11px] font-semibold">Order #</span>
+            <span className="text-gray-500 uppercase tracking-wider text-[12px] lg:text-[14px] font-semibold">Order #</span>
             <span className="font-semibold text-gray-900" data-testid="order-display-id">{order.display_id}</span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-gray-500 uppercase tracking-wider text-[11px] font-semibold">Order Placed</span>
+            <span className="text-gray-500 uppercase tracking-wider text-[12px] lg:text-[14px] font-semibold">Order Placed</span>
             <span className="text-gray-700 font-medium" data-testid="order-created-at">
               {new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-gray-500 uppercase tracking-wider text-[11px] font-semibold">Total</span>
+            <span className="text-gray-500 uppercase tracking-wider text-[12px] lg:text-[14px] font-semibold">Total</span>
             <span className="font-semibold text-gray-900" data-testid="order-amount">
               {convertToLocale({
                 amount: order.total,
@@ -52,13 +52,13 @@ const OrderCard = ({ order }: OrderCardProps) => {
             </span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-gray-500 uppercase tracking-wider text-[11px] font-semibold">Items</span>
+            <span className="text-gray-500 uppercase tracking-wider text-[12px] lg:text-[14px] font-semibold">Items</span>
             <span className="text-gray-700 font-medium">{numberOfLines} {numberOfLines === 1 ? "item" : "items"}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="bg-gray-200 text-gray-800 text-xs px-2.5 py-1 rounded-full font-medium">
+          <span className="bg-gray-200 text-gray-800 text-xs lg:text-sm px-2.5 py-1 rounded-full font-medium">
             {formatStatus(order.status)}
           </span>
         </div>
@@ -80,7 +80,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
               <span className="font-medium text-gray-900 text-sm hover:text-black transition-colors" data-testid="item-title">
                 {item.title}
               </span>
-              <span className="text-xs text-gray-500 mt-1">
+              <span className="text-xs lg:text-sm text-gray-500 mt-1">
                 Qty: <span data-testid="item-quantity">{item.quantity}</span>
               </span>
             </div>
@@ -96,7 +96,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
       {/* Card Footer Actions */}
       <div className="bg-gray-50/50 px-6 py-3 border-t border-gray-100 flex justify-between items-center">
-        <span className="text-xs text-gray-500">
+        <span className="text-xs lg:text-sm text-gray-500">
           Order ID: {order.id}
         </span>
         <LocalizedClientLink href={`/account/orders/details/${order.id}`}>

@@ -10,10 +10,10 @@ export default function Subscriptions() {
   return (
     <div className="w-full max-w-[500px] mx-auto pt-0 font-sans text-[#111111]">
       <div className="mb-12">
-        <h1 className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.05em] mb-4">
+        <h1 className="text-[12px] lg:text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.05em] mb-4">
           My subscriptions
         </h1>
-        <p className="text-[14px] font-normal tracking-wide leading-relaxed">
+        <p className="text-[12px] lg:text-[14px] font-normal tracking-wide leading-relaxed">
           Manage your newsletter and notification preferences. To unsubscribe, uncheck all the boxes.
         </p>
       </div>
@@ -21,7 +21,7 @@ export default function Subscriptions() {
       <form className="flex flex-col gap-y-12">
         {/* Contents Section */}
         <section>
-          <h2 className="text-[13px] font-bold uppercase tracking-[0.05em] mb-6">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-6">
             Contents
           </h2>
           <div className="flex flex-col gap-y-4">
@@ -33,7 +33,7 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">Woman</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">Woman</span>
             </label>
 
             <label className="flex items-center gap-x-3 cursor-pointer group">
@@ -44,7 +44,7 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">Man</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">Man</span>
             </label>
 
             <label className="flex items-center gap-x-3 cursor-pointer group">
@@ -55,14 +55,14 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">Kids</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">Kids</span>
             </label>
           </div>
         </section>
 
         {/* Channels Section */}
         <section>
-          <h2 className="text-[13px] font-bold uppercase tracking-[0.05em] mb-6">
+          <h2 className="text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.05em] mb-6">
             Channels
           </h2>
           <div className="flex flex-col gap-y-4">
@@ -74,7 +74,7 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">e-mail</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">e-mail</span>
             </label>
 
             <label className="flex items-center gap-x-3 cursor-pointer group">
@@ -85,7 +85,7 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">SMS</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">SMS</span>
             </label>
 
             <label className="flex items-center gap-x-3 cursor-pointer group">
@@ -96,14 +96,14 @@ export default function Subscriptions() {
                   <path fillRule="evenodd" d="M14 14H2V2h12zM3 13h10V3H3z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <span className="text-[14px] tracking-wide text-[#111111]">Post</span>
+              <span className="text-[12px] lg:text-[14px] tracking-wide text-[#111111]">Post</span>
             </label>
           </div>
         </section>
 
         <button
           type="submit"
-          className="w-full bg-[#111111] hover:bg-[#333333] text-white transition-colors h-[48px] text-[12px] font-bold uppercase tracking-[0.1em]"
+          className="w-full border border-[#111111] bg-[#111111] hover:bg-white hover:text-[#111111] text-white transition-colors h-[48px] text-[12px] lg:text-[14px] font-bold uppercase tracking-[0.1em]"
         >
           Save
         </button>

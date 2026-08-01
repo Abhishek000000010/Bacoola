@@ -59,8 +59,8 @@ export default function WishlistButton({
         stroke="currentColor"
         className={`${iconClassName} transition-colors duration-200 ${
           isWishlisted
-            ? "fill-red-600 text-red-600"
-            : "fill-none text-gray-900 hover:text-red-500"
+            ? "fill-black text-black"
+            : "fill-none text-gray-900 hover:text-black"
         }`}
       >
         <path

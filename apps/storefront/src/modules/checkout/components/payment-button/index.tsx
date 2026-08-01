@@ -2,6 +2,7 @@
 
 import { isManual, isStripeLike, isRazorpay } from "@lib/constants"
 import { placeOrder, checkCartInventory } from "@lib/data/cart"
+import { isRedirectError } from "@lib/util/is-redirect-error"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
@@ -72,13 +73,15 @@ const StripePaymentButton = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+    } catch (err: any) {
+      if (isRedirectError(err)) {
+        throw err
+      }
+      setErrorMessage(err.message)
+      setSubmitting(false)
+    }
   }
 
   const stripe = useStripe()
@@ -167,9 +170,10 @@ const StripePaymentButton = ({
         onClick={handlePayment}
         size="large"
         isLoading={submitting}
+        className="h-[50px] w-full tracking-[0.05em]"
         data-testid={dataTestId}
       >
-        Place order
+        Pay now
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -184,13 +188,15 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+    } catch (err: any) {
+      if (isRedirectError(err)) {
+        throw err
+      }
+      setErrorMessage(err.message)
+      setSubmitting(false)
+    }
   }
 
   const handlePayment = async () => {
@@ -219,9 +225,10 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         isLoading={submitting}
         onClick={handlePayment}
         size="large"
+        className="h-[50px] w-full tracking-[0.05em]"
         data-testid="submit-order-button"
       >
-        Place order
+        Pay now
       </Button>
       <ErrorMessage
         error={errorMessage}
