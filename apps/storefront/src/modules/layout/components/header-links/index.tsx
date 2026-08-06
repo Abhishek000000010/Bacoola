@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@modules/common/components/ui"
@@ -19,20 +19,45 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const isActive = (href: string) => {
-    if (!pathname) return false
+  // This nav lives in a statically-rendered layout, so on the server
+  // `usePathname()` can't resolve the current category and the section highlight
+  // would differ from the client's -> a hydration mismatch. Apply the
+  // pathname-derived underline only after mount so the first client render
+  // matches the server (nothing highlighted), then lights the right section.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  // Resolve which top-level section (women/men/teen/kids) the current URL sits
+  // under, so the underline stays lit while browsing that section -- not only on
+  // the /landingpage/<section> pages. Category pages live at /categories/<handle>
+  // and chain up via parent_category_id to a root whose handle is the section key.
+  const activeSectionKey = React.useMemo<string | null>(() => {
+    if (!pathname) return null
 
     // Normalize path by stripping the locale code (e.g. "/us/categories/men" -> "/categories/men")
     const segments = pathname.split("/").filter(Boolean)
     const cleanSegments =
       segments.length > 0 && segments[0].length === 2 ? segments.slice(1) : segments
-    const cleanPath = "/" + cleanSegments.join("/")
 
-    if (href === "/") {
-      return cleanPath === "/"
+    // /landingpage/<section>
+    if (cleanSegments[0] === "landingpage" && cleanSegments[1]) {
+      return cleanSegments[1]
     }
-    return cleanPath.startsWith(href)
-  }
+
+    // /categories/<handle> -> walk up to the root category's handle
+    if (cleanSegments[0] === "categories" && cleanSegments[1]) {
+      const byHandle = new Map(categories.map((c) => [c.handle, c]))
+      const byId = new Map(categories.map((c) => [c.id, c]))
+      let current = byHandle.get(cleanSegments[1])
+      // Guard against cycles/missing data with a bounded walk.
+      for (let i = 0; current && i < 10; i++) {
+        if (!current.parent_category_id) return current.handle ?? null
+        current = byId.get(current.parent_category_id)
+      }
+    }
+
+    return null
+  }, [pathname, categories])
 
   // Handle cursor entering a link trigger
   const handleMouseEnter = (key: string) => {
@@ -68,7 +93,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   return (
     <div className="flex items-center gap-x-[20px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
-        const active = isActive(href)
+        const active = mounted && activeSectionKey === key
         const isHighlighted = activeCategory ? activeCategory === key : active
 
         return (
